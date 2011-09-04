@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <!-- attributes -->
+    
+    <xsd:attribute name="id">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:int">
+                <xsd:minInclusive value="0"></xsd:minInclusive>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+
+    <xsd:attribute name="location" type="xsd:string"></xsd:attribute>
+    <xsd:attribute name="realm" type="xsd:string"></xsd:attribute>
+    <xsd:attribute name="done" type="xsd:boolean" default="false"></xsd:attribute>
+    <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
+    
+    <!-- types -->
+    
+    <xsd:complexType name="Task_t">
+        <xsd:sequence>
+            <xsd:element name="startDate" type="xsd:dateTime"></xsd:element>
+            <xsd:element name="endDate" type="xsd:dateTime"></xsd:element>
+            <xsd:element name="dueDate" type="xsd:dateTime"></xsd:element>
+            <xsd:element name="title" type="xsd:string"></xsd:element>
+            <xsd:element name="description" type="xsd:string"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute ref="id"></xsd:attribute>
+        <xsd:attribute ref="location"></xsd:attribute>
+        <xsd:attribute ref="realm"></xsd:attribute>
+        <xsd:attribute ref="done"></xsd:attribute>
+    </xsd:complexType>
+    
+    <xsd:complexType name="Task">
+        <xsd:sequence>
+            <xsd:element name="Task" type="Task_t" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="Realm_t">
+        <xsd:attribute ref="name" use="required"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="Realm">
+        <xsd:sequence>
+            <xsd:element name="Realm" type="Realm_t" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UserData">
+        <xsd:sequence maxOccurs="1" minOccurs="1">
+            <xsd:element name="Realms" type="Realm"></xsd:element>
+            <xsd:element name="Locations" type="Location"></xsd:element>
+            <xsd:element name="Tasks" type="Task"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute ref="name" use="required"></xsd:attribute>
+    </xsd:complexType>
+    
+    <xsd:complexType name="Location_t">
+        <xsd:attribute ref="name" use="required"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="Location">
+        <xsd:sequence>
+            <xsd:element name="Location" type="Location_t" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <!-- actual elements -->
+    
+    <xsd:element name="User" type="UserData"></xsd:element>
+</xsd:schema>

@@ -14,11 +14,27 @@ QMAKE_LFLAGS_RELEASE ~= s/-O./-O3/g
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    TaskXmlWriter.cpp
+    TaskXmlWriter.cpp \
+    Task.cpp \
+    UserData.cpp
 
 HEADERS  += MainWindow.h \
-    TaskXmlWriter.h
+    TaskXmlWriter.h \
+    Task.h \
+    UserData.h
 
 FORMS    += MainWindow.ui
+
+OTHER_FILES += \
+    Tasks.xsd
+
+
+
+
+
+
+
+
+
 
 
