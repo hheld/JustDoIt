@@ -39,8 +39,8 @@ Task::~Task()
 
 const QDateTime & Task::startDate() const
 {
-    Q_D(Task);
-    return *d->startDate;
+    Q_D(const Task);
+    return d->startDate;
 }
 
 void Task::startDate(const QDateTime &startDate)
@@ -51,8 +51,8 @@ void Task::startDate(const QDateTime &startDate)
 
 const QDateTime & Task::endDate() const
 {
-    Q_D(Task);
-    return *d->endDate;
+    Q_D(const Task);
+    return d->endDate;
 }
 
 void Task::endDate(const QDateTime &endDate)
@@ -63,8 +63,8 @@ void Task::endDate(const QDateTime &endDate)
 
 const QDateTime & Task::dueDate() const
 {
-    Q_D(Task);
-    return *d->dueDate;
+    Q_D(const Task);
+    return d->dueDate;
 }
 
 void Task::dueDate(const QDateTime &dueDate)
@@ -75,8 +75,8 @@ void Task::dueDate(const QDateTime &dueDate)
 
 const QString & Task::title() const
 {
-    Q_D(Task);
-    return *d->title;
+    Q_D(const Task);
+    return d->title;
 }
 
 void Task::title(const QString &title)
@@ -87,8 +87,8 @@ void Task::title(const QString &title)
 
 const QString & Task::description() const
 {
-    Q_D(Task);
-    return *d->description;
+    Q_D(const Task);
+    return d->description;
 }
 
 void Task::description(const QString &description)
@@ -99,8 +99,8 @@ void Task::description(const QString &description)
 
 const qint32 & Task::id() const
 {
-    Q_D(Task);
-    return *d->id;
+    Q_D(const Task);
+    return d->id;
 }
 
 void Task::id(const qint32 &id)
@@ -111,8 +111,8 @@ void Task::id(const qint32 &id)
 
 const QString & Task::location() const
 {
-    Q_D(Task);
-    return *d->location;
+    Q_D(const Task);
+    return d->location;
 }
 
 void Task::location(const QString &location)
@@ -123,8 +123,8 @@ void Task::location(const QString &location)
 
 const QString & Task::realm() const
 {
-    Q_D(Task);
-    return *d->realm;
+    Q_D(const Task);
+    return d->realm;
 }
 
 void Task::realm(const QString &realm)
@@ -135,12 +135,22 @@ void Task::realm(const QString &realm)
 
 const bool & Task::done() const
 {
-    Q_D(Task);
-    return *d->done;
+    Q_D(const Task);
+    return d->done;
 }
 
 void Task::done(const bool &done)
 {
     Q_D(Task);
     d->done = done;
+}
+
+bool Task::operator ==(const Task &task) const
+{
+    Q_D(const Task);
+
+    qint32 leftId = d->id;
+    qint32 rightId = task.id();
+
+    return leftId == rightId;
 }

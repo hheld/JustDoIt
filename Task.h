@@ -41,6 +41,10 @@ public:
 
     //-------------------------------------------------
 
+    bool operator==(const Task &task) const;
+
+    //-------------------------------------------------
+
     static QString DateTimeFormat;
 
 private:
