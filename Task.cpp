@@ -1,6 +1,7 @@
 #include "Task.h"
 
 QString Task::DateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
+qint32 Task::NumOfTasks = 0;
 
 //----------------------------------------------------
 
@@ -29,6 +30,7 @@ struct TaskPrivate
 Task::Task()
     : d_ptr(new TaskPrivate(this))
 {
+    NumOfTasks++;
 }
 
 Task::~Task()
@@ -101,12 +103,6 @@ const qint32 & Task::id() const
 {
     Q_D(const Task);
     return d->id;
-}
-
-void Task::id(const qint32 &id)
-{
-    Q_D(Task);
-    d->id = id;
 }
 
 const QString & Task::location() const

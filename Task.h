@@ -28,7 +28,6 @@ public:
     void description(const QString &description);
 
     const qint32& id() const;
-    void id(const qint32 &id);
 
     const QString& location() const;
     void location(const QString &location);
@@ -46,6 +45,7 @@ public:
     //-------------------------------------------------
 
     static QString DateTimeFormat;
+    static qint32 NumOfTasks;
 
 private:
     TaskPrivate *d_ptr;

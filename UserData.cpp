@@ -28,6 +28,16 @@ UserData::UserData(const QString &name)
 
 UserData::~UserData()
 {
+    Q_D(UserData);
+
+    for(int i=0; i<d->tasks.size(); ++i)
+    {
+        delete d->tasks[i];
+        d->tasks[i] = 0;
+    }
+
+    d->tasks.clear();
+
     delete d_ptr;
     d_ptr = 0;
 }

@@ -13,7 +13,8 @@ public:
     ~TaskXmlWriter();
 
     void writeDocument();
-    UserData* userDataPtr();
+    UserData* uData();
+    void uData(UserData *uDat);
 
 private:
     QXmlStreamWriter *xmlWriter;
