@@ -16,17 +16,21 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     TaskXmlWriter.cpp \
     Task.cpp \
-    UserData.cpp
+    UserData.cpp \
+    TaskXmlReader.cpp
 
 HEADERS  += MainWindow.h \
     TaskXmlWriter.h \
     Task.h \
-    UserData.h
+    UserData.h \
+    TaskXmlReader.h
 
 FORMS    += MainWindow.ui
 
 OTHER_FILES += \
     Tasks.xsd
+
+
 
 
 

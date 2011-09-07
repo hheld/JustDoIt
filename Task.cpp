@@ -30,6 +30,9 @@ struct TaskPrivate
 Task::Task()
     : d_ptr(new TaskPrivate(this))
 {
+    Q_D(Task);
+
+    d->id = NumOfTasks;
     NumOfTasks++;
 }
 
@@ -103,6 +106,17 @@ const qint32 & Task::id() const
 {
     Q_D(const Task);
     return d->id;
+}
+
+void Task::id(const qint32 &id)
+{
+    Q_D(Task);
+    d->id = id;
+
+    if(id>NumOfTasks)
+    {
+        NumOfTasks = id+1;
+    }
 }
 
 const QString & Task::location() const
