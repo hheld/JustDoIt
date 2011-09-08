@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->listView_realms->setModel(model_realms);
     ui->listView_locations->setModel(model_locations);
 
+    ui->comboBox->setModel(model_realms);
+
     connect(model_realms, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(realmData_changed()));
     connect(model_locations, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(locationData_changed()));
 }
@@ -66,7 +68,7 @@ void MainWindow::saveXML(const QString &fileName)
 
 void MainWindow::on_button_save_clicked()
 {
-    saveXML("mySavedFile.xml");
+    saveXML(saveFileName);
 }
 
 void MainWindow::realmData_changed()
@@ -112,4 +114,9 @@ void MainWindow::on_button_deleteRealm_clicked()
     model_realms->removeRows(ui->listView_realms->currentIndex().row(), 1);
 
     emit realmData_changed();
+}
+
+void MainWindow::setSaveFileName(const QString &xmlOutFileName)
+{
+    saveFileName = xmlOutFileName;
 }

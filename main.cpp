@@ -1,7 +1,10 @@
 #include <QtGui/QApplication>
-#include "MainWindow.h"
+#include <QDir>
+#include <QProcessEnvironment>
 
+#include "MainWindow.h"
 #include "TaskXmlReader.h"
+#include "UserData.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,16 +12,34 @@ int main(int argc, char *argv[])
 
     //------------------------------------------------
 
-    TaskXmlReader myReader("myTasks.xml");
+    QDir homeDir = QDir::homePath();
 
-    myReader.readDocument();
+    if(!homeDir.exists(".justdoit"))
+    {
+        homeDir.mkdir(".justdoit");
+    }
 
-    UserData *myUd = myReader.uData();
+    QDir savePath = homeDir.absolutePath() + "/.justdoit";
+
+    TaskXmlReader myReader(savePath.absolutePath() + "/tasks.xml");
+
+    UserData *myUd = 0;
+
+    if(savePath.exists("tasks.xml"))
+    {
+        myReader.readDocument();
+        myUd = myReader.uData();
+    }
+    else
+    {
+        myUd = new UserData(QProcessEnvironment::systemEnvironment().value("USER"));
+    }
 
     //------------------------------------------------
 
     MainWindow w;
     w.setUsrData(myUd);
+    w.setSaveFileName(savePath.absolutePath() + "/tasks.xml");
     w.show();
 
     return a.exec();

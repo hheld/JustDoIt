@@ -20,6 +20,7 @@ public:
     ~MainWindow();
 
     void setUsrData(UserData *uData);
+    void setSaveFileName(const QString &xmlOutFileName);
 
 protected:
     void changeEvent(QEvent *e);
@@ -31,6 +32,8 @@ private:
 
     QStringListModel *model_realms;
     QStringListModel *model_locations;
+
+    QString saveFileName;
 
 public slots:
     void saveXML(const QString &fileName = QString());
