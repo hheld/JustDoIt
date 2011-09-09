@@ -3,6 +3,7 @@
 
 #include "UserData.h"
 #include "TaskXmlWriter.h"
+#include "TaskTableModel.h"
 
 #include <QStringListModel>
 #include <QDebug>
@@ -21,8 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->listView_realms->setModel(model_realms);
     ui->listView_locations->setModel(model_locations);
-
-    ui->comboBox->setModel(model_realms);
 
     connect(model_realms, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(realmData_changed()));
     connect(model_locations, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(locationData_changed()));
@@ -55,6 +54,11 @@ void MainWindow::setUsrData(UserData *uData)
 
     model_realms->setStringList(uData->realms());
     model_locations->setStringList(uData->locations());
+
+    model_tasks = new TaskTableModel(uData->tasks(), this);
+    connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(taskData_changed(QModelIndex)));
+
+    ui->table_tasks->setModel(model_tasks);
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -79,6 +83,13 @@ void MainWindow::realmData_changed()
 void MainWindow::locationData_changed()
 {
     uData->locations() = model_locations->stringList();
+}
+
+void MainWindow::taskData_changed(QModelIndex index)
+{
+    Q_UNUSED(index);
+
+    uData->tasks() = model_tasks->getTasks();
 }
 
 void MainWindow::on_button_addRealm_clicked()
@@ -119,4 +130,58 @@ void MainWindow::on_button_deleteRealm_clicked()
 void MainWindow::setSaveFileName(const QString &xmlOutFileName)
 {
     saveFileName = xmlOutFileName;
+}
+
+void MainWindow::on_button_addLocation_clicked()
+{
+    int row = model_locations->rowCount();
+
+    model_locations->insertRows(row, 1);
+
+    QModelIndex index = model_locations->index(row);
+
+    ui->listView_locations->setCurrentIndex(index);
+    ui->listView_locations->edit(index);
+}
+
+void MainWindow::on_button_insertLocation_clicked()
+{
+    int row = ui->listView_locations->currentIndex().row();
+    model_locations->insertRows(row, 1);
+
+    QModelIndex index = model_locations->index(row);
+
+    if(index.row()<0)
+    {
+        return;
+    }
+
+    ui->listView_locations->setCurrentIndex(index);
+    ui->listView_locations->edit(index);
+}
+
+void MainWindow::on_button_deleteLocation_clicked()
+{
+    model_locations->removeRows(ui->listView_locations->currentIndex().row(), 1);
+
+    emit locationData_changed();
+}
+
+void MainWindow::on_button_addTask_clicked()
+{
+    int row = model_tasks->rowCount();
+
+    model_tasks->insertRows(row, 1);
+
+    QModelIndex index = model_tasks->index(row, 1);
+
+    ui->table_tasks->setCurrentIndex(index);
+    ui->table_tasks->edit(index);
+}
+
+void MainWindow::on_button_deleteTask_clicked()
+{
+    model_tasks->removeRows(ui->table_tasks->currentIndex().row(), 1);
+
+    emit taskData_changed(ui->table_tasks->currentIndex());
 }

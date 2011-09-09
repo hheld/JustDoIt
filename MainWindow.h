@@ -6,6 +6,7 @@
 
 class UserData;
 class QStringListModel;
+class TaskTableModel;
 
 namespace Ui {
     class MainWindow;
@@ -32,6 +33,7 @@ private:
 
     QStringListModel *model_realms;
     QStringListModel *model_locations;
+    TaskTableModel *model_tasks;
 
     QString saveFileName;
 
@@ -42,9 +44,15 @@ private slots:
     void on_button_save_clicked();
     void realmData_changed();
     void locationData_changed();
+    void taskData_changed(QModelIndex index);
     void on_button_addRealm_clicked();
     void on_button_insertRealm_clicked();
     void on_button_deleteRealm_clicked();
+    void on_button_addLocation_clicked();
+    void on_button_insertLocation_clicked();
+    void on_button_deleteLocation_clicked();
+    void on_button_addTask_clicked();
+    void on_button_deleteTask_clicked();
 };
 
 #endif // MAINWINDOW_H
