@@ -3,11 +3,11 @@
 
 #include <QStyledItemDelegate>
 
-class TaskTableRealmDelegate : public QStyledItemDelegate
+class TaskTableStringListComboboxDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit TaskTableRealmDelegate(QObject *parent = 0);
+    explicit TaskTableStringListComboboxDelegate(QObject *parent = 0);
 
     void setModel(QAbstractItemModel* model);
     QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;

@@ -2,14 +2,14 @@
 #include <QDebug>
 #include <QStringListModel>
 
-#include "TaskTableRealmDelegate.h"
+#include "TaskTableStringListCombobox.h"
 
-TaskTableRealmDelegate::TaskTableRealmDelegate(QObject *parent) :
+TaskTableStringListComboboxDelegate::TaskTableStringListComboboxDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
 {
 }
 
-QWidget * TaskTableRealmDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget * TaskTableStringListComboboxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(parent);
     Q_UNUSED(option);
@@ -22,7 +22,7 @@ QWidget * TaskTableRealmDelegate::createEditor(QWidget *parent, const QStyleOpti
     return editor;
 }
 
-void TaskTableRealmDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void TaskTableStringListComboboxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     Q_UNUSED(index);
 
@@ -39,21 +39,21 @@ void TaskTableRealmDelegate::setEditorData(QWidget *editor, const QModelIndex &i
     return;
 }
 
-void TaskTableRealmDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void TaskTableStringListComboboxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QComboBox *cb = static_cast<QComboBox*>(editor);
 
     model->setData(index, cb->currentText());
 }
 
-void TaskTableRealmDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void TaskTableStringListComboboxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(index);
 
     editor->setGeometry(option.rect);
 }
 
-void TaskTableRealmDelegate::setModel(QAbstractItemModel *model)
+void TaskTableStringListComboboxDelegate::setModel(QAbstractItemModel *model)
 {
     this->model = model;
 }

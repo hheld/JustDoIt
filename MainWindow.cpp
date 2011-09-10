@@ -4,7 +4,7 @@
 #include "UserData.h"
 #include "TaskXmlWriter.h"
 #include "TaskTableModel.h"
-#include "TaskTableRealmDelegate.h"
+#include "TaskTableStringListCombobox.h"
 
 #include <QStringListModel>
 #include <QDebug>
@@ -15,7 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     uData(0),
     model_realms(0),
     model_locations(0),
-    realmDelegate(0)
+    realmDelegate(0),
+    locationDelegate(0)
 {
     ui->setupUi(this);
 
@@ -28,8 +29,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(model_realms, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(realmData_changed()));
     connect(model_locations, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(locationData_changed()));
 
-    realmDelegate = new TaskTableRealmDelegate(this);
+    realmDelegate = new TaskTableStringListComboboxDelegate(this);
     realmDelegate->setModel(model_realms);
+
+    locationDelegate = new TaskTableStringListComboboxDelegate(this);
+    locationDelegate->setModel(model_locations);
 }
 
 MainWindow::~MainWindow()
@@ -40,6 +44,7 @@ MainWindow::~MainWindow()
     delete model_realms; model_realms = 0;
     delete model_locations; model_locations = 0;
     delete realmDelegate; realmDelegate = 0;
+    delete locationDelegate; locationDelegate = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -68,6 +73,7 @@ void MainWindow::setUsrData(UserData *uData)
     hideUninterestingColumns();
 
     ui->table_tasks->setItemDelegateForColumn(2, realmDelegate);
+    ui->table_tasks->setItemDelegateForColumn(1, locationDelegate);
 }
 
 void MainWindow::saveXML(const QString &fileName)

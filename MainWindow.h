@@ -7,7 +7,7 @@
 class UserData;
 class QStringListModel;
 class TaskTableModel;
-class TaskTableRealmDelegate;
+class TaskTableStringListComboboxDelegate;
 
 namespace Ui {
     class MainWindow;
@@ -35,7 +35,8 @@ private:
     QStringListModel *model_realms;
     QStringListModel *model_locations;
     TaskTableModel *model_tasks;
-    TaskTableRealmDelegate *realmDelegate;
+    TaskTableStringListComboboxDelegate *realmDelegate;
+    TaskTableStringListComboboxDelegate *locationDelegate;
 
     QString saveFileName;
 
