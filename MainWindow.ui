@@ -47,7 +47,11 @@
        </layout>
       </item>
       <item>
-       <widget class="QTableView" name="table_tasks"/>
+       <widget class="QTableView" name="table_tasks">
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

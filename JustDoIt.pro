@@ -25,12 +25,14 @@ HEADERS  += MainWindow.h \
     Task.h \
     UserData.h \
     TaskXmlReader.h \
-    TaskTableModel.h
+    TaskTableModel.h \
+    taskSort.h
 
 FORMS    += MainWindow.ui
 
 OTHER_FILES += \
     Tasks.xsd
+
 
 
 

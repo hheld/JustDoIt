@@ -37,6 +37,8 @@ private:
 
     QString saveFileName;
 
+    void hideUninterestingColumns() const;
+
 public slots:
     void saveXML(const QString &fileName = QString());
 

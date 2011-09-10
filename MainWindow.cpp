@@ -59,6 +59,7 @@ void MainWindow::setUsrData(UserData *uData)
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(taskData_changed(QModelIndex)));
 
     ui->table_tasks->setModel(model_tasks);
+    hideUninterestingColumns();
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -184,4 +185,9 @@ void MainWindow::on_button_deleteTask_clicked()
     model_tasks->removeRows(ui->table_tasks->currentIndex().row(), 1);
 
     emit taskData_changed(ui->table_tasks->currentIndex());
+}
+
+void MainWindow::hideUninterestingColumns() const
+{
+    ui->table_tasks->hideColumn(0);
 }
