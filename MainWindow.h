@@ -8,6 +8,7 @@ class UserData;
 class QStringListModel;
 class TaskTableModel;
 class TaskTableStringListComboboxDelegate;
+class TaskTableBoolCheckboxDelegate;
 
 namespace Ui {
     class MainWindow;

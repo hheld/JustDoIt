@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 
 #include "UserData.h"
+#include "Task.h"
 #include "TaskXmlWriter.h"
 #include "TaskTableModel.h"
 #include "TaskTableStringListCombobox.h"
@@ -72,8 +73,8 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setModel(model_tasks);
     hideUninterestingColumns();
 
-    ui->table_tasks->setItemDelegateForColumn(2, realmDelegate);
     ui->table_tasks->setItemDelegateForColumn(1, locationDelegate);
+    ui->table_tasks->setItemDelegateForColumn(2, realmDelegate);
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -103,8 +104,6 @@ void MainWindow::locationData_changed()
 void MainWindow::taskData_changed(QModelIndex index)
 {
     Q_UNUSED(index);
-
-    uData->tasks() = model_tasks->getTasks();
 }
 
 void MainWindow::on_button_addRealm_clicked()
