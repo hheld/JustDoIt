@@ -4,6 +4,7 @@
 #include "UserData.h"
 #include "TaskXmlWriter.h"
 #include "TaskTableModel.h"
+#include "TaskTableRealmDelegate.h"
 
 #include <QStringListModel>
 #include <QDebug>
@@ -13,7 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     uData(0),
     model_realms(0),
-    model_locations(0)
+    model_locations(0),
+    realmDelegate(0)
 {
     ui->setupUi(this);
 
@@ -25,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(model_realms, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(realmData_changed()));
     connect(model_locations, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(locationData_changed()));
+
+    realmDelegate = new TaskTableRealmDelegate(this);
+    realmDelegate->setModel(model_realms);
 }
 
 MainWindow::~MainWindow()
@@ -34,6 +39,7 @@ MainWindow::~MainWindow()
     delete uData; uData = 0;
     delete model_realms; model_realms = 0;
     delete model_locations; model_locations = 0;
+    delete realmDelegate; realmDelegate = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -60,6 +66,8 @@ void MainWindow::setUsrData(UserData *uData)
 
     ui->table_tasks->setModel(model_tasks);
     hideUninterestingColumns();
+
+    ui->table_tasks->setItemDelegateForColumn(2, realmDelegate);
 }
 
 void MainWindow::saveXML(const QString &fileName)

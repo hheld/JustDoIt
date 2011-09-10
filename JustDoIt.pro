@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     Task.cpp \
     UserData.cpp \
     TaskXmlReader.cpp \
-    TaskTableModel.cpp
+    TaskTableModel.cpp \
+    TaskTableRealmDelegate.cpp
 
 HEADERS  += MainWindow.h \
     TaskXmlWriter.h \
@@ -26,12 +27,19 @@ HEADERS  += MainWindow.h \
     UserData.h \
     TaskXmlReader.h \
     TaskTableModel.h \
-    taskSort.h
+    taskSort.h \
+    TaskTableRealmDelegate.h
 
 FORMS    += MainWindow.ui
 
 OTHER_FILES += \
     Tasks.xsd
+
+
+
+
+
+
 
 
 

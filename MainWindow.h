@@ -7,6 +7,7 @@
 class UserData;
 class QStringListModel;
 class TaskTableModel;
+class TaskTableRealmDelegate;
 
 namespace Ui {
     class MainWindow;
@@ -34,6 +35,7 @@ private:
     QStringListModel *model_realms;
     QStringListModel *model_locations;
     TaskTableModel *model_tasks;
+    TaskTableRealmDelegate *realmDelegate;
 
     QString saveFileName;
 

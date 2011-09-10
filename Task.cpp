@@ -34,6 +34,8 @@ Task::Task()
 
     d->id = NumOfTasks;
     NumOfTasks++;
+
+    d->startDate = QDateTime::currentDateTime();
 }
 
 Task::~Task()

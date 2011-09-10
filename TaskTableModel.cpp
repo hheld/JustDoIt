@@ -102,7 +102,12 @@ Qt::ItemFlags TaskTableModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::ItemIsEnabled;
 
-    if(index.column() == 0) return QAbstractTableModel::flags(index);
+    if(index.column() == 0
+            || index.column() == 4
+            || index.column() == 5)
+    {
+        return QAbstractTableModel::flags(index);
+    }
 
     return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
 }
