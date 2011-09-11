@@ -8,7 +8,7 @@ class UserData;
 class QStringListModel;
 class TaskTableModel;
 class TaskTableStringListComboboxDelegate;
-class TaskTableBoolCheckboxDelegate;
+class TaskTableColorDoneDelegate;
 
 namespace Ui {
     class MainWindow;
@@ -38,6 +38,7 @@ private:
     TaskTableModel *model_tasks;
     TaskTableStringListComboboxDelegate *realmDelegate;
     TaskTableStringListComboboxDelegate *locationDelegate;
+    TaskTableColorDoneDelegate *doneColorDelegate;
 
     QString saveFileName;
 

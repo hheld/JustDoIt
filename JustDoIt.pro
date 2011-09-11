@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     UserData.cpp \
     TaskXmlReader.cpp \
     TaskTableModel.cpp \
-    TaskTableStringListComboboxDelegate.cpp
+    TaskTableStringListComboboxDelegate.cpp \
+    TaskTableColorDoneDelegate.cpp
 
 HEADERS  += MainWindow.h \
     TaskXmlWriter.h \
@@ -28,12 +29,15 @@ HEADERS  += MainWindow.h \
     TaskXmlReader.h \
     TaskTableModel.h \
     taskSort.h \
-    TaskTableStringListCombobox.h
+    TaskTableStringListCombobox.h \
+    TaskTableColorDoneDelegate.h
 
 FORMS    += MainWindow.ui
 
 OTHER_FILES += \
     Tasks.xsd
+
+
 
 
 
