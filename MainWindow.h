@@ -9,6 +9,7 @@ class QStringListModel;
 class TaskTableModel;
 class TaskTableStringListComboboxDelegate;
 class TaskTableColorDoneDelegate;
+class TaskSortFilterProxyModel;
 
 namespace Ui {
     class MainWindow;
@@ -39,10 +40,9 @@ private:
     TaskTableStringListComboboxDelegate *realmDelegate;
     TaskTableStringListComboboxDelegate *locationDelegate;
     TaskTableColorDoneDelegate *doneColorDelegate;
+    TaskSortFilterProxyModel *sortFilterTasksProxy;
 
     QString saveFileName;
-
-    void hideUninterestingColumns() const;
 
 public slots:
     void saveXML(const QString &fileName = QString());

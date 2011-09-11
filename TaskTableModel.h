@@ -23,7 +23,6 @@ public:
     bool insertRows(int position, int rows, const QModelIndex &index=QModelIndex());
     bool removeRows(int position, int rows, const QModelIndex &index=QModelIndex());
     const QVector<Task*>& getTasks() const;
-    void sort ( int column, Qt::SortOrder order = Qt::AscendingOrder );
 
 private:
     Q_DISABLE_COPY(TaskTableModel)

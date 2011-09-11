@@ -203,6 +203,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QCheckBox" name="checkBox_hideDone">
+        <property name="text">
+         <string>Hide done</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>

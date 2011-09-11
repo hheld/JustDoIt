@@ -3,7 +3,6 @@
 
 #include "TaskTableModel.h"
 #include "Task.h"
-#include "taskSort.h"
 
 TaskTableModel::TaskTableModel(const QVector<Task*> allTasks, QObject *parent) :
     QAbstractTableModel(parent),
@@ -203,38 +202,4 @@ bool TaskTableModel::removeRows(int position, int rows, const QModelIndex &index
 const QVector<Task *> & TaskTableModel::getTasks() const
 {
     return allTasks;
-}
-
-void TaskTableModel::sort(int column, Qt::SortOrder order)
-{
-    emit layoutAboutToBeChanged();
-
-    if(order == Qt::AscendingOrder)
-    {
-        if (column == 0) qSort(allTasks.begin(), allTasks.end(), taskLessThan<0>);
-        else if (column == 1) qSort(allTasks.begin(), allTasks.end(), taskLessThan<1>);
-        else if (column == 2) qSort(allTasks.begin(), allTasks.end(), taskLessThan<2>);
-        else if (column == 3) qSort(allTasks.begin(), allTasks.end(), taskLessThan<3>);
-        else if (column == 4) qSort(allTasks.begin(), allTasks.end(), taskLessThan<4>);
-        else if (column == 5) qSort(allTasks.begin(), allTasks.end(), taskLessThan<5>);
-        else if (column == 6) qSort(allTasks.begin(), allTasks.end(), taskLessThan<6>);
-        else if (column == 7) qSort(allTasks.begin(), allTasks.end(), taskLessThan<7>);
-        else if (column == 8) qSort(allTasks.begin(), allTasks.end(), taskLessThan<8>);
-        else return;
-    }
-    else if(order == Qt::DescendingOrder)
-    {
-        if (column == 0) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<0>);
-        else if (column == 1) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<1>);
-        else if (column == 2) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<2>);
-        else if (column == 3) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<3>);
-        else if (column == 4) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<4>);
-        else if (column == 5) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<5>);
-        else if (column == 6) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<6>);
-        else if (column == 7) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<7>);
-        else if (column == 8) qSort(allTasks.begin(), allTasks.end(), taskGreaterThan<8>);
-        else return;
-    }
-
-    emit layoutChanged();
 }

@@ -32,6 +32,8 @@ Task::Task()
 {
     Q_D(Task);
 
+    d->done = false;
+
     d->id = NumOfTasks;
     NumOfTasks++;
 

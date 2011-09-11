@@ -7,6 +7,7 @@
 #include "TaskTableModel.h"
 #include "TaskTableStringListCombobox.h"
 #include "TaskTableColorDoneDelegate.h"
+#include "TaskSortFilterProxyModel.h"
 
 #include <QStringListModel>
 #include <QDebug>
@@ -19,7 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     model_locations(0),
     realmDelegate(0),
     locationDelegate(0),
-    doneColorDelegate(0)
+    doneColorDelegate(0),
+    sortFilterTasksProxy(0)
 {
     ui->setupUi(this);
 
@@ -51,6 +53,7 @@ MainWindow::~MainWindow()
     delete realmDelegate; realmDelegate = 0;
     delete locationDelegate; locationDelegate = 0;
     delete doneColorDelegate; doneColorDelegate = 0;
+    delete sortFilterTasksProxy; sortFilterTasksProxy = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -75,12 +78,16 @@ void MainWindow::setUsrData(UserData *uData)
     model_tasks = new TaskTableModel(uData->tasks(), this);
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(taskData_changed(QModelIndex)));
 
-    ui->table_tasks->setModel(model_tasks);
-    hideUninterestingColumns();
+    sortFilterTasksProxy = new TaskSortFilterProxyModel(this);
+    connect(ui->checkBox_hideDone, SIGNAL(toggled(bool)), sortFilterTasksProxy, SLOT(hideDoneTasks(bool)));
 
-    ui->table_tasks->setItemDelegateForColumn(1, locationDelegate);
-    ui->table_tasks->setItemDelegateForColumn(2, realmDelegate);
-    ui->table_tasks->setItemDelegateForColumn(3, doneColorDelegate);
+    sortFilterTasksProxy->setSourceModel(model_tasks);
+
+    ui->table_tasks->setModel(sortFilterTasksProxy);
+
+    ui->table_tasks->setItemDelegateForColumn(0, locationDelegate);
+    ui->table_tasks->setItemDelegateForColumn(1, realmDelegate);
+    ui->table_tasks->setItemDelegateForColumn(2, doneColorDelegate);
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -193,7 +200,7 @@ void MainWindow::on_button_addTask_clicked()
 
     model_tasks->insertRows(row, 1);
 
-    QModelIndex index = model_tasks->index(row, 1);
+    QModelIndex index = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 1));
 
     ui->table_tasks->setCurrentIndex(index);
     ui->table_tasks->edit(index);
@@ -201,12 +208,10 @@ void MainWindow::on_button_addTask_clicked()
 
 void MainWindow::on_button_deleteTask_clicked()
 {
-    model_tasks->removeRows(ui->table_tasks->currentIndex().row(), 1);
+    if(ui->table_tasks->currentIndex().isValid())
+    {
+        model_tasks->removeRows(ui->table_tasks->currentIndex().row(), 1);
+    }
 
     emit taskData_changed(ui->table_tasks->currentIndex());
-}
-
-void MainWindow::hideUninterestingColumns() const
-{
-    ui->table_tasks->hideColumn(0);
 }

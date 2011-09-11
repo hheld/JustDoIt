@@ -3,6 +3,7 @@
 
 #include "TaskTableColorDoneDelegate.h"
 #include "TaskTableModel.h"
+#include "TaskSortFilterProxyModel.h"
 #include "Task.h"
 
 TaskTableColorDoneDelegate::TaskTableColorDoneDelegate(QObject *parent) :
@@ -12,11 +13,12 @@ TaskTableColorDoneDelegate::TaskTableColorDoneDelegate(QObject *parent) :
 
 void TaskTableColorDoneDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    const TaskTableModel *model = static_cast<const TaskTableModel*>(index.model());
+    const TaskSortFilterProxyModel *modelProxy = static_cast<const TaskSortFilterProxyModel*>(index.model());
+    const TaskTableModel *model = static_cast<const TaskTableModel*>(modelProxy->sourceModel());
 
     const QVector<Task*> allTasks = model->getTasks();
 
-    bool isDone = allTasks[index.row()]->done();
+    bool isDone = allTasks[modelProxy->mapToSource(index).row()]->done();
 
     if(isDone)
     {

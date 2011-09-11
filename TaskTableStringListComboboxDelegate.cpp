@@ -24,8 +24,6 @@ QWidget * TaskTableStringListComboboxDelegate::createEditor(QWidget *parent, con
 
 void TaskTableStringListComboboxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    Q_UNUSED(index);
-
     QComboBox *cb = static_cast<QComboBox*>(editor);
     QStringListModel *stringListModel = static_cast<QStringListModel*>(model);
     QStringList allRealms = stringListModel->stringList();
