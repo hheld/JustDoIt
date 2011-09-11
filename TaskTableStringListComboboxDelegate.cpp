@@ -33,8 +33,6 @@ void TaskTableStringListComboboxDelegate::setEditorData(QWidget *editor, const Q
     int selectedIndex = allRealms.indexOf(selectionFromModel);
 
     cb->setCurrentIndex(selectedIndex);
-
-    return;
 }
 
 void TaskTableStringListComboboxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const

@@ -8,6 +8,7 @@
 #include "TaskTableStringListCombobox.h"
 #include "TaskTableColorDoneDelegate.h"
 #include "TaskSortFilterProxyModel.h"
+#include "TaskTableDateTimeDelegate.h"
 
 #include <QStringListModel>
 #include <QDebug>
@@ -21,7 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     realmDelegate(0),
     locationDelegate(0),
     doneColorDelegate(0),
-    sortFilterTasksProxy(0)
+    sortFilterTasksProxy(0),
+    dueDate_delegate(0)
 {
     ui->setupUi(this);
 
@@ -41,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
     locationDelegate->setModel(model_locations);
 
     doneColorDelegate = new TaskTableColorDoneDelegate(this);
+
+    dueDate_delegate = new TaskTableDateTimeDelegate(this);
 }
 
 MainWindow::~MainWindow()
@@ -54,6 +58,7 @@ MainWindow::~MainWindow()
     delete locationDelegate; locationDelegate = 0;
     delete doneColorDelegate; doneColorDelegate = 0;
     delete sortFilterTasksProxy; sortFilterTasksProxy = 0;
+    delete dueDate_delegate; dueDate_delegate = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -93,6 +98,7 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setItemDelegateForColumn(0, locationDelegate);
     ui->table_tasks->setItemDelegateForColumn(1, realmDelegate);
     ui->table_tasks->setItemDelegateForColumn(2, doneColorDelegate);
+    ui->table_tasks->setItemDelegateForColumn(5, dueDate_delegate);
 
     permuteColumns();
 
@@ -128,6 +134,8 @@ void MainWindow::locationData_changed()
 void MainWindow::taskData_changed(QModelIndex index)
 {
     Q_UNUSED(index);
+
+    uData->tasks() = model_tasks->getTasks();
 }
 
 void MainWindow::on_button_addRealm_clicked()
