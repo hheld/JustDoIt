@@ -76,6 +76,7 @@ void MainWindow::setUsrData(UserData *uData)
     model_locations->setStringList(uData->locations());
 
     model_tasks = new TaskTableModel(uData->tasks(), this);
+    connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), ui->table_tasks, SLOT(resizeColumnsToContents()));
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(taskData_changed(QModelIndex)));
 
     sortFilterTasksProxy = new TaskSortFilterProxyModel(this);
@@ -88,6 +89,8 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setItemDelegateForColumn(0, locationDelegate);
     ui->table_tasks->setItemDelegateForColumn(1, realmDelegate);
     ui->table_tasks->setItemDelegateForColumn(2, doneColorDelegate);
+
+    ui->table_tasks->resizeColumnsToContents();
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -117,6 +120,8 @@ void MainWindow::locationData_changed()
 void MainWindow::taskData_changed(QModelIndex index)
 {
     Q_UNUSED(index);
+
+    ui->table_tasks->horizontalHeader()->reset();
 }
 
 void MainWindow::on_button_addRealm_clicked()
