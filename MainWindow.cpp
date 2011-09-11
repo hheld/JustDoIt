@@ -79,6 +79,7 @@ void MainWindow::setUsrData(UserData *uData)
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), ui->table_tasks, SLOT(resizeColumnsToContents()));
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(taskData_changed(QModelIndex)));
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), ui->table_tasks->horizontalHeader(), SLOT(doItemsLayout()));
+    connect(model_tasks, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(updateStatusMesg()));
 
     sortFilterTasksProxy = new TaskSortFilterProxyModel(this);
     connect(ui->checkBox_hideDone, SIGNAL(toggled(bool)), sortFilterTasksProxy, SLOT(hideDoneTasks(bool)));
@@ -96,6 +97,8 @@ void MainWindow::setUsrData(UserData *uData)
     permuteColumns();
 
     ui->table_tasks->resizeColumnsToContents();
+
+    updateStatusMesg();
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -233,4 +236,34 @@ void MainWindow::permuteColumns()
     hw->moveSection(7, 4);
 
     hw->setSortIndicator(6, Qt::AscendingOrder);
+}
+
+void MainWindow::updateStatusMesg()
+{
+    ui->statusBar->showMessage(tr("Tasks of user: '%1'; Number of unfinished tasks: %2").arg(uData->name()).arg(QString::number(numOfUnfinishedTasks())));
+}
+
+int MainWindow::numOfUnfinishedTasks() const
+{
+    if(uData)
+    {
+        int numUndone = 0;
+
+        const QVector<Task*> &allTasks = uData->tasks();
+        int numOfTasks = allTasks.size();
+
+        for(int i=0; i<numOfTasks; ++i)
+        {
+            if(!allTasks.at(i)->done())
+            {
+                ++numUndone;
+            }
+        }
+
+        return numUndone;
+    }
+    else
+    {
+        return 0;
+    }
 }

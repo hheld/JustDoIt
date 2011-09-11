@@ -49,7 +49,7 @@ QVariant TaskTableModel::data(const QModelIndex &index, int role) const
         if (index.column() == 0) return task->id();
         else if (index.column() == 1) return task->location();
         else if (index.column() == 2) return task->realm();
-        else if (index.column() == 3) return task->done() ? "Finished" : QString::number(qMax(QDateTime::currentDateTime().daysTo(task->dueDate()), 0)) + " days left";
+        else if (index.column() == 3) return task->done() ? tr("Finished" ): QString::number(qMax(QDateTime::currentDateTime().daysTo(task->dueDate()), 0)) + tr(" days left");
 //        else if (index.column() == 3) return QVariant();
         else if (index.column() == 4) return task->startDate();
         else if (index.column() == 5) return task->endDate();

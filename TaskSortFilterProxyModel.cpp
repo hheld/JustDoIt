@@ -42,6 +42,6 @@ void TaskSortFilterProxyModel::hideDoneTasks(bool done)
 {
     hideDone = done;
 
-    setFilterFixedString("Finished");
+    setFilterFixedString(tr("Finished"));
     setFilterKeyColumn(2);
 }

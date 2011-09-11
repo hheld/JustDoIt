@@ -45,9 +45,11 @@ private:
     QString saveFileName;
 
     void permuteColumns();
+    int numOfUnfinishedTasks() const;
 
 public slots:
     void saveXML(const QString &fileName = QString());
+    void updateStatusMesg();
 
 private slots:
     void on_button_save_clicked();
