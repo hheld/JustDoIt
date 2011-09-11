@@ -12,6 +12,7 @@
 
 #include <QStringListModel>
 #include <QDebug>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,7 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     locationDelegate(0),
     doneColorDelegate(0),
     sortFilterTasksProxy(0),
-    dueDate_delegate(0)
+    dueDate_delegate(0),
+    saveNeeded(false)
 {
     ui->setupUi(this);
 
@@ -45,6 +47,10 @@ MainWindow::MainWindow(QWidget *parent) :
     doneColorDelegate = new TaskTableColorDoneDelegate(this);
 
     dueDate_delegate = new TaskTableDateTimeDelegate(this);
+
+    // actions
+    ui->actionSave->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
+    connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveData()));
 }
 
 MainWindow::~MainWindow()
@@ -116,24 +122,35 @@ void MainWindow::saveXML(const QString &fileName)
     myWriter.writeDocument();
 }
 
-void MainWindow::on_button_save_clicked()
+void MainWindow::saveData()
 {
-    saveXML(saveFileName);
+    if(saveNeeded)
+    {
+        saveXML(saveFileName);
+
+        saveNeeded = false;
+    }
 }
 
 void MainWindow::realmData_changed()
 {
+    saveNeeded = true;
+
     uData->realms() = model_realms->stringList();
 }
 
 void MainWindow::locationData_changed()
 {
+    saveNeeded = true;
+
     uData->locations() = model_locations->stringList();
 }
 
 void MainWindow::taskData_changed(QModelIndex index)
 {
     Q_UNUSED(index);
+
+    saveNeeded = true;
 
     uData->tasks() = model_tasks->getTasks();
 }
@@ -219,7 +236,7 @@ void MainWindow::on_button_addTask_clicked()
 
     model_tasks->insertRows(row, 1);
 
-    QModelIndex index = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 1));
+    QModelIndex index = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 7));
 
     ui->table_tasks->setCurrentIndex(index);
     ui->table_tasks->edit(index);
@@ -227,12 +244,14 @@ void MainWindow::on_button_addTask_clicked()
 
 void MainWindow::on_button_deleteTask_clicked()
 {
-    if(ui->table_tasks->currentIndex().isValid())
+    QModelIndex index = sortFilterTasksProxy->mapToSource(ui->table_tasks->currentIndex());
+
+    if(index.isValid())
     {
-        model_tasks->removeRows(ui->table_tasks->currentIndex().row(), 1);
+        model_tasks->removeRows(index.row(), 1);
     }
 
-    emit taskData_changed(ui->table_tasks->currentIndex());
+    emit taskData_changed(index);
 }
 
 void MainWindow::permuteColumns()
@@ -274,4 +293,26 @@ int MainWindow::numOfUnfinishedTasks() const
     {
         return 0;
     }
+}
+
+bool MainWindow::event(QEvent *event)
+{
+    if(event->type() == QEvent::Close && saveNeeded)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(tr("The document has been modified."));
+        msgBox.setInformativeText(tr("Do you want to save your changes?"));
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+
+        if(ret == QMessageBox::Save)
+        {
+            saveData();
+        }
+
+        return QMainWindow::event(event);
+    }
+
+    return QMainWindow::event(event);
 }

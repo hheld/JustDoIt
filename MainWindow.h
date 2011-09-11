@@ -27,6 +27,8 @@ public:
     void setUsrData(UserData *uData);
     void setSaveFileName(const QString &xmlOutFileName);
 
+    bool event(QEvent *event);
+
 protected:
     void changeEvent(QEvent *e);
 
@@ -49,12 +51,14 @@ private:
     void permuteColumns();
     int numOfUnfinishedTasks() const;
 
+    bool saveNeeded;
+
 public slots:
     void saveXML(const QString &fileName = QString());
     void updateStatusMesg();
 
 private slots:
-    void on_button_save_clicked();
+    void saveData();
     void realmData_changed();
     void locationData_changed();
     void taskData_changed(QModelIndex index);

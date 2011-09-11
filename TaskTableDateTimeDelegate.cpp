@@ -24,7 +24,7 @@ void TaskTableDateTimeDelegate::setEditorData(QWidget *editor, const QModelIndex
 {
     QDateTimeEdit *dte = static_cast<QDateTimeEdit*>(editor);
 
-    QDateTime currentDt = index.data().toDateTime();
+    QDateTime currentDt = qMax(index.data().toDateTime(), QDateTime::currentDateTime());
 
     dte->setDateTime(currentDt);
 }
