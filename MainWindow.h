@@ -44,6 +44,8 @@ private:
 
     QString saveFileName;
 
+    void permuteColumns();
+
 public slots:
     void saveXML(const QString &fileName = QString());
 

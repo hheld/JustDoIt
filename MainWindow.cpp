@@ -93,6 +93,8 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setItemDelegateForColumn(1, realmDelegate);
     ui->table_tasks->setItemDelegateForColumn(2, doneColorDelegate);
 
+    permuteColumns();
+
     ui->table_tasks->resizeColumnsToContents();
 }
 
@@ -220,4 +222,15 @@ void MainWindow::on_button_deleteTask_clicked()
     }
 
     emit taskData_changed(ui->table_tasks->currentIndex());
+}
+
+void MainWindow::permuteColumns()
+{
+    QHeaderView *hw = ui->table_tasks->horizontalHeader();
+
+    hw->moveSection(6, 0);
+    hw->moveSection(7, 1);
+    hw->moveSection(7, 4);
+
+    hw->setSortIndicator(6, Qt::AscendingOrder);
 }
