@@ -28,20 +28,32 @@ bool TaskSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
 {
     Q_UNUSED(source_parent);
 
+    bool accept = true;
+
     const TaskTableModel *model = static_cast<const TaskTableModel*>(sourceModel());
 
+    // handle hidden finished tasks
     if(hideDone)
     {
-        return !model->getTasks().at(source_row)->done();
+        accept = !model->getTasks().at(source_row)->done() && accept;
     }
 
-    return true;
+    QModelIndex index1 = sourceModel()->index(source_row, 1, source_parent);
+    QModelIndex index2 = sourceModel()->index(source_row, 2, source_parent);
+    QModelIndex index7 = sourceModel()->index(source_row, 7, source_parent);
+    QModelIndex index8 = sourceModel()->index(source_row, 8, source_parent);
+
+    accept = accept && (sourceModel()->data(index1).toString().contains(filterRegExp())
+                        || sourceModel()->data(index2).toString().contains(filterRegExp())
+                        || sourceModel()->data(index7).toString().contains(filterRegExp())
+                        || sourceModel()->data(index8).toString().contains(filterRegExp()));
+
+    return accept;
 }
 
 void TaskSortFilterProxyModel::hideDoneTasks(bool done)
 {
     hideDone = done;
 
-    setFilterFixedString(tr("Finished"));
-    setFilterKeyColumn(2);
+    setFilterKeyColumn(3);
 }
