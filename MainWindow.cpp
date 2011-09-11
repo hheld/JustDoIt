@@ -78,9 +78,12 @@ void MainWindow::setUsrData(UserData *uData)
     model_tasks = new TaskTableModel(uData->tasks(), this);
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), ui->table_tasks, SLOT(resizeColumnsToContents()));
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(taskData_changed(QModelIndex)));
+    connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), ui->table_tasks->horizontalHeader(), SLOT(doItemsLayout()));
 
     sortFilterTasksProxy = new TaskSortFilterProxyModel(this);
     connect(ui->checkBox_hideDone, SIGNAL(toggled(bool)), sortFilterTasksProxy, SLOT(hideDoneTasks(bool)));
+    connect(ui->checkBox_hideDone, SIGNAL(toggled(bool)), ui->table_tasks, SLOT(resizeColumnsToContents()));
+    connect(ui->checkBox_hideDone, SIGNAL(toggled(bool)), ui->table_tasks->horizontalHeader(), SLOT(doItemsLayout()));
 
     sortFilterTasksProxy->setSourceModel(model_tasks);
 
@@ -120,8 +123,6 @@ void MainWindow::locationData_changed()
 void MainWindow::taskData_changed(QModelIndex index)
 {
     Q_UNUSED(index);
-
-    ui->table_tasks->horizontalHeader()->reset();
 }
 
 void MainWindow::on_button_addRealm_clicked()
