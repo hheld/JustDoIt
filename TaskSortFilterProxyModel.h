@@ -14,9 +14,13 @@ public:
 
 public slots:
     void hideDoneTasks(bool done);
+    void setNumOfDaysAhead(int numOfDaysAhead);
 
 private:
     bool hideDone;
+    int numOfDaysAhead;
+
+    bool dateInRange(const QDate &date) const;
 };
 
 #endif // TASKSORTFILTERPROXYMODEL_H

@@ -6,7 +6,8 @@
 
 TaskSortFilterProxyModel::TaskSortFilterProxyModel(QObject *parent) :
     QSortFilterProxyModel(parent),
-    hideDone(false)
+    hideDone(false),
+    numOfDaysAhead(-1)
 {
     setDynamicSortFilter(true);
 }
@@ -42,11 +43,13 @@ bool TaskSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
     QModelIndex index2 = sourceModel()->index(source_row, 2, source_parent);
     QModelIndex index7 = sourceModel()->index(source_row, 7, source_parent);
     QModelIndex index8 = sourceModel()->index(source_row, 8, source_parent);
+    QModelIndex index6 = sourceModel()->index(source_row, 6, source_parent);
 
     accept = accept && (sourceModel()->data(index1).toString().contains(filterRegExp())
                         || sourceModel()->data(index2).toString().contains(filterRegExp())
                         || sourceModel()->data(index7).toString().contains(filterRegExp())
-                        || sourceModel()->data(index8).toString().contains(filterRegExp()));
+                        || sourceModel()->data(index8).toString().contains(filterRegExp()))
+             && dateInRange(sourceModel()->data(index6).toDate());
 
     return accept;
 }
@@ -56,4 +59,23 @@ void TaskSortFilterProxyModel::hideDoneTasks(bool done)
     hideDone = done;
 
     setFilterKeyColumn(3);
+}
+
+bool TaskSortFilterProxyModel::dateInRange(const QDate &date) const
+{
+    if(numOfDaysAhead==-1)
+    {
+        return true;
+    }
+    else
+    {
+        return date <= QDate::currentDate().addDays(numOfDaysAhead);
+    }
+}
+
+void TaskSortFilterProxyModel::setNumOfDaysAhead(int numOfDaysAhead)
+{
+    this->numOfDaysAhead = numOfDaysAhead;
+
+    setFilterKeyColumn(6);
 }

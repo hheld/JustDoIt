@@ -105,6 +105,8 @@ void MainWindow::setUsrData(UserData *uData)
 
     sortFilterTasksProxy->setSourceModel(model_tasks);
 
+    connect(ui->spinBox_dueWithinDays, SIGNAL(valueChanged(int)), sortFilterTasksProxy, SLOT(setNumOfDaysAhead(int)));
+
     ui->table_tasks->setModel(sortFilterTasksProxy);
 
     ui->table_tasks->setItemDelegateForColumn(0, locationDelegate);
