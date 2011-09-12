@@ -2,6 +2,8 @@
 #include <QDir>
 #include <QProcessEnvironment>
 
+#include <QxtGlobalShortcut>
+
 #include "MainWindow.h"
 #include "TaskXmlReader.h"
 #include "UserData.h"
@@ -38,6 +40,11 @@ int main(int argc, char *argv[])
     //------------------------------------------------
 
     MainWindow w;
+
+    QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(&w);
+    QObject::connect(shortcut, SIGNAL(activated()), &w, SLOT(toggleVisibility()));
+    shortcut->setShortcut(QKeySequence("Ctrl+Shift+F11"));
+
     w.setUsrData(myUd);
     w.setSaveFileName(savePath.absolutePath() + "/tasks.xml");
     w.show();

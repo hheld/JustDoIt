@@ -6,6 +6,9 @@
 
 QT       += core gui xml
 
+INCLUDEPATH += /usr/include/qxt/QxtGui/ /usr/include/qxt/QxtCore
+LIBS += -lQxtCore -lQxtGui
+
 TARGET = JustDoIt
 TEMPLATE = app
 

@@ -56,6 +56,7 @@ private:
 public slots:
     void saveXML(const QString &fileName = QString());
     void updateStatusMesg();
+    void toggleVisibility();
 
 private slots:
     void saveData();
@@ -70,6 +71,9 @@ private slots:
     void on_button_deleteLocation_clicked();
     void on_button_addTask_clicked();
     void on_button_deleteTask_clicked();
+    void on_tabWidget_currentChanged(int index);
+    void on_button_add_clicked();
+    void on_button_clear_clicked();
 };
 
 #endif // MAINWINDOW_H

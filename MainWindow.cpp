@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->lineEdit_quickTitle->setFocus();
+
     model_realms = new QStringListModel(this);
     model_locations = new QStringListModel(this);
 
@@ -47,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
     doneColorDelegate = new TaskTableColorDoneDelegate(this);
 
     dueDate_delegate = new TaskTableDateTimeDelegate(this);
+
+    ui->comboBox_quickLocation->setModel(model_locations);
+    ui->comboBox_quickRealm->setModel(model_realms);
 
     // actions
     ui->actionSave->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
@@ -316,4 +321,58 @@ bool MainWindow::event(QEvent *event)
     }
 
     return QMainWindow::event(event);
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    switch(index)
+    {
+    case 0:
+        ui->groupBox->setEnabled(false);
+        break;
+
+    case 1:
+        ui->groupBox->setEnabled(true);
+        break;
+    }
+}
+
+void MainWindow::toggleVisibility()
+{
+    setVisible(!isVisible());
+
+    if(isVisible())
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->tabWidget->currentWidget()->setFocus();
+        ui->lineEdit_quickTitle->setFocus();
+    }
+}
+
+void MainWindow::on_button_add_clicked()
+{
+    int row = model_tasks->rowCount();
+
+    model_tasks->insertRows(row, 1);
+
+    QModelIndex indexLocation = model_tasks->index(row, 1);
+    QModelIndex indexRealm = model_tasks->index(row, 2);
+    QModelIndex indexTitle = model_tasks->index(row, 7);
+    QModelIndex indexDescription = model_tasks->index(row, 8);
+
+    model_tasks->setData(indexLocation, ui->comboBox_quickLocation->currentText());
+    model_tasks->setData(indexRealm, ui->comboBox_quickRealm->currentText());
+    model_tasks->setData(indexTitle, ui->lineEdit_quickTitle->text());
+    model_tasks->setData(indexDescription, ui->plainTextEdit_quickDescription->document()->toPlainText());
+
+    on_button_clear_clicked();
+}
+
+void MainWindow::on_button_clear_clicked()
+{
+    ui->lineEdit_quickTitle->clear();
+    ui->plainTextEdit_quickDescription->clear();
+    ui->comboBox_quickLocation->setCurrentIndex(-1);
+    ui->comboBox_quickRealm->setCurrentIndex(-1);
+    ui->lineEdit_quickTitle->setFocus();
 }
