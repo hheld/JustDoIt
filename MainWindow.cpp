@@ -31,6 +31,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->lineEdit_quickTitle->setFocus();
 
+    updateDefaultDueDateTime();
+    connect(ui->button_add, SIGNAL(clicked()), this, SLOT(updateDefaultDueDateTime()));
+
     model_realms = new QStringListModel(this);
     model_locations = new QStringListModel(this);
 
@@ -361,11 +364,13 @@ void MainWindow::on_button_add_clicked()
     QModelIndex indexRealm = model_tasks->index(row, 2);
     QModelIndex indexTitle = model_tasks->index(row, 7);
     QModelIndex indexDescription = model_tasks->index(row, 8);
+    QModelIndex indexDueDate = model_tasks->index(row, 6);
 
     model_tasks->setData(indexLocation, ui->comboBox_quickLocation->currentText());
     model_tasks->setData(indexRealm, ui->comboBox_quickRealm->currentText());
     model_tasks->setData(indexTitle, ui->lineEdit_quickTitle->text());
     model_tasks->setData(indexDescription, ui->plainTextEdit_quickDescription->document()->toPlainText());
+    model_tasks->setData(indexDueDate, ui->dateTimeEdit_quickDueDate->dateTime());
 
     on_button_clear_clicked();
 }
@@ -377,4 +382,9 @@ void MainWindow::on_button_clear_clicked()
     ui->comboBox_quickLocation->setCurrentIndex(-1);
     ui->comboBox_quickRealm->setCurrentIndex(-1);
     ui->lineEdit_quickTitle->setFocus();
+}
+
+void MainWindow::updateDefaultDueDateTime()
+{
+    ui->dateTimeEdit_quickDueDate->setDateTime(QDateTime::currentDateTime());
 }

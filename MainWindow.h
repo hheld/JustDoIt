@@ -57,6 +57,7 @@ public slots:
     void saveXML(const QString &fileName = QString());
     void updateStatusMesg();
     void toggleVisibility();
+    void updateDefaultDueDateTime();
 
 private slots:
     void saveData();
