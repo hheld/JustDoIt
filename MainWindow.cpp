@@ -9,6 +9,7 @@
 #include "TaskTableColorDoneDelegate.h"
 #include "TaskSortFilterProxyModel.h"
 #include "TaskTableDateTimeDelegate.h"
+#include "TaskTableLineEditDelegate.h"
 
 #include <QStringListModel>
 #include <QDebug>
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     doneColorDelegate(0),
     sortFilterTasksProxy(0),
     dueDate_delegate(0),
+    titleDelegate(0),
     saveNeeded(false)
 {
     ui->setupUi(this);
@@ -55,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     dueDate_delegate = new TaskTableDateTimeDelegate(this);
 
+    titleDelegate = new TaskTableLineEditDelegate(this);
+
     ui->comboBox_quickLocation->setModel(model_locations);
     ui->comboBox_quickRealm->setModel(model_realms);
 
@@ -75,6 +79,7 @@ MainWindow::~MainWindow()
     delete doneColorDelegate; doneColorDelegate = 0;
     delete sortFilterTasksProxy; sortFilterTasksProxy = 0;
     delete dueDate_delegate; dueDate_delegate = 0;
+    delete titleDelegate; titleDelegate = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -118,6 +123,7 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setItemDelegateForColumn(1, realmDelegate);
     ui->table_tasks->setItemDelegateForColumn(2, doneColorDelegate);
     ui->table_tasks->setItemDelegateForColumn(5, dueDate_delegate);
+    ui->table_tasks->setItemDelegateForColumn(6, titleDelegate);
 
     permuteColumns();
 
