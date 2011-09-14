@@ -56,15 +56,15 @@ void TaskXmlWriter::writeDocument()
         xmlWriter->writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         xmlWriter->writeAttribute("xsi:noNamespaceSchemaLocation", "Tasks.xsd");
 
-        // realms
-        xmlWriter->writeStartElement("Realms");
+        // groups
+        xmlWriter->writeStartElement("Groups");
 
-        const QStringList& allRealms = userData->realms();
+        const QStringList& allGroups = userData->groups();
 
-        for(int i=0; i<allRealms.size(); ++i)
+        for(int i=0; i<allGroups.size(); ++i)
         {
-            xmlWriter->writeEmptyElement("Realm");
-            xmlWriter->writeAttribute("name", allRealms.at(i));
+            xmlWriter->writeEmptyElement("Group");
+            xmlWriter->writeAttribute("name", allGroups.at(i));
         }
 
         xmlWriter->writeEndElement();
@@ -95,7 +95,7 @@ void TaskXmlWriter::writeDocument()
             xmlWriter->writeAttribute("done", currentTask->done() ? "true" : "false");
             xmlWriter->writeAttribute("id", QString::number(currentTask->id()));
             xmlWriter->writeAttribute("location", currentTask->location());
-            xmlWriter->writeAttribute("realm", currentTask->realm());
+            xmlWriter->writeAttribute("group", currentTask->group());
             xmlWriter->writeTextElement("startDate", currentTask->startDate().toString(Task::DateTimeFormat));
             xmlWriter->writeTextElement("endDate", currentTask->endDate().toString(Task::DateTimeFormat));
             xmlWriter->writeTextElement("dueDate", currentTask->dueDate().toString(Task::DateTimeFormat));

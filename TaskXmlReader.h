@@ -23,7 +23,7 @@ private:
 
     void readUserName();
     void readLocation();
-    void readRealm();
+    void readGroup();
     void readTask();
 };
 

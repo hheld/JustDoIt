@@ -37,8 +37,8 @@ void TaskXmlReader::readDocument()
         {
             if (xmlReader->name() == "User")
                 readUserName();
-            else if (xmlReader->name() == "Realm")
-                readRealm();
+            else if (xmlReader->name() == "Group")
+                readGroup();
             else if (xmlReader->name() == "Location")
                 readLocation();
             else if(xmlReader->name() == "Task")
@@ -77,18 +77,18 @@ void TaskXmlReader::readLocation()
     userData->addLocation(location);
 }
 
-void TaskXmlReader::readRealm()
+void TaskXmlReader::readGroup()
 {
-    QString realm = xmlReader->attributes().value("name").toString();
+    QString group = xmlReader->attributes().value("name").toString();
 
-    userData->addRealm(realm);
+    userData->addGroup(group);
 }
 
 void TaskXmlReader::readTask()
 {
     qint32 id = xmlReader->attributes().value("id").toString().toInt();
     QString location = xmlReader->attributes().value("location").toString();
-    QString realm = xmlReader->attributes().value("realm").toString();
+    QString group = xmlReader->attributes().value("group").toString();
     bool done = xmlReader->attributes().value("done").toString() == "true" ? true : false;
 
     QDateTime startDate;
@@ -129,7 +129,7 @@ void TaskXmlReader::readTask()
 
     newTask->id(id);
     newTask->location(location);
-    newTask->realm(realm);
+    newTask->group(group);
     newTask->done(done);
     newTask->startDate(startDate);
     newTask->endDate(endDate);

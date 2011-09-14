@@ -17,7 +17,7 @@ struct TaskPrivate
     QString description;
     qint32 id;
     QString location;
-    QString realm;
+    QString group;
     bool done;
     // -----------------------------------------------
 
@@ -135,16 +135,16 @@ void Task::location(const QString &location)
     d->location = location;
 }
 
-const QString & Task::realm() const
+const QString & Task::group() const
 {
     Q_D(const Task);
-    return d->realm;
+    return d->group;
 }
 
-void Task::realm(const QString &realm)
+void Task::group(const QString &group)
 {
     Q_D(Task);
-    d->realm = realm;
+    d->group = group;
 }
 
 const bool & Task::done() const

@@ -14,14 +14,14 @@ public:
     UserData(const QString &name);
     ~UserData();
 
-    void addRealm(const QString &realm);
+    void addGroup(const QString &group);
     void addLocation(const QString &location);
     void addTask(Task *task);
 
     const QString& name() const;
 
-    const QStringList& realms() const;
-    QStringList& realms();
+    const QStringList& groups() const;
+    QStringList& groups();
 
     const QStringList& locations() const;
     QStringList& locations();

@@ -20,9 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     uData(0),
-    model_realms(0),
+    model_groups(0),
     model_locations(0),
-    realmDelegate(0),
+    groupDelegate(0),
     locationDelegate(0),
     doneColorDelegate(0),
     sortFilterTasksProxy(0),
@@ -40,17 +40,17 @@ MainWindow::MainWindow(QWidget *parent) :
     updateDefaultDueDateTime();
     connect(ui->button_add, SIGNAL(clicked()), this, SLOT(updateDefaultDueDateTime()));
 
-    model_realms = new QStringListModel(this);
+    model_groups = new QStringListModel(this);
     model_locations = new QStringListModel(this);
 
-    ui->listView_realms->setModel(model_realms);
+    ui->listView_groups->setModel(model_groups);
     ui->listView_locations->setModel(model_locations);
 
-    connect(model_realms, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(realmData_changed()));
+    connect(model_groups, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(groupData_changed()));
     connect(model_locations, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(locationData_changed()));
 
-    realmDelegate = new TaskTableStringListComboboxDelegate(this);
-    realmDelegate->setModel(model_realms);
+    groupDelegate = new TaskTableStringListComboboxDelegate(this);
+    groupDelegate->setModel(model_groups);
 
     locationDelegate = new TaskTableStringListComboboxDelegate(this);
     locationDelegate->setModel(model_locations);
@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     descriptionDelegate = new TaskTableTextEditDelegate(this);
 
     ui->comboBox_quickLocation->setModel(model_locations);
-    ui->comboBox_quickRealm->setModel(model_realms);
+    ui->comboBox_quickGroup->setModel(model_groups);
 
     // actions
     ui->actionSave->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
@@ -76,9 +76,9 @@ MainWindow::~MainWindow()
     delete ui;
 
     delete uData; uData = 0;
-    delete model_realms; model_realms = 0;
+    delete model_groups; model_groups = 0;
     delete model_locations; model_locations = 0;
-    delete realmDelegate; realmDelegate = 0;
+    delete groupDelegate; groupDelegate = 0;
     delete locationDelegate; locationDelegate = 0;
     delete doneColorDelegate; doneColorDelegate = 0;
     delete sortFilterTasksProxy; sortFilterTasksProxy = 0;
@@ -103,7 +103,7 @@ void MainWindow::setUsrData(UserData *uData)
 {
     this->uData = uData;
 
-    model_realms->setStringList(uData->realms());
+    model_groups->setStringList(uData->groups());
     model_locations->setStringList(uData->locations());
 
     model_tasks = new TaskTableModel(uData->tasks(), this);
@@ -125,7 +125,7 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setModel(sortFilterTasksProxy);
 
     ui->table_tasks->setItemDelegateForColumn(0, locationDelegate);
-    ui->table_tasks->setItemDelegateForColumn(1, realmDelegate);
+    ui->table_tasks->setItemDelegateForColumn(1, groupDelegate);
     ui->table_tasks->setItemDelegateForColumn(2, doneColorDelegate);
     ui->table_tasks->setItemDelegateForColumn(5, dueDate_delegate);
     ui->table_tasks->setItemDelegateForColumn(6, titleDelegate);
@@ -157,11 +157,11 @@ void MainWindow::saveData()
     }
 }
 
-void MainWindow::realmData_changed()
+void MainWindow::groupData_changed()
 {
     saveNeeded = true;
 
-    uData->realms() = model_realms->stringList();
+    uData->groups() = model_groups->stringList();
 }
 
 void MainWindow::locationData_changed()
@@ -180,39 +180,39 @@ void MainWindow::taskData_changed(QModelIndex index)
     uData->tasks() = model_tasks->getTasks();
 }
 
-void MainWindow::on_button_addRealm_clicked()
+void MainWindow::on_button_addGroup_clicked()
 {
-    int row = model_realms->rowCount();
+    int row = model_groups->rowCount();
 
-    model_realms->insertRows(row, 1);
+    model_groups->insertRows(row, 1);
 
-    QModelIndex index = model_realms->index(row);
+    QModelIndex index = model_groups->index(row);
 
-    ui->listView_realms->setCurrentIndex(index);
-    ui->listView_realms->edit(index);
+    ui->listView_groups->setCurrentIndex(index);
+    ui->listView_groups->edit(index);
 }
 
-void MainWindow::on_button_insertRealm_clicked()
+void MainWindow::on_button_insertGroup_clicked()
 {
-    int row = ui->listView_realms->currentIndex().row();
-    model_realms->insertRows(row, 1);
+    int row = ui->listView_groups->currentIndex().row();
+    model_groups->insertRows(row, 1);
 
-    QModelIndex index = model_realms->index(row);
+    QModelIndex index = model_groups->index(row);
 
     if(index.row()<0)
     {
         return;
     }
 
-    ui->listView_realms->setCurrentIndex(index);
-    ui->listView_realms->edit(index);
+    ui->listView_groups->setCurrentIndex(index);
+    ui->listView_groups->edit(index);
 }
 
-void MainWindow::on_button_deleteRealm_clicked()
+void MainWindow::on_button_deleteGroup_clicked()
 {
-    model_realms->removeRows(ui->listView_realms->currentIndex().row(), 1);
+    model_groups->removeRows(ui->listView_groups->currentIndex().row(), 1);
 
-    emit realmData_changed();
+    emit groupData_changed();
 }
 
 void MainWindow::setSaveFileName(const QString &xmlOutFileName)
@@ -375,13 +375,13 @@ void MainWindow::on_button_add_clicked()
     model_tasks->insertRows(row, 1);
 
     QModelIndex indexLocation = model_tasks->index(row, 1);
-    QModelIndex indexRealm = model_tasks->index(row, 2);
+    QModelIndex indexGroup = model_tasks->index(row, 2);
     QModelIndex indexTitle = model_tasks->index(row, 7);
     QModelIndex indexDescription = model_tasks->index(row, 8);
     QModelIndex indexDueDate = model_tasks->index(row, 6);
 
     model_tasks->setData(indexLocation, ui->comboBox_quickLocation->currentText());
-    model_tasks->setData(indexRealm, ui->comboBox_quickRealm->currentText());
+    model_tasks->setData(indexGroup, ui->comboBox_quickGroup->currentText());
     model_tasks->setData(indexTitle, ui->lineEdit_quickTitle->text());
     model_tasks->setData(indexDescription, ui->plainTextEdit_quickDescription->document()->toPlainText());
     model_tasks->setData(indexDueDate, ui->dateTimeEdit_quickDueDate->dateTime());
@@ -394,7 +394,7 @@ void MainWindow::on_button_clear_clicked()
     ui->lineEdit_quickTitle->clear();
     ui->plainTextEdit_quickDescription->clear();
     ui->comboBox_quickLocation->setCurrentIndex(-1);
-    ui->comboBox_quickRealm->setCurrentIndex(-1);
+    ui->comboBox_quickGroup->setCurrentIndex(-1);
     ui->lineEdit_quickTitle->setFocus();
 }
 

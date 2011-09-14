@@ -39,10 +39,10 @@ private:
 
     UserData *uData;
 
-    QStringListModel *model_realms;
+    QStringListModel *model_groups;
     QStringListModel *model_locations;
     TaskTableModel *model_tasks;
-    TaskTableStringListComboboxDelegate *realmDelegate;
+    TaskTableStringListComboboxDelegate *groupDelegate;
     TaskTableStringListComboboxDelegate *locationDelegate;
     TaskTableColorDoneDelegate *doneColorDelegate;
     TaskSortFilterProxyModel *sortFilterTasksProxy;
@@ -65,12 +65,12 @@ public slots:
 
 private slots:
     void saveData();
-    void realmData_changed();
+    void groupData_changed();
     void locationData_changed();
     void taskData_changed(QModelIndex index);
-    void on_button_addRealm_clicked();
-    void on_button_insertRealm_clicked();
-    void on_button_deleteRealm_clicked();
+    void on_button_addGroup_clicked();
+    void on_button_insertGroup_clicked();
+    void on_button_deleteGroup_clicked();
     void on_button_addLocation_clicked();
     void on_button_insertLocation_clicked();
     void on_button_deleteLocation_clicked();

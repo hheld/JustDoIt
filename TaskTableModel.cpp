@@ -48,7 +48,7 @@ QVariant TaskTableModel::data(const QModelIndex &index, int role) const
 
         if (index.column() == 0) return task->id();
         else if (index.column() == 1) return task->location();
-        else if (index.column() == 2) return task->realm();
+        else if (index.column() == 2) return task->group();
         else if (index.column() == 3) return task->done() ? tr("Finished" ): QString::number(qMax(QDateTime::currentDateTime().daysTo(task->dueDate()), 0)) + tr(" days left");
 //        else if (index.column() == 3) return QVariant();
         else if (index.column() == 4) return task->startDate();
@@ -77,7 +77,7 @@ QVariant TaskTableModel::headerData(int section, Qt::Orientation orientation, in
             return tr("Location");
 
         case 2:
-            return tr("Realm");
+            return tr("Group");
 
         case 3:
             return tr("Done");
@@ -135,7 +135,7 @@ bool TaskTableModel::setData(const QModelIndex &index, const QVariant &value, in
 
         if (index.column() == 0) currentTask->id(value.toInt());
         else if (index.column() == 1) currentTask->location(value.toString());
-        else if (index.column() == 2) currentTask->realm(value.toString());
+        else if (index.column() == 2) currentTask->group(value.toString());
         else if (index.column() == 3)
         {
             currentTask->done(value.toBool());

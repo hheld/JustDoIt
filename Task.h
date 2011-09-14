@@ -33,8 +33,8 @@ public:
     const QString& location() const;
     void location(const QString &location);
 
-    const QString& realm() const;
-    void realm(const QString &realm);
+    const QString& group() const;
+    void group(const QString &group);
 
     const bool& done() const;
     void done(const bool &done);
