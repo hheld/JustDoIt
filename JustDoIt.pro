@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     TaskSortFilterProxyModel.cpp \
     TaskTableDateTimeDelegate.cpp \
     TaskTableView.cpp \
-    TaskTableLineEditDelegate.cpp
+    TaskTableLineEditDelegate.cpp \
+    TaskTableTextEditDelegate.cpp
 
 HEADERS  += MainWindow.h \
     TaskXmlWriter.h \
@@ -40,12 +41,21 @@ HEADERS  += MainWindow.h \
     TaskSortFilterProxyModel.h \
     TaskTableDateTimeDelegate.h \
     TaskTableView.h \
-    TaskTableLineEditDelegate.h
+    TaskTableLineEditDelegate.h \
+    TaskTableTextEditDelegate.h
 
 FORMS    += MainWindow.ui
 
 OTHER_FILES += \
     Tasks.xsd
+
+
+
+
+
+
+
+
 
 
 

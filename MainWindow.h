@@ -12,6 +12,7 @@ class TaskTableColorDoneDelegate;
 class TaskSortFilterProxyModel;
 class TaskTableDateTimeDelegate;
 class TaskTableLineEditDelegate;
+class TaskTableTextEditDelegate;
 
 namespace Ui {
     class MainWindow;
@@ -47,6 +48,7 @@ private:
     TaskSortFilterProxyModel *sortFilterTasksProxy;
     TaskTableDateTimeDelegate *dueDate_delegate;
     TaskTableLineEditDelegate *titleDelegate;
+    TaskTableTextEditDelegate *descriptionDelegate;
 
     QString saveFileName;
 
