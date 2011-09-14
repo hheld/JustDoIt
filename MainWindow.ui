@@ -20,7 +20,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_quickEnter">
          <attribute name="title">
@@ -180,7 +180,10 @@
              </layout>
             </item>
             <item>
-             <widget class="QTableView" name="table_tasks">
+             <widget class="TaskTableView" name="table_tasks">
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
               <property name="horizontalScrollMode">
                <enum>QAbstractItemView::ScrollPerPixel</enum>
               </property>
@@ -521,6 +524,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TaskTableView</class>
+   <extends>QTableView</extends>
+   <header>TaskTableView.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

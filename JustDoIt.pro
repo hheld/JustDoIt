@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     TaskTableStringListComboboxDelegate.cpp \
     TaskTableColorDoneDelegate.cpp \
     TaskSortFilterProxyModel.cpp \
-    TaskTableDateTimeDelegate.cpp
+    TaskTableDateTimeDelegate.cpp \
+    TaskTableView.cpp
 
 HEADERS  += MainWindow.h \
     TaskXmlWriter.h \
@@ -36,12 +37,15 @@ HEADERS  += MainWindow.h \
     TaskTableStringListCombobox.h \
     TaskTableColorDoneDelegate.h \
     TaskSortFilterProxyModel.h \
-    TaskTableDateTimeDelegate.h
+    TaskTableDateTimeDelegate.h \
+    TaskTableView.h
 
 FORMS    += MainWindow.ui
 
 OTHER_FILES += \
     Tasks.xsd
+
+
 
 
 

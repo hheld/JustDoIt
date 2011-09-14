@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->tabWidget->setCurrentIndex(0);
+    ui->tabWidget->currentWidget()->setFocus();
     ui->lineEdit_quickTitle->setFocus();
 
     updateDefaultDueDateTime();
