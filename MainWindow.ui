@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
+    <width>1100</width>
     <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Just Do It !!!</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
@@ -20,7 +23,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_quickEnter">
          <attribute name="title">
@@ -183,6 +186,9 @@
              <widget class="TaskTableView" name="table_tasks">
               <property name="mouseTracking">
                <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 10pt &quot;Ubuntu&quot;;</string>
               </property>
               <property name="horizontalScrollMode">
                <enum>QAbstractItemView::ScrollPerPixel</enum>
@@ -462,11 +468,14 @@
                  <height>16777215</height>
                 </size>
                </property>
+               <property name="mouseTracking">
+                <bool>false</bool>
+               </property>
                <property name="text">
                 <string/>
                </property>
                <property name="placeholderText">
-                <string>enter regular expression ...</string>
+                <string>enter regex ...</string>
                </property>
               </widget>
              </item>
@@ -499,7 +508,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>768</width>
+     <width>1100</width>
      <height>25</height>
     </rect>
    </property>
