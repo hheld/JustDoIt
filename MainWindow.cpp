@@ -296,6 +296,7 @@ void MainWindow::permuteColumns()
     hw->moveSection(6, 0);
     hw->moveSection(7, 1);
     hw->moveSection(7, 4);
+    hw->moveSection(5, 0);
 
     hw->setSortIndicator(6, Qt::AscendingOrder);
 }

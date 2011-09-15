@@ -23,7 +23,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_quickEnter">
          <attribute name="title">
@@ -204,6 +204,9 @@
               </property>
               <property name="styleSheet">
                <string notr="true">font: 10pt &quot;Ubuntu&quot;;</string>
+              </property>
+              <property name="alternatingRowColors">
+               <bool>true</bool>
               </property>
               <property name="horizontalScrollMode">
                <enum>QAbstractItemView::ScrollPerPixel</enum>
