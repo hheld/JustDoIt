@@ -1,5 +1,6 @@
 #include <QtAlgorithms>
 #include <QtGlobal>
+#include <QTimer>
 
 #include "TaskTableModel.h"
 #include "Task.h"
@@ -8,6 +9,12 @@ TaskTableModel::TaskTableModel(const QVector<Task*> allTasks, QObject *parent) :
     QAbstractTableModel(parent),
     allTasks(allTasks)
 {
+    /*  Since we display something like "xxx days left", in theory it should be possible to leave the application open, never change data, and therefore never get an update
+        on these values. Therefore, we just reset the view every 6 hours, that shouldn't have any performance issues and this admittedly rare occasion is handled correctly. */
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(resetView()));
+    timer->start(1000 * 60 * 60 * 6);
 }
 
 TaskTableModel::~TaskTableModel()
@@ -202,4 +209,9 @@ bool TaskTableModel::removeRows(int position, int rows, const QModelIndex &index
 const QVector<Task *> & TaskTableModel::getTasks() const
 {
     return allTasks;
+}
+
+void TaskTableModel::resetView()
+{
+    reset();
 }

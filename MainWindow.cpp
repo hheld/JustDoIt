@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->actionSave->setEnabled(false);
+
     ui->tabWidget->setCurrentIndex(0);
     ui->tabWidget->currentWidget()->setFocus();
     ui->lineEdit_quickTitle->setFocus();
@@ -154,6 +156,8 @@ void MainWindow::saveData()
         saveXML(saveFileName);
 
         saveNeeded = false;
+
+        ui->actionSave->setEnabled(false);
     }
 }
 
@@ -161,12 +165,16 @@ void MainWindow::groupData_changed()
 {
     saveNeeded = true;
 
+    ui->actionSave->setEnabled(true);
+
     uData->groups() = model_groups->stringList();
 }
 
 void MainWindow::locationData_changed()
 {
     saveNeeded = true;
+
+    ui->actionSave->setEnabled(true);
 
     uData->locations() = model_locations->stringList();
 }
@@ -176,6 +184,8 @@ void MainWindow::taskData_changed(QModelIndex index)
     Q_UNUSED(index);
 
     saveNeeded = true;
+
+    ui->actionSave->setEnabled(true);
 
     uData->tasks() = model_tasks->getTasks();
 }
@@ -358,12 +368,31 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 
 void MainWindow::toggleVisibility()
 {
-    setVisible(!isVisible());
-
     if(isVisible())
     {
+        if(!isActiveWindow())
+        {
+            show();
+            raise();
+            activateWindow();
+
+            ui->tabWidget->setCurrentIndex(0);
+            ui->lineEdit_quickTitle->setFocus();
+        }
+        else
+        {
+            setVisible(false);
+        }
+    }
+    else
+    {
+        setVisible(true);
+
+        show();
+        raise();
+        activateWindow();
+
         ui->tabWidget->setCurrentIndex(0);
-        ui->tabWidget->currentWidget()->setFocus();
         ui->lineEdit_quickTitle->setFocus();
     }
 }

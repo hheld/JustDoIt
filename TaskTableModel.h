@@ -5,6 +5,7 @@
 #include <QVector>
 
 class Task;
+class QTimer;
 
 class TaskTableModel : public QAbstractTableModel
 {
@@ -28,6 +29,11 @@ private:
     Q_DISABLE_COPY(TaskTableModel)
 
     QVector<Task*> allTasks;
+
+    QTimer *timer;
+
+private slots:
+    void resetView();
 };
 
 #endif // TASKTABLEMODEL_H
