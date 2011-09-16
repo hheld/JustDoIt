@@ -49,6 +49,10 @@ FORMS    += MainWindow.ui
 OTHER_FILES += \
     Tasks.xsd
 
+RESOURCES += \
+    resources.qrc
+
+
 
 
 

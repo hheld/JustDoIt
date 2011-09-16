@@ -181,15 +181,41 @@
                <layout class="QHBoxLayout" name="horizontalLayout_6">
                 <item>
                  <widget class="QToolButton" name="button_addTask">
+                  <property name="toolTip">
+                   <string>Add a new task.</string>
+                  </property>
                   <property name="text">
-                   <string>+</string>
+                   <string>0</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/icons/res/plus.svg</normaloff>:/icons/res/plus.svg</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>8</width>
+                    <height>8</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QToolButton" name="button_deleteTask">
+                  <property name="toolTip">
+                   <string>Delete the current task,</string>
+                  </property>
                   <property name="text">
-                   <string>-</string>
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/icons/res/minus.svg</normaloff>:/icons/res/minus.svg</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>8</width>
+                    <height>8</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
@@ -201,6 +227,12 @@
              <widget class="TaskTableView" name="table_tasks">
               <property name="mouseTracking">
                <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="statusTip">
+               <string/>
               </property>
               <property name="styleSheet">
                <string notr="true">font: 10pt &quot;Ubuntu&quot;;
@@ -278,22 +310,61 @@ alternate-background-color: rgb(170, 191, 216);</string>
                  <layout class="QHBoxLayout" name="horizontalLayout">
                   <item>
                    <widget class="QToolButton" name="button_addGroup">
+                    <property name="toolTip">
+                     <string>Add a new group.</string>
+                    </property>
                     <property name="text">
-                     <string>+</string>
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/icons/res/plus.svg</normaloff>:/icons/res/plus.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>8</width>
+                      <height>8</height>
+                     </size>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QToolButton" name="button_insertGroup">
+                    <property name="toolTip">
+                     <string>Insert a new group at the current location.</string>
+                    </property>
                     <property name="text">
-                     <string>.+.</string>
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/icons/res/insert.svg</normaloff>:/icons/res/insert.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>8</width>
+                      <height>8</height>
+                     </size>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QToolButton" name="button_deleteGroup">
+                    <property name="toolTip">
+                     <string>Delete the current group.</string>
+                    </property>
                     <property name="text">
-                     <string>-</string>
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/icons/res/minus.svg</normaloff>:/icons/res/minus.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>8</width>
+                      <height>8</height>
+                     </size>
                     </property>
                    </widget>
                   </item>
@@ -365,22 +436,61 @@ alternate-background-color: rgb(170, 191, 216);</string>
                  <layout class="QHBoxLayout" name="horizontalLayout_3">
                   <item>
                    <widget class="QToolButton" name="button_addLocation">
+                    <property name="toolTip">
+                     <string>Add a new location.</string>
+                    </property>
                     <property name="text">
-                     <string>+</string>
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/icons/res/plus.svg</normaloff>:/icons/res/plus.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>8</width>
+                      <height>8</height>
+                     </size>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QToolButton" name="button_insertLocation">
+                    <property name="toolTip">
+                     <string>Insert a new location at the current position.</string>
+                    </property>
                     <property name="text">
-                     <string>.+.</string>
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/icons/res/insert.svg</normaloff>:/icons/res/insert.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>8</width>
+                      <height>8</height>
+                     </size>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QToolButton" name="button_deleteLocation">
+                    <property name="toolTip">
+                     <string>Delete the current location.</string>
+                    </property>
                     <property name="text">
-                     <string>-</string>
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/icons/res/minus.svg</normaloff>:/icons/res/minus.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>8</width>
+                      <height>8</height>
+                     </size>
                     </property>
                    </widget>
                   </item>
@@ -575,7 +685,9 @@ alternate-background-color: rgb(170, 191, 216);</string>
    <header>TaskTableView.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>lineEdit_quickTitle</sender>
