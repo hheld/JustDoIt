@@ -20,26 +20,16 @@ void TaskTableColorDoneDelegate::paint(QPainter *painter, const QStyleOptionView
 
     bool isDone = allTasks[modelProxy->mapToSource(index).row()]->done();
 
+    QStyleOptionViewItem newOption(option);
+
     if(isDone)
     {
-        QStyleOptionViewItem newOption(option);
-
         newOption.palette.setColor(QPalette::Text, QColor(0, 255, 0));
-
-        QStyledItemDelegate::paint(painter, newOption, index);
-
-        return;
     }
     else
     {
-        QStyleOptionViewItem newOption(option);
-
         newOption.palette.setColor(QPalette::Text, QColor(255, 0, 0));
-
-        QStyledItemDelegate::paint(painter, newOption, index);
-
-        return;
     }
 
-    QStyledItemDelegate::paint(painter, option, index);
+    QStyledItemDelegate::paint(painter, newOption, index);
 }

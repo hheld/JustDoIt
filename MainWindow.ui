@@ -203,13 +203,21 @@
                <bool>false</bool>
               </property>
               <property name="styleSheet">
-               <string notr="true">font: 10pt &quot;Ubuntu&quot;;</string>
+               <string notr="true">font: 10pt &quot;Ubuntu&quot;;
+background-color: rgb(230, 230, 230);
+alternate-background-color: rgb(170, 191, 216);</string>
               </property>
               <property name="alternatingRowColors">
                <bool>true</bool>
               </property>
+              <property name="textElideMode">
+               <enum>Qt::ElideRight</enum>
+              </property>
               <property name="horizontalScrollMode">
                <enum>QAbstractItemView::ScrollPerPixel</enum>
+              </property>
+              <property name="showGrid">
+               <bool>false</bool>
               </property>
               <property name="sortingEnabled">
                <bool>true</bool>
@@ -222,6 +230,9 @@
               </attribute>
               <attribute name="verticalHeaderVisible">
                <bool>false</bool>
+              </attribute>
+              <attribute name="verticalHeaderDefaultSectionSize">
+               <number>20</number>
               </attribute>
              </widget>
             </item>
