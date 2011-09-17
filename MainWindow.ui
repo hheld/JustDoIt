@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Just Do It !!!</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/res/app.svg</normaloff>:/icons/res/app.svg</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -23,7 +27,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_quickEnter">
          <attribute name="title">
@@ -234,8 +238,18 @@
               <property name="statusTip">
                <string/>
               </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
               <property name="styleSheet">
-               <string notr="true"/>
+               <string notr="true">TaskTableView
+{
+	background-color: qlineargradient(spread:pad, x1:0.51, y1:0, x2:0.523333, y2:1, stop:0 rgba(203, 217, 247, 255), stop:1 rgba(255, 255, 255, 255));
+	/*alternate-background-color: rgb(112, 121, 147);*/
+	
+	alternate-background-color: rgb(180, 189, 226);
+	color: rgb(0, 0, 0);
+}</string>
               </property>
               <property name="alternatingRowColors">
                <bool>true</bool>

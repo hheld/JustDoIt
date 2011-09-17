@@ -3,5 +3,6 @@
         <file>res/plus.svg</file>
         <file>res/minus.svg</file>
         <file>res/insert.svg</file>
+        <file>res/app.svg</file>
     </qresource>
 </RCC>

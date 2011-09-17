@@ -49,7 +49,7 @@ void TaskTableDateTimeDelegate::paint(QPainter *painter, const QStyleOptionViewI
 {
     QStyleOptionViewItem newOption(option);
 
-    newOption.palette.setColor(QPalette::Text, QColor(0, 0, 255));
+    newOption.palette.setColor(QPalette::Text, QColor(0, 0, 200));
 
     QStyledItemDelegate::paint(painter, newOption, index);
 }

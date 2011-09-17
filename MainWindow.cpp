@@ -15,6 +15,7 @@
 #include <QStringListModel>
 #include <QDebug>
 #include <QMessageBox>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -29,9 +30,19 @@ MainWindow::MainWindow(QWidget *parent) :
     dueDate_delegate(0),
     titleDelegate(0),
     descriptionDelegate(0),
-    saveNeeded(false)
+    sti(0),
+    trayIconMenu(0),
+    saveNeeded(false),
+    startVisible(true),
+    hideToSystemTray(false)
 {
     ui->setupUi(this);
+
+    readSettings();
+
+    sti = new QSystemTrayIcon(this);
+    trayIconMenu = new QMenu(this);
+    initSystray();
 
     ui->actionSave->setEnabled(false);
 
@@ -87,6 +98,8 @@ MainWindow::~MainWindow()
     delete dueDate_delegate; dueDate_delegate = 0;
     delete titleDelegate; titleDelegate = 0;
     delete descriptionDelegate; descriptionDelegate = 0;
+    delete sti; sti = 0;
+    delete trayIconMenu; trayIconMenu = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -431,4 +444,137 @@ void MainWindow::on_button_clear_clicked()
 void MainWindow::updateDefaultDueDateTime()
 {
     ui->dateTimeEdit_quickDueDate->setDateTime(QDateTime::currentDateTime());
+}
+
+void MainWindow::initSystray()
+{
+    sti->setIcon(QIcon(":/icons/res/app.svg"));
+
+    trayIconMenu->addAction(tr("Add task"), this, SLOT(trayIcon_addTask_clicked()));
+    trayIconMenu->addAction(tr("View/manage tasks"), this, SLOT(trayIcon_manageTasks_clicked()));
+
+    trayIconMenu->addSeparator();
+
+    QAction *actStartVisibility = new QAction(this);
+    actStartVisibility->setText(tr("Start visible"));
+    actStartVisibility->setCheckable(true);
+    actStartVisibility->setChecked(startVisible);
+    connect(actStartVisibility, SIGNAL(triggered(bool)), this, SLOT(setStartVisible(bool)));
+    trayIconMenu->addAction(actStartVisibility);
+
+    QAction *actHideToSysTray = new QAction(this);
+    actHideToSysTray->setText(tr("Hide to system tray"));
+    actHideToSysTray->setCheckable(true);
+    actHideToSysTray->setChecked(hideToSystemTray);
+    connect(actHideToSysTray, SIGNAL(triggered(bool)), this, SLOT(setHideToSystemTray(bool)));
+    trayIconMenu->addAction(actHideToSysTray);
+
+    connect(sti, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sysTrayIconClicked(QSystemTrayIcon::ActivationReason)));
+
+    sti->setContextMenu(trayIconMenu);
+
+    sti->show();
+}
+
+void MainWindow::trayIcon_addTask_clicked()
+{
+    if(!isVisible())
+    {
+        setVisible(true);
+
+        show();
+        raise();
+        activateWindow();
+    }
+
+    if(!isActiveWindow())
+    {
+        activateWindow();
+    }
+
+    ui->tabWidget->setCurrentIndex(0);
+    ui->lineEdit_quickTitle->setFocus();
+}
+
+void MainWindow::trayIcon_manageTasks_clicked()
+{
+    if(!isVisible())
+    {
+        setVisible(true);
+
+        show();
+        raise();
+        activateWindow();
+    }
+
+    if(!isActiveWindow())
+    {
+        activateWindow();
+    }
+
+    ui->tabWidget->setCurrentIndex(1);
+}
+
+void MainWindow::setStartVisible(bool visibleOnStart)
+{
+    startVisible = visibleOnStart;
+}
+
+void MainWindow::readSettings()
+{
+    QSettings settings("JustDoIt", "JustDoIt");
+
+    settings.beginGroup("MainWindow");
+    startVisible = settings.value("isVisibleOnStart").toBool();
+    hideToSystemTray = settings.value("hideToSystemTray").toBool();
+    settings.endGroup();
+}
+
+void MainWindow::writeSettings()
+{
+    QSettings settings("JustDoIt", "JustDoIt");
+
+    settings.beginGroup("MainWindow");
+    settings.setValue("isVisibleOnStart", startVisible);
+    settings.setValue("hideToSystemTray", hideToSystemTray);
+    settings.endGroup();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    writeSettings();
+    event->accept();
+}
+
+void MainWindow::hideEvent(QHideEvent *event)
+{
+    if(hideToSystemTray)
+    {
+        setVisible(false);
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+
+void MainWindow::setHideToSystemTray(bool hideToSysTray)
+{
+    hideToSystemTray = hideToSysTray;
+}
+
+void MainWindow::sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason)
+{
+    if(reason == QSystemTrayIcon::Trigger)
+    {
+        if(!isActiveWindow())
+        {
+            trayIcon_addTask_clicked();
+        }
+        else
+        {
+            hide();
+        }
+    }
 }

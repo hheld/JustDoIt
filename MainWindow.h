@@ -3,6 +3,7 @@
 
 #include <QtGui/QMainWindow>
 #include <QModelIndex>
+#include <QSystemTrayIcon>
 
 class UserData;
 class QStringListModel;
@@ -33,6 +34,8 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+    void closeEvent(QCloseEvent *event);
+    void hideEvent(QHideEvent *event);
 
 private:
     Ui::MainWindow *ui;
@@ -50,12 +53,20 @@ private:
     TaskTableLineEditDelegate *titleDelegate;
     TaskTableTextEditDelegate *descriptionDelegate;
 
+    QSystemTrayIcon *sti;
+    QMenu *trayIconMenu;
+
     QString saveFileName;
 
     void permuteColumns();
     int numOfUnfinishedTasks() const;
+    void initSystray();
+    void readSettings();
+    void writeSettings();
 
     bool saveNeeded;
+    bool startVisible;
+    bool hideToSystemTray;
 
 public slots:
     void saveXML(const QString &fileName = QString());
@@ -79,6 +90,11 @@ private slots:
     void on_tabWidget_currentChanged(int index);
     void on_button_add_clicked();
     void on_button_clear_clicked();
+    void trayIcon_addTask_clicked();
+    void trayIcon_manageTasks_clicked();
+    void setStartVisible(bool visibleOnStart);
+    void setHideToSystemTray(bool hideToSysTray);
+    void sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif // MAINWINDOW_H

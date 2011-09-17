@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include <QDir>
 #include <QProcessEnvironment>
+#include <QSettings>
 
 #include <QxtGlobalShortcut>
 
@@ -41,13 +42,23 @@ int main(int argc, char *argv[])
 
     MainWindow w;
 
+    QSettings settings("JustDoIt", "JustDoIt");
+
+    settings.beginGroup("MainWindow");
+    bool startVisible = settings.value("isVisibleOnStart").toBool();
+    settings.endGroup();
+
     QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(&w);
     QObject::connect(shortcut, SIGNAL(activated()), &w, SLOT(toggleVisibility()));
     shortcut->setShortcut(QKeySequence("Ctrl+Shift+F11"));
 
     w.setUsrData(myUd);
     w.setSaveFileName(savePath.absolutePath() + "/tasks.xml");
-    w.show();
+
+    if(startVisible)
+    {
+        w.show();
+    }
 
     return a.exec();
 }

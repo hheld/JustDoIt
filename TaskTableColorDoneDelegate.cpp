@@ -24,11 +24,11 @@ void TaskTableColorDoneDelegate::paint(QPainter *painter, const QStyleOptionView
 
     if(isDone)
     {
-        newOption.palette.setColor(QPalette::Text, QColor(0, 255, 0));
+        newOption.palette.setColor(QPalette::Text, QColor(0, 200, 0));
     }
     else
     {
-        newOption.palette.setColor(QPalette::Text, QColor(255, 0, 0));
+        newOption.palette.setColor(QPalette::Text, QColor(200, 0, 0));
     }
 
     QStyledItemDelegate::paint(painter, newOption, index);
