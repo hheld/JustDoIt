@@ -44,3 +44,12 @@ void TaskTableDateTimeDelegate::updateEditorGeometry(QWidget *editor, const QSty
 
     editor->setGeometry(option.rect);
 }
+
+void TaskTableDateTimeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionViewItem newOption(option);
+
+    newOption.palette.setColor(QPalette::Text, QColor(0, 0, 255));
+
+    QStyledItemDelegate::paint(painter, newOption, index);
+}
