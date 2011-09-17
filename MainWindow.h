@@ -95,6 +95,7 @@ private slots:
     void setStartVisible(bool visibleOnStart);
     void setHideToSystemTray(bool hideToSysTray);
     void sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
+    void on_actionQuit_triggered();
 };
 
 #endif // MAINWINDOW_H

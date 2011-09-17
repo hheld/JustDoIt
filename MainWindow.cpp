@@ -38,6 +38,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // disable close icon on window
+    setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
+
     readSettings();
 
     sti = new QSystemTrayIcon(this);
@@ -201,6 +204,8 @@ void MainWindow::taskData_changed(QModelIndex index)
     ui->actionSave->setEnabled(true);
 
     uData->tasks() = model_tasks->getTasks();
+
+    updateStatusMesg();
 }
 
 void MainWindow::on_button_addGroup_clicked()
@@ -577,4 +582,9 @@ void MainWindow::sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason)
             hide();
         }
     }
+}
+
+void MainWindow::on_actionQuit_triggered()
+{
+    close();
 }
