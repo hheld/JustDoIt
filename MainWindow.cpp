@@ -523,6 +523,8 @@ void MainWindow::trayIcon_manageTasks_clicked()
 void MainWindow::setStartVisible(bool visibleOnStart)
 {
     startVisible = visibleOnStart;
+
+    writeSettings();
 }
 
 void MainWindow::readSettings()
@@ -567,6 +569,8 @@ void MainWindow::hideEvent(QHideEvent *event)
 void MainWindow::setHideToSystemTray(bool hideToSysTray)
 {
     hideToSystemTray = hideToSysTray;
+
+    writeSettings();
 }
 
 void MainWindow::sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason)
