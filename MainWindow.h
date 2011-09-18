@@ -63,6 +63,7 @@ private:
     void initSystray();
     void readSettings();
     void writeSettings();
+    void purgeAllDoneTasks();
 
     bool saveNeeded;
     bool startVisible;
@@ -96,6 +97,7 @@ private slots:
     void setHideToSystemTray(bool hideToSysTray);
     void sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
     void on_actionQuit_triggered();
+    void on_actionPurge_triggered();
 };
 
 #endif // MAINWINDOW_H

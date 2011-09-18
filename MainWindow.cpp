@@ -588,3 +588,46 @@ void MainWindow::on_actionQuit_triggered()
 {
     close();
 }
+
+void MainWindow::purgeAllDoneTasks()
+{
+    if(uData)
+    {
+        int numDeleted = 0;
+
+        const QVector<Task*> &allTasks = uData->tasks();
+        QVector<int> indicesOfTasksToBeDeleted;
+
+        int numOfTasks = allTasks.size();
+
+        for(int i=0; i<numOfTasks; ++i)
+        {
+            if(allTasks.at(i)->done())
+            {
+                indicesOfTasksToBeDeleted.append(i);
+            }
+        }
+
+        int numOfDoneTasks = indicesOfTasksToBeDeleted.size();
+
+        for(int i=0; i<numOfDoneTasks; ++i)
+        {
+            // the ascending order of indices here is crucial!!
+            QModelIndex index = model_tasks->index(indicesOfTasksToBeDeleted[i] - numDeleted, 0);
+
+            if(index.isValid())
+            {
+                model_tasks->removeRows(index.row(), 1);
+
+                emit taskData_changed(index);
+            }
+
+            ++numDeleted;
+        }
+    }
+}
+
+void MainWindow::on_actionPurge_triggered()
+{
+    purgeAllDoneTasks();
+}
