@@ -597,6 +597,11 @@ void MainWindow::purgeAllDoneTasks()
 {
     if(uData)
     {
+        if(QMessageBox::question(this, "Confirm", "Are you sure that you want to delete all completed tasks?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+        {
+            return;
+        }
+
         int numDeleted = 0;
 
         const QVector<Task*> &allTasks = uData->tasks();
