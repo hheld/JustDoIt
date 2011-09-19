@@ -375,6 +375,12 @@ bool MainWindow::event(QEvent *event)
         msgBox.setDefaultButton(QMessageBox::Save);
         int ret = msgBox.exec();
 
+        if(ret == QMessageBox::Cancel)
+        {
+            event->ignore();
+            return true;
+        }
+
         if(ret == QMessageBox::Save)
         {
             saveData();

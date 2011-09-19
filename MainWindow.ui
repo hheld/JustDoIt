@@ -262,7 +262,6 @@
                  <string notr="true">TaskTableView
 {
 	background-color: qlineargradient(spread:pad, x1:0.51, y1:0, x2:0.523333, y2:1, stop:0 rgba(203, 217, 247, 255), stop:1 rgba(255, 255, 255, 255));
-	/*alternate-background-color: rgb(112, 121, 147);*/
 	
 	alternate-background-color: rgb(180, 189, 226);
 	color: rgb(0, 0, 0);
@@ -313,7 +312,8 @@
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">background-color: rgb(59, 63, 84);
+color: rgb(255, 255, 255);</string>
              </property>
              <property name="title">
               <string>Current Task</string>
@@ -342,6 +342,12 @@
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">selection-color: white;
+border: 2px groove gray;
+border-radius: 10px;
+padding: 2px 4px;</string>
                       </property>
                       <property name="frame">
                        <bool>false</bool>
@@ -386,14 +392,29 @@
                         <verstretch>0</verstretch>
                        </sizepolicy>
                       </property>
+                      <property name="styleSheet">
+                       <string notr="true">selection-color: white;
+border: 2px groove gray;
+border-radius: 10px;
+padding: 2px 4px;</string>
+                      </property>
                       <property name="frame">
                        <bool>false</bool>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
                       </property>
                       <property name="readOnly">
                        <bool>true</bool>
                       </property>
                       <property name="buttonSymbols">
                        <enum>QAbstractSpinBox::NoButtons</enum>
+                      </property>
+                      <property name="specialValueText">
+                       <string/>
+                      </property>
+                      <property name="correctionMode">
+                       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
                       </property>
                      </widget>
                     </item>
@@ -417,6 +438,12 @@
                     </item>
                     <item>
                      <widget class="QLineEdit" name="lineEdit_groupDisplay">
+                      <property name="styleSheet">
+                       <string notr="true">selection-color: white;
+border: 2px groove gray;
+border-radius: 10px;
+padding: 2px 4px;</string>
+                      </property>
                       <property name="frame">
                        <bool>false</bool>
                       </property>
@@ -454,8 +481,14 @@
                     </item>
                     <item>
                      <widget class="QLineEdit" name="lineEdit_locationDisplay">
+                      <property name="styleSheet">
+                       <string notr="true">selection-color: white;   	
+border: 2px groove gray;
+border-radius: 10px;
+padding: 2px 4px;</string>
+                      </property>
                       <property name="frame">
-                       <bool>false</bool>
+                       <bool>true</bool>
                       </property>
                       <property name="readOnly">
                        <bool>true</bool>
@@ -497,8 +530,14 @@
                   </item>
                   <item>
                    <widget class="QPlainTextEdit" name="plainTextEdit_descriptionDisplay">
+                    <property name="styleSheet">
+                     <string notr="true">selection-color: white;
+border: 2px groove gray;
+border-radius: 10px;
+padding: 2px 4px;</string>
+                    </property>
                     <property name="frameShape">
-                     <enum>QFrame::NoFrame</enum>
+                     <enum>QFrame::StyledPanel</enum>
                     </property>
                     <property name="readOnly">
                      <bool>true</bool>
@@ -972,8 +1011,8 @@
      <y>124</y>
     </hint>
     <hint type="destinationlabel">
-     <x>502</x>
-     <y>626</y>
+     <x>860</x>
+     <y>636</y>
     </hint>
    </hints>
   </connection>
