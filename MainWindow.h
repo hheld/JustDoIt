@@ -64,6 +64,7 @@ private:
     void readSettings();
     void writeSettings();
     void purgeAllDoneTasks();
+    void center();
 
     bool saveNeeded;
     bool startVisible;

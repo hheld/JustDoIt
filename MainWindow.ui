@@ -18,7 +18,10 @@
     <normaloff>:/icons/res/app.svg</normaloff>:/icons/res/app.svg</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QMainWindow
+{
+	background-color: rgb(221, 226, 239);
+}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
@@ -26,8 +29,34 @@
      <layout class="QHBoxLayout" name="horizontalLayout_8">
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTabBar::tab
+{
+  background: transparent;
+  color: black;
+  padding: 6px;
+}
+
+ QTabBar::tab:selected
+{
+	background-color: rgb(59, 63, 84);
+	color: white;
+}</string>
+        </property>
+        <property name="tabPosition">
+         <enum>QTabWidget::North</enum>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Rounded</enum>
+        </property>
         <property name="currentIndex">
          <number>1</number>
+        </property>
+        <property name="documentMode">
+         <bool>true</bool>
         </property>
         <widget class="QWidget" name="tab_quickEnter">
          <attribute name="title">
@@ -166,6 +195,9 @@
          </layout>
         </widget>
         <widget class="QWidget" name="tab_allTasks">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <attribute name="title">
           <string>Manage tasks</string>
          </attribute>
@@ -415,6 +447,9 @@ padding: 2px 4px;</string>
                       </property>
                       <property name="correctionMode">
                        <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                      </property>
+                      <property name="keyboardTracking">
+                       <bool>false</bool>
                       </property>
                      </widget>
                     </item>

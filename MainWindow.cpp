@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QSettings>
+#include <QDesktopWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -85,6 +86,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // actions
     ui->actionSave->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveData()));
+
+    ui->actionPurge->setIcon(style()->standardIcon(QStyle::SP_TrashIcon));
+
+    // center on screen
+    center();
 }
 
 MainWindow::~MainWindow()
@@ -618,11 +624,6 @@ void MainWindow::purgeAllDoneTasks()
 {
     if(uData)
     {
-        if(QMessageBox::question(this, "Confirm", "Are you sure that you want to delete all completed tasks?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-        {
-            return;
-        }
-
         int numDeleted = 0;
 
         const QVector<Task*> &allTasks = uData->tasks();
@@ -639,6 +640,16 @@ void MainWindow::purgeAllDoneTasks()
         }
 
         int numOfDoneTasks = indicesOfTasksToBeDeleted.size();
+
+        if(!numOfDoneTasks)
+        {
+            return;
+        }
+
+        if(QMessageBox::question(this, "Confirm", "Are you sure that you want to delete all completed tasks?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+        {
+            return;
+        }
 
         for(int i=0; i<numOfDoneTasks; ++i)
         {
@@ -708,4 +719,26 @@ void MainWindow::deselectAllRows()
     ui->table_tasks->clearSelection();
 
     ui->label_dueDateDisplay->setText(tr("Due date"));
+}
+
+void MainWindow::center()
+{
+    QDesktopWidget *desktop = QApplication::desktop();
+
+    int screenWidth, width;
+    int screenHeight, height;
+    int x, y;
+    QSize windowSize;
+
+    screenWidth = desktop->width();
+    screenHeight = desktop->height();
+
+    windowSize = size();
+    width = windowSize.width();
+    height = windowSize.height();
+
+    x = (screenWidth - width) / 2;
+    y = (screenHeight - height) / 2;
+
+    move (x, y);
 }
