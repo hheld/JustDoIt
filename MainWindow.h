@@ -74,6 +74,7 @@ public slots:
     void updateStatusMesg();
     void toggleVisibility();
     void updateDefaultDueDateTime();
+    void deselectAllRows();
 
 private slots:
     void saveData();
@@ -98,6 +99,7 @@ private slots:
     void sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
     void on_actionQuit_triggered();
     void on_actionPurge_triggered();
+    void taskRowClicked(QModelIndex);
 };
 
 #endif // MAINWINDOW_H

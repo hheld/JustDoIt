@@ -10,6 +10,10 @@ public:
     explicit TaskTableView(QWidget *parent = 0);
 
     bool viewportEvent(QEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+
+signals:
+    void clickedOutsideData();
 };
 
 #endif // TASKTABLEVIEW_H

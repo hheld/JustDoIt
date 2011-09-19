@@ -42,3 +42,13 @@ bool TaskTableView::viewportEvent(QEvent *event)
 
     return QTableView::viewportEvent(event);
 }
+
+void TaskTableView::mousePressEvent(QMouseEvent *event)
+{
+    if(!indexAt(event->pos()).isValid())
+    {
+        emit clickedOutsideData();
+    }
+
+    QTableView::mousePressEvent(event);
+}

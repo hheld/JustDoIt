@@ -139,6 +139,12 @@ void MainWindow::setUsrData(UserData *uData)
     sortFilterTasksProxy->setSourceModel(model_tasks);
 
     connect(ui->spinBox_dueWithinDays, SIGNAL(valueChanged(int)), sortFilterTasksProxy, SLOT(setNumOfDaysAhead(int)));
+    connect(ui->table_tasks, SIGNAL(clickedOutsideData()), this, SLOT(deselectAllRows()));
+    connect(ui->table_tasks, SIGNAL(clickedOutsideData()), ui->lineEdit_titleDisplay, SLOT(clear()));
+    connect(ui->table_tasks, SIGNAL(clickedOutsideData()), ui->lineEdit_groupDisplay, SLOT(clear()));
+    connect(ui->table_tasks, SIGNAL(clickedOutsideData()), ui->lineEdit_locationDisplay, SLOT(clear()));
+    connect(ui->table_tasks, SIGNAL(clickedOutsideData()), ui->plainTextEdit_descriptionDisplay, SLOT(clear()));
+    connect(ui->table_tasks, SIGNAL(clickedOutsideData()), ui->dateTimeEdit_duedateDisplay, SLOT(clear()));
 
     ui->table_tasks->setModel(sortFilterTasksProxy);
 
@@ -148,6 +154,8 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setItemDelegateForColumn(5, dueDate_delegate);
     ui->table_tasks->setItemDelegateForColumn(6, titleDelegate);
     ui->table_tasks->setItemDelegateForColumn(7, descriptionDelegate);
+
+    connect(ui->table_tasks, SIGNAL(clicked(QModelIndex)), this, SLOT(taskRowClicked(QModelIndex)));
 
     permuteColumns();
 
@@ -206,6 +214,13 @@ void MainWindow::taskData_changed(QModelIndex index)
     uData->tasks() = model_tasks->getTasks();
 
     updateStatusMesg();
+
+    int currentlySelectedRow = ui->table_tasks->currentIndex().row();
+
+    if(currentlySelectedRow != -1)
+    {
+        taskRowClicked(ui->table_tasks->currentIndex());
+    }
 }
 
 void MainWindow::on_button_addGroup_clicked()
@@ -639,4 +654,52 @@ void MainWindow::purgeAllDoneTasks()
 void MainWindow::on_actionPurge_triggered()
 {
     purgeAllDoneTasks();
+}
+
+void MainWindow::taskRowClicked(QModelIndex index)
+{
+    int row = index.row();
+
+    QModelIndex index_title = model_tasks->index(row, 7);
+    QModelIndex index_description = model_tasks->index(row, 8);
+    QModelIndex index_group = model_tasks->index(row, 2);
+    QModelIndex index_location = model_tasks->index(row, 1);
+    QModelIndex index_done = model_tasks->index(row, 3);
+
+    QString title = model_tasks->data(index_title, Qt::DisplayRole).toString();
+    QString description = model_tasks->data(index_description, Qt::DisplayRole).toString();
+    QString group = model_tasks->data(index_group, Qt::DisplayRole).toString();
+    QString location = model_tasks->data(index_location, Qt::DisplayRole).toString();
+    bool done = model_tasks->data(index_done, Qt::CheckStateRole).toBool();
+
+    ui->lineEdit_titleDisplay->setText(title);
+    ui->lineEdit_groupDisplay->setText(group);
+    ui->lineEdit_locationDisplay->setText(location);
+    ui->plainTextEdit_descriptionDisplay->document()->setPlainText(description);
+
+    if(done)
+    {
+        QModelIndex index_finishDate = model_tasks->index(row, 5);
+
+        QDateTime finishDate = model_tasks->data(index_finishDate, Qt::DisplayRole).toDateTime();
+
+        ui->dateTimeEdit_duedateDisplay->setDateTime(finishDate);
+        ui->label_dueDateDisplay->setText(tr("Finished on"));
+    }
+    else
+    {
+        QModelIndex index_dueDate = model_tasks->index(row, 6);
+
+        QDateTime dueDate = model_tasks->data(index_dueDate, Qt::DisplayRole).toDateTime();
+
+        ui->dateTimeEdit_duedateDisplay->setDateTime(dueDate);
+        ui->label_dueDateDisplay->setText(tr("Due on"));
+    }
+}
+
+void MainWindow::deselectAllRows()
+{
+    ui->table_tasks->clearSelection();
+
+    ui->label_dueDateDisplay->setText(tr("Due date"));
 }
