@@ -14,6 +14,7 @@ class TaskSortFilterProxyModel;
 class TaskTableDateTimeDelegate;
 class TaskTableLineEditDelegate;
 class TaskTableTextEditDelegate;
+class QTimer;
 
 namespace Ui {
     class MainWindow;
@@ -57,6 +58,8 @@ private:
     QMenu *trayIconMenu;
 
     QString saveFileName;
+
+    QTimer *timer;
 
     void permuteColumns();
     int numOfUnfinishedTasks() const;

@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QDesktopWidget>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     descriptionDelegate(0),
     sti(0),
     trayIconMenu(0),
+    timer(0),
     saveNeeded(false),
     startVisible(true),
     hideToSystemTray(false)
@@ -91,6 +93,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // center on screen
     center();
+
+    // enable autosave every 5 minutes
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(saveData()));
+    timer->start(1000 * 60 * 5);
 }
 
 MainWindow::~MainWindow()
@@ -109,6 +116,7 @@ MainWindow::~MainWindow()
     delete descriptionDelegate; descriptionDelegate = 0;
     delete sti; sti = 0;
     delete trayIconMenu; trayIconMenu = 0;
+    delete timer; timer = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
