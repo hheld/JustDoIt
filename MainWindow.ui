@@ -213,7 +213,7 @@
             <property name="childrenCollapsible">
              <bool>false</bool>
             </property>
-            <widget class="QWidget" name="">
+            <widget class="QWidget" name="layoutWidget">
              <layout class="QVBoxLayout" name="verticalLayout_3">
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -297,7 +297,18 @@
 	
 	alternate-background-color: rgb(180, 189, 226);
 	color: rgb(0, 0, 0);
-}</string>
+}
+
+QHeaderView::section
+{
+     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                       stop:0 rgb(59, 63, 84), stop: 0.5 #505050,
+                                       stop: 0.6 #434343, stop:1 #656565);
+     color: white;
+     padding-right: 4px;
+     padding-bottom: 4px;
+     border: 1px solid #6c6c6c;
+ }</string>
                 </property>
                 <property name="alternatingRowColors">
                  <bool>true</bool>
