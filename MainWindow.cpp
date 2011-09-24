@@ -107,6 +107,8 @@ MainWindow::~MainWindow()
     delete uData; uData = 0;
     delete model_groups; model_groups = 0;
     delete model_locations; model_locations = 0;
+    delete model_tasks; model_tasks = 0;
+    delete sortFilterTasksProxy; sortFilterTasksProxy = 0;
     delete groupDelegate; groupDelegate = 0;
     delete locationDelegate; locationDelegate = 0;
     delete doneColorDelegate; doneColorDelegate = 0;

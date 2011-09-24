@@ -3,7 +3,7 @@
 #include <QProcessEnvironment>
 #include <QSettings>
 
-#include <QxtGlobalShortcut>
+// #include <QxtGlobalShortcut>
 
 #include "MainWindow.h"
 #include "TaskXmlReader.h"
@@ -48,9 +48,9 @@ int main(int argc, char *argv[])
     bool startVisible = settings.value("isVisibleOnStart").toBool();
     settings.endGroup();
 
-    QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(&w);
-    QObject::connect(shortcut, SIGNAL(activated()), &w, SLOT(toggleVisibility()));
-    shortcut->setShortcut(QKeySequence("Ctrl+Shift+F11"));
+//    QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(&w);
+//    QObject::connect(shortcut, SIGNAL(activated()), &w, SLOT(toggleVisibility()));
+//    shortcut->setShortcut(QKeySequence("Ctrl+Shift+F11"));
 
     w.setUsrData(myUd);
     w.setSaveFileName(savePath.absolutePath() + "/tasks.xml");
