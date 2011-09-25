@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     TaskTableDateTimeDelegate.cpp \
     TaskTableView.cpp \
     TaskTableLineEditDelegate.cpp \
-    TaskTableTextEditDelegate.cpp
+    TaskTableTextEditDelegate.cpp \
+    Reminder.cpp
 
 HEADERS  += MainWindow.h \
     TaskXmlWriter.h \
@@ -42,15 +43,20 @@ HEADERS  += MainWindow.h \
     TaskTableDateTimeDelegate.h \
     TaskTableView.h \
     TaskTableLineEditDelegate.h \
-    TaskTableTextEditDelegate.h
+    TaskTableTextEditDelegate.h \
+    Reminder.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    Reminder.ui
 
 OTHER_FILES += \
     Tasks.xsd
 
 RESOURCES += \
     resources.qrc
+
+
+
 
 
 

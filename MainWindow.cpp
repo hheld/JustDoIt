@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
+#include "Reminder.h"
+
 #include "UserData.h"
 #include "Task.h"
 #include "TaskXmlWriter.h"
@@ -178,6 +180,9 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->resizeColumnsToContents();
 
     updateStatusMesg();
+
+    Reminder *testReminder = new Reminder(model_tasks, 0);
+    testReminder->show();
 }
 
 void MainWindow::saveXML(const QString &fileName)
