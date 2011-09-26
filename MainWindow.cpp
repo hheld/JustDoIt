@@ -687,17 +687,17 @@ void MainWindow::taskRowClicked(QModelIndex index)
 {
     int row = index.row();
 
-    QModelIndex index_title = model_tasks->index(row, 7);
-    QModelIndex index_description = model_tasks->index(row, 8);
-    QModelIndex index_group = model_tasks->index(row, 2);
-    QModelIndex index_location = model_tasks->index(row, 1);
-    QModelIndex index_done = model_tasks->index(row, 3);
+    QModelIndex index_title = sortFilterTasksProxy->index(row, 6);
+    QModelIndex index_description = sortFilterTasksProxy->index(row, 7);
+    QModelIndex index_group = sortFilterTasksProxy->index(row, 1);
+    QModelIndex index_location = sortFilterTasksProxy->index(row, 0);
+    QModelIndex index_done = sortFilterTasksProxy->index(row, 2);
 
-    QString title = model_tasks->data(index_title, Qt::DisplayRole).toString();
-    QString description = model_tasks->data(index_description, Qt::DisplayRole).toString();
-    QString group = model_tasks->data(index_group, Qt::DisplayRole).toString();
-    QString location = model_tasks->data(index_location, Qt::DisplayRole).toString();
-    bool done = model_tasks->data(index_done, Qt::CheckStateRole).toBool();
+    QString title = sortFilterTasksProxy->data(index_title, Qt::DisplayRole).toString();
+    QString description = sortFilterTasksProxy->data(index_description, Qt::DisplayRole).toString();
+    QString group = sortFilterTasksProxy->data(index_group, Qt::DisplayRole).toString();
+    QString location = sortFilterTasksProxy->data(index_location, Qt::DisplayRole).toString();
+    bool done = sortFilterTasksProxy->data(index_done, Qt::CheckStateRole).toBool();
 
     ui->lineEdit_titleDisplay->setText(title);
     ui->lineEdit_groupDisplay->setText(group);
