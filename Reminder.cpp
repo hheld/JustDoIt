@@ -27,6 +27,8 @@ Reminder::Reminder(TaskTableModel *model, QWidget *parent) :
 
     ui->tableView->resizeColumnsToContents();
 
+    connect(proxyModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), ui->tableView, SLOT(doItemsLayout()));
+
     // invalidate the filter every minute to get accurate reminders
     timer_invalidate = new QTimer(this);
     connect(timer_invalidate, SIGNAL(timeout()), proxyModel, SLOT(invalidate()));
