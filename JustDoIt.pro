@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     TaskTableView.cpp \
     TaskTableLineEditDelegate.cpp \
     TaskTableTextEditDelegate.cpp \
-    Reminder.cpp
+    Reminder.cpp \
+    ReminderFilterProxyModel.cpp
 
 HEADERS  += MainWindow.h \
     TaskXmlWriter.h \
@@ -44,7 +45,8 @@ HEADERS  += MainWindow.h \
     TaskTableView.h \
     TaskTableLineEditDelegate.h \
     TaskTableTextEditDelegate.h \
-    Reminder.h
+    Reminder.h \
+    ReminderFilterProxyModel.h
 
 FORMS    += MainWindow.ui \
     Reminder.ui
@@ -54,6 +56,8 @@ OTHER_FILES += \
 
 RESOURCES += \
     resources.qrc
+
+
 
 
 

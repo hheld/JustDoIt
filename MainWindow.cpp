@@ -36,7 +36,9 @@ MainWindow::MainWindow(QWidget *parent) :
     descriptionDelegate(0),
     sti(0),
     trayIconMenu(0),
-    timer(0),
+    timer_autoSave(0),
+    reminderWidget(0),
+    timer_reminder(0),
     saveNeeded(false),
     startVisible(true),
     hideToSystemTray(false)
@@ -97,9 +99,9 @@ MainWindow::MainWindow(QWidget *parent) :
     center();
 
     // enable autosave every 5 minutes
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(saveData()));
-    timer->start(1000 * 60 * 5);
+    timer_autoSave = new QTimer(this);
+    connect(timer_autoSave, SIGNAL(timeout()), this, SLOT(saveData()));
+    timer_autoSave->start(1000 * 60 * 5);
 }
 
 MainWindow::~MainWindow()
@@ -120,7 +122,9 @@ MainWindow::~MainWindow()
     delete descriptionDelegate; descriptionDelegate = 0;
     delete sti; sti = 0;
     delete trayIconMenu; trayIconMenu = 0;
-    delete timer; timer = 0;
+    delete timer_autoSave; timer_autoSave = 0;
+    delete reminderWidget; reminderWidget = 0;
+    delete timer_reminder; timer_reminder = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -181,8 +185,16 @@ void MainWindow::setUsrData(UserData *uData)
 
     updateStatusMesg();
 
-    Reminder *testReminder = new Reminder(model_tasks, 0);
-    testReminder->show();
+    reminderWidget = new Reminder(model_tasks, 0);
+    reminderWidget->setAttribute(Qt::WA_QuitOnClose, false);
+
+    timer_reminder = new QTimer(this);
+    connect(timer_reminder, SIGNAL(timeout()), this, SLOT(showReminder()));
+    // check every 5 minutes if there are tasks due within the next 2 hours
+    timer_reminder->start(1000 * 60 * 5);
+
+    // check at application start if there are any due tasks
+    showReminder();
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -756,4 +768,12 @@ void MainWindow::center()
     y = (screenHeight - height) / 2;
 
     move (x, y);
+}
+
+void MainWindow::showReminder()
+{
+    if(reminderWidget->numOfDueTasks())
+    {
+        reminderWidget->show();
+    }
 }

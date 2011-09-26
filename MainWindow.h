@@ -5,8 +5,10 @@
 #include <QModelIndex>
 #include <QSystemTrayIcon>
 
-class UserData;
+class QTimer;
 class QStringListModel;
+
+class UserData;
 class TaskTableModel;
 class TaskTableStringListComboboxDelegate;
 class TaskTableColorDoneDelegate;
@@ -14,7 +16,7 @@ class TaskSortFilterProxyModel;
 class TaskTableDateTimeDelegate;
 class TaskTableLineEditDelegate;
 class TaskTableTextEditDelegate;
-class QTimer;
+class Reminder;
 
 namespace Ui {
     class MainWindow;
@@ -59,7 +61,10 @@ private:
 
     QString saveFileName;
 
-    QTimer *timer;
+    QTimer *timer_autoSave;
+
+    Reminder *reminderWidget;
+    QTimer *timer_reminder;
 
     void permuteColumns();
     int numOfUnfinishedTasks() const;
@@ -104,6 +109,7 @@ private slots:
     void on_actionQuit_triggered();
     void on_actionPurge_triggered();
     void taskRowClicked(QModelIndex);
+    void showReminder();
 };
 
 #endif // MAINWINDOW_H
