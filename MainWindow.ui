@@ -123,12 +123,12 @@
                   <string>Category</string>
                  </property>
                  <property name="buddy">
-                  <cstring>comboBox_quickGroup</cstring>
+                  <cstring>comboBox_quickCategory</cstring>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QComboBox" name="comboBox_quickGroup"/>
+                <widget class="QComboBox" name="comboBox_quickCategory"/>
                </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_5">
@@ -628,7 +628,7 @@ padding: 2px 4px;</string>
                  <enum>QLayout::SetMaximumSize</enum>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_groups">
+                 <widget class="QLabel" name="label_categories">
                   <property name="text">
                    <string>Categories</string>
                   </property>
@@ -637,7 +637,7 @@ padding: 2px 4px;</string>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout">
                   <item>
-                   <widget class="QToolButton" name="button_addGroup">
+                   <widget class="QToolButton" name="button_addCategory">
                     <property name="toolTip">
                      <string>Add a new category.</string>
                     </property>
@@ -657,7 +657,7 @@ padding: 2px 4px;</string>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="button_insertGroup">
+                   <widget class="QToolButton" name="button_insertCategory">
                     <property name="toolTip">
                      <string>Insert a new category at the current location.</string>
                     </property>
@@ -677,7 +677,7 @@ padding: 2px 4px;</string>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QToolButton" name="button_deleteGroup">
+                   <widget class="QToolButton" name="button_deleteCategory">
                     <property name="toolTip">
                      <string>Delete the current category.</string>
                     </property>
@@ -701,7 +701,7 @@ padding: 2px 4px;</string>
                </layout>
               </item>
               <item row="1" column="0">
-               <widget class="QListView" name="listView_groups">
+               <widget class="QListView" name="listView_categories">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
                   <horstretch>0</horstretch>

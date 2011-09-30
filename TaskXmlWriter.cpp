@@ -59,12 +59,12 @@ void TaskXmlWriter::writeDocument()
         // categories
         xmlWriter->writeStartElement("Categories");
 
-        const QStringList& allGroups = userData->categories();
+        const QStringList& allCategories = userData->categories();
 
-        for(int i=0; i<allGroups.size(); ++i)
+        for(int i=0; i<allCategories.size(); ++i)
         {
             xmlWriter->writeEmptyElement("Category");
-            xmlWriter->writeAttribute("name", allGroups.at(i));
+            xmlWriter->writeAttribute("name", allCategories.at(i));
         }
 
         xmlWriter->writeEndElement();

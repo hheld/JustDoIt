@@ -46,7 +46,7 @@ private:
 
     UserData *uData;
 
-    QStringListModel *model_groups;
+    QStringListModel *model_categories;
     QStringListModel *model_locations;
     TaskTableModel *model_tasks;
     TaskTableStringListComboboxDelegate *groupDelegate;
@@ -93,9 +93,9 @@ private slots:
     void groupData_changed();
     void locationData_changed();
     void taskData_changed(QModelIndex index);
-    void on_button_addGroup_clicked();
-    void on_button_insertGroup_clicked();
-    void on_button_deleteGroup_clicked();
+    void on_button_addCategory_clicked();
+    void on_button_insertCategory_clicked();
+    void on_button_deleteCategory_clicked();
     void on_button_addLocation_clicked();
     void on_button_insertLocation_clicked();
     void on_button_deleteLocation_clicked();

@@ -42,7 +42,7 @@ UserData::~UserData()
     d_ptr = 0;
 }
 
-void UserData::addGroup(const QString &category)
+void UserData::addCategory(const QString &category)
 {
     Q_D(UserData);
 

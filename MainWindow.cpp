@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     uData(0),
-    model_groups(0),
+    model_categories(0),
     model_locations(0),
     groupDelegate(0),
     locationDelegate(0),
@@ -63,17 +63,17 @@ MainWindow::MainWindow(QWidget *parent) :
     updateDefaultDueDateTime();
     connect(ui->button_add, SIGNAL(clicked()), this, SLOT(updateDefaultDueDateTime()));
 
-    model_groups = new QStringListModel(this);
+    model_categories = new QStringListModel(this);
     model_locations = new QStringListModel(this);
 
-    ui->listView_groups->setModel(model_groups);
+    ui->listView_categories->setModel(model_categories);
     ui->listView_locations->setModel(model_locations);
 
-    connect(model_groups, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(groupData_changed()));
+    connect(model_categories, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(groupData_changed()));
     connect(model_locations, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(locationData_changed()));
 
     groupDelegate = new TaskTableStringListComboboxDelegate(this);
-    groupDelegate->setModel(model_groups);
+    groupDelegate->setModel(model_categories);
 
     locationDelegate = new TaskTableStringListComboboxDelegate(this);
     locationDelegate->setModel(model_locations);
@@ -87,7 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
     descriptionDelegate = new TaskTableTextEditDelegate(this);
 
     ui->comboBox_quickLocation->setModel(model_locations);
-    ui->comboBox_quickGroup->setModel(model_groups);
+    ui->comboBox_quickCategory->setModel(model_categories);
 
     // actions
     ui->actionSave->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
@@ -109,7 +109,7 @@ MainWindow::~MainWindow()
     delete ui;
 
     delete uData; uData = 0;
-    delete model_groups; model_groups = 0;
+    delete model_categories; model_categories = 0;
     delete model_locations; model_locations = 0;
     delete model_tasks; model_tasks = 0;
     delete sortFilterTasksProxy; sortFilterTasksProxy = 0;
@@ -143,7 +143,7 @@ void MainWindow::setUsrData(UserData *uData)
 {
     this->uData = uData;
 
-    model_groups->setStringList(uData->categories());
+    model_categories->setStringList(uData->categories());
     model_locations->setStringList(uData->locations());
 
     model_tasks = new TaskTableModel(uData->tasks(), this);
@@ -227,7 +227,7 @@ void MainWindow::groupData_changed()
 
     ui->actionSave->setEnabled(true);
 
-    uData->categories() = model_groups->stringList();
+    uData->categories() = model_categories->stringList();
 }
 
 void MainWindow::locationData_changed()
@@ -259,37 +259,37 @@ void MainWindow::taskData_changed(QModelIndex index)
     }
 }
 
-void MainWindow::on_button_addGroup_clicked()
+void MainWindow::on_button_addCategory_clicked()
 {
-    int row = model_groups->rowCount();
+    int row = model_categories->rowCount();
 
-    model_groups->insertRows(row, 1);
+    model_categories->insertRows(row, 1);
 
-    QModelIndex index = model_groups->index(row);
+    QModelIndex index = model_categories->index(row);
 
-    ui->listView_groups->setCurrentIndex(index);
-    ui->listView_groups->edit(index);
+    ui->listView_categories->setCurrentIndex(index);
+    ui->listView_categories->edit(index);
 }
 
-void MainWindow::on_button_insertGroup_clicked()
+void MainWindow::on_button_insertCategory_clicked()
 {
-    int row = ui->listView_groups->currentIndex().row();
-    model_groups->insertRows(row, 1);
+    int row = ui->listView_categories->currentIndex().row();
+    model_categories->insertRows(row, 1);
 
-    QModelIndex index = model_groups->index(row);
+    QModelIndex index = model_categories->index(row);
 
     if(index.row()<0)
     {
         return;
     }
 
-    ui->listView_groups->setCurrentIndex(index);
-    ui->listView_groups->edit(index);
+    ui->listView_categories->setCurrentIndex(index);
+    ui->listView_categories->edit(index);
 }
 
-void MainWindow::on_button_deleteGroup_clicked()
+void MainWindow::on_button_deleteCategory_clicked()
 {
-    model_groups->removeRows(ui->listView_groups->currentIndex().row(), 1);
+    model_categories->removeRows(ui->listView_categories->currentIndex().row(), 1);
 
     emit groupData_changed();
 }
@@ -480,13 +480,13 @@ void MainWindow::on_button_add_clicked()
     model_tasks->insertRows(row, 1);
 
     QModelIndex indexLocation = model_tasks->index(row, 1);
-    QModelIndex indexGroup = model_tasks->index(row, 2);
+    QModelIndex indexCategory = model_tasks->index(row, 2);
     QModelIndex indexTitle = model_tasks->index(row, 7);
     QModelIndex indexDescription = model_tasks->index(row, 8);
     QModelIndex indexDueDate = model_tasks->index(row, 6);
 
     model_tasks->setData(indexLocation, ui->comboBox_quickLocation->currentText());
-    model_tasks->setData(indexGroup, ui->comboBox_quickGroup->currentText());
+    model_tasks->setData(indexCategory, ui->comboBox_quickCategory->currentText());
     model_tasks->setData(indexTitle, ui->lineEdit_quickTitle->text());
     model_tasks->setData(indexDescription, ui->plainTextEdit_quickDescription->document()->toPlainText());
     model_tasks->setData(indexDueDate, ui->dateTimeEdit_quickDueDate->dateTime());
@@ -499,7 +499,7 @@ void MainWindow::on_button_clear_clicked()
     ui->lineEdit_quickTitle->clear();
     ui->plainTextEdit_quickDescription->clear();
     ui->comboBox_quickLocation->setCurrentIndex(-1);
-    ui->comboBox_quickGroup->setCurrentIndex(-1);
+    ui->comboBox_quickCategory->setCurrentIndex(-1);
     ui->lineEdit_quickTitle->setFocus();
 }
 
@@ -722,13 +722,13 @@ void MainWindow::taskRowClicked(QModelIndex index)
 
     QModelIndex index_title = sortFilterTasksProxy->index(row, 6);
     QModelIndex index_description = sortFilterTasksProxy->index(row, 7);
-    QModelIndex index_group = sortFilterTasksProxy->index(row, 1);
+    QModelIndex index_category = sortFilterTasksProxy->index(row, 1);
     QModelIndex index_location = sortFilterTasksProxy->index(row, 0);
     QModelIndex index_done = sortFilterTasksProxy->index(row, 2);
 
     QString title = sortFilterTasksProxy->data(index_title, Qt::DisplayRole).toString();
     QString description = sortFilterTasksProxy->data(index_description, Qt::DisplayRole).toString();
-    QString category = sortFilterTasksProxy->data(index_group, Qt::DisplayRole).toString();
+    QString category = sortFilterTasksProxy->data(index_category, Qt::DisplayRole).toString();
     QString location = sortFilterTasksProxy->data(index_location, Qt::DisplayRole).toString();
     bool done = sortFilterTasksProxy->data(index_done, Qt::CheckStateRole).toBool();
 

@@ -14,7 +14,7 @@ public:
     UserData(const QString &name);
     ~UserData();
 
-    void addGroup(const QString &category);
+    void addCategory(const QString &category);
     void addLocation(const QString &location);
     void addTask(Task *task);
 

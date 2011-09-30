@@ -38,7 +38,7 @@ void TaskXmlReader::readDocument()
             if (xmlReader->name() == "User")
                 readUserName();
             else if (xmlReader->name() == "Category")
-                readGroup();
+                readCategory();
             else if (xmlReader->name() == "Location")
                 readLocation();
             else if(xmlReader->name() == "Task")
@@ -77,11 +77,11 @@ void TaskXmlReader::readLocation()
     userData->addLocation(location);
 }
 
-void TaskXmlReader::readGroup()
+void TaskXmlReader::readCategory()
 {
     QString category = xmlReader->attributes().value("name").toString();
 
-    userData->addGroup(category);
+    userData->addCategory(category);
 }
 
 void TaskXmlReader::readTask()

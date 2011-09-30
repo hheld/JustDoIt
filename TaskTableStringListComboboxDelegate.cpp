@@ -26,11 +26,11 @@ void TaskTableStringListComboboxDelegate::setEditorData(QWidget *editor, const Q
 {
     QComboBox *cb = static_cast<QComboBox*>(editor);
     QStringListModel *stringListModel = static_cast<QStringListModel*>(model);
-    QStringList allGroups = stringListModel->stringList();
+    QStringList allCategories = stringListModel->stringList();
 
     QString selectionFromModel = index.model()->data(index, Qt::DisplayRole).toString();
 
-    int selectedIndex = allGroups.indexOf(selectionFromModel);
+    int selectedIndex = allCategories.indexOf(selectionFromModel);
 
     cb->setCurrentIndex(selectedIndex);
 }

@@ -23,7 +23,7 @@ private:
 
     void readUserName();
     void readLocation();
-    void readGroup();
+    void readCategory();
     void readTask();
 };
 
