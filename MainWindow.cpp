@@ -616,6 +616,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::hideEvent(QHideEvent *event)
 {
+    lastGeometry = geometry();
+
     if(hideToSystemTray)
     {
         setVisible(false);
@@ -625,6 +627,13 @@ void MainWindow::hideEvent(QHideEvent *event)
     {
         event->ignore();
     }
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    move(lastGeometry.x(), lastGeometry.y());
+    setGeometry(lastGeometry);
+    event->accept();
 }
 
 void MainWindow::setHideToSystemTray(bool hideToSysTray)
@@ -775,6 +784,8 @@ void MainWindow::center()
     y = (screenHeight - height) / 2;
 
     move (x, y);
+
+    lastGeometry = geometry();
 }
 
 void MainWindow::showReminder()

@@ -39,6 +39,7 @@ protected:
     void changeEvent(QEvent *e);
     void closeEvent(QCloseEvent *event);
     void hideEvent(QHideEvent *event);
+    void showEvent(QShowEvent *);
 
 private:
     Ui::MainWindow *ui;
@@ -65,6 +66,8 @@ private:
 
     Reminder *reminderWidget;
     QTimer *timer_reminder;
+
+    QRect lastGeometry;
 
     void permuteColumns();
     int numOfUnfinishedTasks() const;
