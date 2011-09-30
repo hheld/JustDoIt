@@ -56,14 +56,14 @@ void TaskXmlWriter::writeDocument()
         xmlWriter->writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         xmlWriter->writeAttribute("xsi:noNamespaceSchemaLocation", "Tasks.xsd");
 
-        // groups
-        xmlWriter->writeStartElement("Groups");
+        // categories
+        xmlWriter->writeStartElement("Categories");
 
-        const QStringList& allGroups = userData->groups();
+        const QStringList& allGroups = userData->categories();
 
         for(int i=0; i<allGroups.size(); ++i)
         {
-            xmlWriter->writeEmptyElement("Group");
+            xmlWriter->writeEmptyElement("Category");
             xmlWriter->writeAttribute("name", allGroups.at(i));
         }
 
@@ -95,7 +95,7 @@ void TaskXmlWriter::writeDocument()
             xmlWriter->writeAttribute("done", currentTask->done() ? "true" : "false");
             xmlWriter->writeAttribute("id", QString::number(currentTask->id()));
             xmlWriter->writeAttribute("location", currentTask->location());
-            xmlWriter->writeAttribute("group", currentTask->group());
+            xmlWriter->writeAttribute("category", currentTask->category());
             xmlWriter->writeTextElement("startDate", currentTask->startDate().toString(Task::DateTimeFormat));
             xmlWriter->writeTextElement("endDate", currentTask->endDate().toString(Task::DateTimeFormat));
             xmlWriter->writeTextElement("dueDate", currentTask->dueDate().toString(Task::DateTimeFormat));

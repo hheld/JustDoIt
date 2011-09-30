@@ -143,7 +143,7 @@ void MainWindow::setUsrData(UserData *uData)
 {
     this->uData = uData;
 
-    model_groups->setStringList(uData->groups());
+    model_groups->setStringList(uData->categories());
     model_locations->setStringList(uData->locations());
 
     model_tasks = new TaskTableModel(uData->tasks(), this);
@@ -227,7 +227,7 @@ void MainWindow::groupData_changed()
 
     ui->actionSave->setEnabled(true);
 
-    uData->groups() = model_groups->stringList();
+    uData->categories() = model_groups->stringList();
 }
 
 void MainWindow::locationData_changed()
@@ -728,12 +728,12 @@ void MainWindow::taskRowClicked(QModelIndex index)
 
     QString title = sortFilterTasksProxy->data(index_title, Qt::DisplayRole).toString();
     QString description = sortFilterTasksProxy->data(index_description, Qt::DisplayRole).toString();
-    QString group = sortFilterTasksProxy->data(index_group, Qt::DisplayRole).toString();
+    QString category = sortFilterTasksProxy->data(index_group, Qt::DisplayRole).toString();
     QString location = sortFilterTasksProxy->data(index_location, Qt::DisplayRole).toString();
     bool done = sortFilterTasksProxy->data(index_done, Qt::CheckStateRole).toBool();
 
     ui->lineEdit_titleDisplay->setText(title);
-    ui->lineEdit_groupDisplay->setText(group);
+    ui->lineEdit_groupDisplay->setText(category);
     ui->lineEdit_locationDisplay->setText(location);
     ui->plainTextEdit_descriptionDisplay->document()->setPlainText(description);
 

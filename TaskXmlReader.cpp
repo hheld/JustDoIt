@@ -37,7 +37,7 @@ void TaskXmlReader::readDocument()
         {
             if (xmlReader->name() == "User")
                 readUserName();
-            else if (xmlReader->name() == "Group")
+            else if (xmlReader->name() == "Category")
                 readGroup();
             else if (xmlReader->name() == "Location")
                 readLocation();
@@ -79,16 +79,16 @@ void TaskXmlReader::readLocation()
 
 void TaskXmlReader::readGroup()
 {
-    QString group = xmlReader->attributes().value("name").toString();
+    QString category = xmlReader->attributes().value("name").toString();
 
-    userData->addGroup(group);
+    userData->addGroup(category);
 }
 
 void TaskXmlReader::readTask()
 {
     qint32 id = xmlReader->attributes().value("id").toString().toInt();
     QString location = xmlReader->attributes().value("location").toString();
-    QString group = xmlReader->attributes().value("group").toString();
+    QString category = xmlReader->attributes().value("category").toString();
     bool done = xmlReader->attributes().value("done").toString() == "true" ? true : false;
 
     QDateTime startDate;
@@ -129,7 +129,7 @@ void TaskXmlReader::readTask()
 
     newTask->id(id);
     newTask->location(location);
-    newTask->group(group);
+    newTask->category(category);
     newTask->done(done);
     newTask->startDate(startDate);
     newTask->endDate(endDate);

@@ -14,14 +14,14 @@ public:
     UserData(const QString &name);
     ~UserData();
 
-    void addGroup(const QString &group);
+    void addGroup(const QString &category);
     void addLocation(const QString &location);
     void addTask(Task *task);
 
     const QString& name() const;
 
-    const QStringList& groups() const;
-    QStringList& groups();
+    const QStringList& categories() const;
+    QStringList& categories();
 
     const QStringList& locations() const;
     QStringList& locations();

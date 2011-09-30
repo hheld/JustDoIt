@@ -7,7 +7,7 @@ struct UserDataPrivate
 
     // parameters ------------------------------------
     QString name;
-    QStringList groups;
+    QStringList categories;
     QStringList locations;
     QVector<Task*> tasks;
     // -----------------------------------------------
@@ -42,13 +42,13 @@ UserData::~UserData()
     d_ptr = 0;
 }
 
-void UserData::addGroup(const QString &group)
+void UserData::addGroup(const QString &category)
 {
     Q_D(UserData);
 
-    if(!d->groups.contains(group))
+    if(!d->categories.contains(category))
     {
-        d->groups.append(group);
+        d->categories.append(category);
     }
 }
 
@@ -79,18 +79,18 @@ const QString & UserData::name() const
     return d->name;
 }
 
-const QStringList & UserData::groups() const
+const QStringList & UserData::categories() const
 {
     Q_D(const UserData);
 
-    return d->groups;
+    return d->categories;
 }
 
-QStringList & UserData::groups()
+QStringList & UserData::categories()
 {
     Q_D(UserData);
 
-    return d->groups;
+    return d->categories;
 }
 
 const QStringList & UserData::locations() const
