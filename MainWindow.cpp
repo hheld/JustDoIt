@@ -195,6 +195,9 @@ void MainWindow::setUsrData(UserData *uData)
 
     // check at application start if there are any due tasks
     showReminder();
+
+    // make sure that the saved max. due date setting is applied
+    sortFilterTasksProxy->setNumOfDaysAhead(ui->spinBox_dueWithinDays->value());
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -588,6 +591,8 @@ void MainWindow::readSettings()
     settings.beginGroup("MainWindow");
     startVisible = settings.value("isVisibleOnStart").toBool();
     hideToSystemTray = settings.value("hideToSystemTray").toBool();
+    ui->checkBox_hideDone->setChecked(settings.value("hideDoneTasks").toBool());
+    ui->spinBox_dueWithinDays->setValue(settings.value("showMaxDueDate").toInt());
     settings.endGroup();
 }
 
@@ -598,6 +603,8 @@ void MainWindow::writeSettings()
     settings.beginGroup("MainWindow");
     settings.setValue("isVisibleOnStart", startVisible);
     settings.setValue("hideToSystemTray", hideToSystemTray);
+    settings.setValue("hideDoneTasks", ui->checkBox_hideDone->isChecked());
+    settings.setValue("showMaxDueDate", ui->spinBox_dueWithinDays->value());
     settings.endGroup();
 }
 
