@@ -41,12 +41,13 @@ MainWindow::MainWindow(QWidget *parent) :
     timer_reminder(0),
     saveNeeded(false),
     startVisible(true),
-    hideToSystemTray(false)
+    hideToSystemTray(false),
+    remindersEnabled(true)
 {
     ui->setupUi(this);
 
     // disable close icon on window
-    setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
+    setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint & ~Qt::WindowMinimizeButtonHint);
 
     readSettings();
 
@@ -532,6 +533,13 @@ void MainWindow::initSystray()
     connect(actHideToSysTray, SIGNAL(triggered(bool)), this, SLOT(setHideToSystemTray(bool)));
     trayIconMenu->addAction(actHideToSysTray);
 
+    QAction *actEnableReminders = new QAction(this);
+    actEnableReminders->setText(tr("Enable reminders"));
+    actEnableReminders->setCheckable(true);
+    actEnableReminders->setChecked(remindersEnabled);
+    connect(actEnableReminders, SIGNAL(triggered(bool)), this, SLOT(enableReminders(bool)));
+    trayIconMenu->addAction(actEnableReminders);
+
     connect(sti, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sysTrayIconClicked(QSystemTrayIcon::ActivationReason)));
 
     sti->setContextMenu(trayIconMenu);
@@ -594,6 +602,7 @@ void MainWindow::readSettings()
     hideToSystemTray = settings.value("hideToSystemTray").toBool();
     ui->checkBox_hideDone->setChecked(settings.value("hideDoneTasks").toBool());
     ui->spinBox_dueWithinDays->setValue(settings.value("showMaxDueDate").toInt());
+    remindersEnabled = settings.value("enableReminders").toBool();
     settings.endGroup();
 }
 
@@ -606,6 +615,7 @@ void MainWindow::writeSettings()
     settings.setValue("hideToSystemTray", hideToSystemTray);
     settings.setValue("hideDoneTasks", ui->checkBox_hideDone->isChecked());
     settings.setValue("showMaxDueDate", ui->spinBox_dueWithinDays->value());
+    settings.setValue("enableReminders", remindersEnabled);
     settings.endGroup();
 }
 
@@ -791,8 +801,18 @@ void MainWindow::center()
 
 void MainWindow::showReminder()
 {
+    if(!remindersEnabled)
+    {
+        return;
+    }
+
     if(reminderWidget->numOfDueTasks())
     {
         reminderWidget->show();
     }
+}
+
+void MainWindow::enableReminders(bool setReminderEnabled)
+{
+    remindersEnabled = setReminderEnabled;
 }

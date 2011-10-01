@@ -80,6 +80,7 @@ private:
     bool saveNeeded;
     bool startVisible;
     bool hideToSystemTray;
+    bool remindersEnabled;
 
 public slots:
     void saveXML(const QString &fileName = QString());
@@ -113,6 +114,7 @@ private slots:
     void on_actionPurge_triggered();
     void taskRowClicked(QModelIndex);
     void showReminder();
+    void enableReminders(bool);
 };
 
 #endif // MAINWINDOW_H
