@@ -6,6 +6,7 @@
 class TaskTableModel;
 class ReminderFilterProxyModel;
 class TaskTableColorDoneDelegate;
+class MainWindow;
 
 class QTimer;
 
@@ -18,7 +19,7 @@ class Reminder : public QWidget
     Q_OBJECT
 
 public:
-    Reminder(TaskTableModel *model, QWidget *parent = 0);
+    Reminder(TaskTableModel *model, MainWindow *mw, QWidget *parent = 0);
     ~Reminder();
 
     qint32 numOfDueTasks() const;
@@ -34,6 +35,11 @@ private:
     TaskTableColorDoneDelegate *doneDelegate;
 
     QTimer *timer_invalidate;
+
+    MainWindow *mainWin;
+
+public slots:
+    void setCheckboxState(bool shouldNotBeChecked);
 };
 
 #endif // REMINDER_H

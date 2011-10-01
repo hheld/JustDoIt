@@ -6,8 +6,9 @@
 #include "TaskTableModel.h"
 #include "ReminderFilterProxyModel.h"
 #include "TaskTableColorDoneDelegate.h"
+#include "MainWindow.h"
 
-Reminder::Reminder(TaskTableModel *model, QWidget *parent) :
+Reminder::Reminder(TaskTableModel *model, MainWindow *mw, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Reminder),
     model(model),
@@ -16,6 +17,8 @@ Reminder::Reminder(TaskTableModel *model, QWidget *parent) :
     timer_invalidate(0)
 {
     ui->setupUi(this);
+
+    mainWin = mw;
 
     proxyModel = new ReminderFilterProxyModel(this);
     proxyModel->setSourceModel(model);
@@ -28,6 +31,8 @@ Reminder::Reminder(TaskTableModel *model, QWidget *parent) :
     ui->tableView->resizeColumnsToContents();
 
     connect(proxyModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), ui->tableView, SLOT(doItemsLayout()));
+
+    connect(ui->checkBox_noMoreReminders, SIGNAL(clicked(bool)), mainWin, SLOT(disableReminders(bool)));
 
     // invalidate the filter every minute to get accurate reminders
     timer_invalidate = new QTimer(this);
@@ -58,4 +63,9 @@ void Reminder::changeEvent(QEvent *e)
 qint32 Reminder::numOfDueTasks() const
 {
     return proxyModel->rowCount();
+}
+
+void Reminder::setCheckboxState(bool shouldNotBeChecked)
+{
+    ui->checkBox_noMoreReminders->setChecked(!shouldNotBeChecked);
 }

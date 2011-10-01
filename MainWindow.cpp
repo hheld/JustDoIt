@@ -46,6 +46,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    actStartVisibility = 0;
+    actHideToSysTray = 0;
+    actEnableReminders = 0;
+
     // disable close icon on window
     setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint & ~Qt::WindowMinimizeButtonHint);
 
@@ -126,6 +130,9 @@ MainWindow::~MainWindow()
     delete timer_autoSave; timer_autoSave = 0;
     delete reminderWidget; reminderWidget = 0;
     delete timer_reminder; timer_reminder = 0;
+    delete actStartVisibility; actStartVisibility = 0;
+    delete actHideToSysTray; actHideToSysTray = 0;
+    delete actEnableReminders; actEnableReminders = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -186,8 +193,10 @@ void MainWindow::setUsrData(UserData *uData)
 
     updateStatusMesg();
 
-    reminderWidget = new Reminder(model_tasks, 0);
+    reminderWidget = new Reminder(model_tasks, this, 0);
     reminderWidget->setAttribute(Qt::WA_QuitOnClose, false);
+    connect(actEnableReminders, SIGNAL(triggered(bool)), reminderWidget, SLOT(setCheckboxState(bool)));
+    reminderWidget->setCheckboxState(actEnableReminders->isChecked());
 
     timer_reminder = new QTimer(this);
     connect(timer_reminder, SIGNAL(timeout()), this, SLOT(showReminder()));
@@ -519,21 +528,21 @@ void MainWindow::initSystray()
 
     trayIconMenu->addSeparator();
 
-    QAction *actStartVisibility = new QAction(this);
+    actStartVisibility = new QAction(this);
     actStartVisibility->setText(tr("Start visible"));
     actStartVisibility->setCheckable(true);
     actStartVisibility->setChecked(startVisible);
     connect(actStartVisibility, SIGNAL(triggered(bool)), this, SLOT(setStartVisible(bool)));
     trayIconMenu->addAction(actStartVisibility);
 
-    QAction *actHideToSysTray = new QAction(this);
+    actHideToSysTray = new QAction(this);
     actHideToSysTray->setText(tr("Hide to system tray"));
     actHideToSysTray->setCheckable(true);
     actHideToSysTray->setChecked(hideToSystemTray);
     connect(actHideToSysTray, SIGNAL(triggered(bool)), this, SLOT(setHideToSystemTray(bool)));
     trayIconMenu->addAction(actHideToSysTray);
 
-    QAction *actEnableReminders = new QAction(this);
+    actEnableReminders = new QAction(this);
     actEnableReminders->setText(tr("Enable reminders"));
     actEnableReminders->setCheckable(true);
     actEnableReminders->setChecked(remindersEnabled);
@@ -815,4 +824,11 @@ void MainWindow::showReminder()
 void MainWindow::enableReminders(bool setReminderEnabled)
 {
     remindersEnabled = setReminderEnabled;
+}
+
+void MainWindow::disableReminders(bool setReminderDisabled)
+{
+    remindersEnabled = !setReminderDisabled;
+
+    actEnableReminders->setChecked(remindersEnabled);
 }

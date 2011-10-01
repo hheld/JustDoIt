@@ -60,6 +60,10 @@ private:
     QSystemTrayIcon *sti;
     QMenu *trayIconMenu;
 
+    QAction *actStartVisibility;
+    QAction *actHideToSysTray;
+    QAction *actEnableReminders;
+
     QString saveFileName;
 
     QTimer *timer_autoSave;
@@ -88,6 +92,8 @@ public slots:
     void toggleVisibility();
     void updateDefaultDueDateTime();
     void deselectAllRows();
+    void enableReminders(bool);
+    void disableReminders(bool);
 
 private slots:
     void saveData();
@@ -114,7 +120,6 @@ private slots:
     void on_actionPurge_triggered();
     void taskRowClicked(QModelIndex);
     void showReminder();
-    void enableReminders(bool);
 };
 
 #endif // MAINWINDOW_H
