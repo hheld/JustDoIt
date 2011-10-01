@@ -198,6 +198,7 @@ void MainWindow::setUsrData(UserData *uData)
 
     // make sure that the saved max. due date setting is applied
     sortFilterTasksProxy->setNumOfDaysAhead(ui->spinBox_dueWithinDays->value());
+    sortFilterTasksProxy->hideDoneTasks(ui->checkBox_hideDone->isChecked());
 }
 
 void MainWindow::saveXML(const QString &fileName)
