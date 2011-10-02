@@ -139,6 +139,7 @@ private slots:
     void on_actionPurge_triggered();
     void taskRowClicked(QModelIndex);
     void showReminder();
+    void showAboutMsg();
 };
 
 #endif // MAINWINDOW_H
