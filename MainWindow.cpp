@@ -60,13 +60,11 @@ MainWindow::MainWindow(QWidget *parent) :
     timer_reminder(0),
     saveNeeded(false),
     startVisible(true),
-    hideToSystemTray(false),
     remindersEnabled(true)
 {
     ui->setupUi(this);
 
     actStartVisibility = 0;
-    actHideToSysTray = 0;
     actEnableReminders = 0;
 
     // disable close icon on window
@@ -153,7 +151,6 @@ MainWindow::~MainWindow()
     delete reminderWidget; reminderWidget = 0;
     delete timer_reminder; timer_reminder = 0;
     delete actStartVisibility; actStartVisibility = 0;
-    delete actHideToSysTray; actHideToSysTray = 0;
     delete actEnableReminders; actEnableReminders = 0;
 }
 
@@ -557,13 +554,6 @@ void MainWindow::initSystray()
     connect(actStartVisibility, SIGNAL(triggered(bool)), this, SLOT(setStartVisible(bool)));
     trayIconMenu->addAction(actStartVisibility);
 
-    actHideToSysTray = new QAction(this);
-    actHideToSysTray->setText(tr("Hide to system tray"));
-    actHideToSysTray->setCheckable(true);
-    actHideToSysTray->setChecked(hideToSystemTray);
-    connect(actHideToSysTray, SIGNAL(triggered(bool)), this, SLOT(setHideToSystemTray(bool)));
-    trayIconMenu->addAction(actHideToSysTray);
-
     actEnableReminders = new QAction(this);
     actEnableReminders->setText(tr("Enable reminders"));
     actEnableReminders->setCheckable(true);
@@ -630,7 +620,6 @@ void MainWindow::readSettings()
 
     settings.beginGroup("MainWindow");
     startVisible = settings.value("isVisibleOnStart").toBool();
-    hideToSystemTray = settings.value("hideToSystemTray").toBool();
     ui->checkBox_hideDone->setChecked(settings.value("hideDoneTasks").toBool());
     ui->spinBox_dueWithinDays->setValue(settings.value("showMaxDueDate").toInt());
     remindersEnabled = settings.value("enableReminders").toBool();
@@ -643,7 +632,6 @@ void MainWindow::writeSettings()
 
     settings.beginGroup("MainWindow");
     settings.setValue("isVisibleOnStart", startVisible);
-    settings.setValue("hideToSystemTray", hideToSystemTray);
     settings.setValue("hideDoneTasks", ui->checkBox_hideDone->isChecked());
     settings.setValue("showMaxDueDate", ui->spinBox_dueWithinDays->value());
     settings.setValue("enableReminders", remindersEnabled);
@@ -660,15 +648,8 @@ void MainWindow::hideEvent(QHideEvent *event)
 {
     lastGeometry = geometry();
 
-    if(hideToSystemTray)
-    {
-        setVisible(false);
-        event->accept();
-    }
-    else
-    {
-        event->ignore();
-    }
+    setVisible(false);
+    event->accept();
 }
 
 void MainWindow::showEvent(QShowEvent *event)
@@ -676,13 +657,6 @@ void MainWindow::showEvent(QShowEvent *event)
     move(lastGeometry.x(), lastGeometry.y());
     setGeometry(lastGeometry);
     event->accept();
-}
-
-void MainWindow::setHideToSystemTray(bool hideToSysTray)
-{
-    hideToSystemTray = hideToSysTray;
-
-    writeSettings();
 }
 
 void MainWindow::sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason)

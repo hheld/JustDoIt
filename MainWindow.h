@@ -102,7 +102,6 @@ private:
 
     bool saveNeeded;
     bool startVisible;
-    bool hideToSystemTray;
     bool remindersEnabled;
 
 public slots:
@@ -133,7 +132,6 @@ private slots:
     void trayIcon_addTask_clicked();
     void trayIcon_manageTasks_clicked();
     void setStartVisible(bool visibleOnStart);
-    void setHideToSystemTray(bool hideToSysTray);
     void sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason);
     void on_actionQuit_triggered();
     void on_actionPurge_triggered();
