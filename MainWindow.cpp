@@ -119,6 +119,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->actionPurge->setIcon(style()->standardIcon(QStyle::SP_TrashIcon));
 
+    ui->actionAbout_JustDoIt->setIcon(style()->standardIcon(QStyle::SP_DialogHelpButton));
+    connect(ui->actionAbout_JustDoIt, SIGNAL(triggered()), this, SLOT(showAboutMsg()));
+
     // center on screen
     center();
 
@@ -850,4 +853,12 @@ void MainWindow::disableReminders(bool setReminderDisabled)
     remindersEnabled = !setReminderDisabled;
 
     actEnableReminders->setChecked(remindersEnabled);
+}
+
+void MainWindow::showAboutMsg()
+{
+    QString msg = tr("<p>Very minimalistic ToDo manager with simple reminder functionality.</p>")
+                  + "Copyright &copy; 2011\tHarald Held (harald.held@gmail.com)";
+
+    QMessageBox::about(this, "JustDoIt !!!", msg);
 }
