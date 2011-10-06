@@ -115,6 +115,7 @@ void TaskXmlReader::readTask()
     QDateTime dueDate;
     QString title;
     QString description;
+    qint32 recurrence = 0;
 
     while(xmlReader->readNextStartElement())
     {
@@ -138,6 +139,10 @@ void TaskXmlReader::readTask()
         {
             description = xmlReader->readElementText();
         }
+        else if(xmlReader->name() == "recurrence")
+        {
+            recurrence = xmlReader->readElementText().toInt();
+        }
         else
         {
             xmlReader->skipCurrentElement();
@@ -155,6 +160,7 @@ void TaskXmlReader::readTask()
     newTask->dueDate(dueDate);
     newTask->title(title);
     newTask->description(description);
+    newTask->recurrenceIntervalInMinutes(recurrence);
 
     userData->addTask(newTask);
 }
