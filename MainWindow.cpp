@@ -535,7 +535,25 @@ void MainWindow::on_button_clear_clicked()
 
 void MainWindow::updateDefaultDueDateTime()
 {
-    ui->dateTimeEdit_quickDueDate->setDateTime(QDateTime::currentDateTime());
+    // make sure that there are always 'round' values, use multiples of 30 minutes
+    QDateTime defaultDueDateTime(QDateTime::currentDateTime());
+
+    int h = defaultDueDateTime.time().hour();
+    int m = defaultDueDateTime.time().minute();
+
+    if(m<=30)
+    {
+        m = 30;
+    }
+    else
+    {
+        m = 0;
+        h = (h+1) % 24;
+    }
+
+    defaultDueDateTime.setTime(QTime(h, m));
+
+    ui->dateTimeEdit_quickDueDate->setDateTime(defaultDueDateTime);
 }
 
 void MainWindow::initSystray()
