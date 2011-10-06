@@ -271,8 +271,6 @@ void MainWindow::locationData_changed()
 
 void MainWindow::taskData_changed(QModelIndex index)
 {
-    Q_UNUSED(index);
-
     saveNeeded = true;
 
     ui->actionSave->setEnabled(true);
@@ -286,6 +284,15 @@ void MainWindow::taskData_changed(QModelIndex index)
     if(currentlySelectedRow != -1)
     {
         taskRowClicked(ui->table_tasks->currentIndex());
+    }
+
+    // check if a task was marked done; if so handle its possible recurring consequences
+    if(index.column() == 3)
+    {
+        if(index.model()->data(index, Qt::CheckStateRole).toBool())
+        {
+            handleRecurringTasks(index.row());
+        }
     }
 }
 
@@ -853,4 +860,44 @@ void MainWindow::showAboutMsg()
                   + "Copyright &copy; 2011\tHarald Held (harald.held@gmail.com)";
 
     QMessageBox::about(this, "JustDoIt !!!", msg);
+}
+
+void MainWindow::handleRecurringTasks(const int &position)
+{
+    QVector<Task*> &allTasks = const_cast<QVector<Task*>&>(model_tasks->getTasks());
+
+    // check if it is a recurring task
+    int recurrence = allTasks.at(position)->recurrenceIntervalInMinutes();
+
+    if(recurrence > 0)
+    {
+        // it is recurrent, so let's create the next one
+        Task *oldTask = allTasks[position];
+
+        int row = model_tasks->rowCount();
+        model_tasks->insertRows(row, 1);
+
+        Task *newTask = allTasks[row];
+
+        newTask->title(oldTask->title());
+        newTask->description(oldTask->description());
+        newTask->category(oldTask->category());
+        newTask->location(oldTask->location());
+        newTask->startDate(QDateTime::currentDateTime());
+        newTask->recurrenceIntervalInMinutes(oldTask->recurrenceIntervalInMinutes());
+
+        // we assume that we want the recurrence to start from the actual previous finish time, not from the first due date
+        /// \todo this should be optional
+        QDateTime newDueDate = oldTask->endDate();
+        QDateTime current = QDateTime::currentDateTime();
+
+        while(newDueDate <= current)
+        {
+            newDueDate = newDueDate.addSecs(oldTask->recurrenceIntervalInMinutes() * 60);
+        }
+
+        newTask->dueDate(newDueDate);
+
+        ui->table_tasks->horizontalHeader()->doItemsLayout();
+    }
 }

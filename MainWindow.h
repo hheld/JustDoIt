@@ -99,6 +99,7 @@ private:
     void writeSettings();
     void purgeAllDoneTasks();
     void center();
+    void handleRecurringTasks(const int &position);
 
     bool saveNeeded;
     bool startVisible;
