@@ -780,18 +780,18 @@ void MainWindow::taskRowClicked(QModelIndex index)
 
     if(done)
     {
-        QModelIndex index_finishDate = model_tasks->index(row, 5);
+        QModelIndex index_finishDate = sortFilterTasksProxy->index(row, 4);
 
-        QDateTime finishDate = model_tasks->data(index_finishDate, Qt::DisplayRole).toDateTime();
+        QDateTime finishDate = sortFilterTasksProxy->data(index_finishDate, Qt::DisplayRole).toDateTime();
 
         ui->dateTimeEdit_duedateDisplay->setDateTime(finishDate);
         ui->label_dueDateDisplay->setText(tr("Finished on"));
     }
     else
     {
-        QModelIndex index_dueDate = model_tasks->index(row, 6);
+        QModelIndex index_dueDate = sortFilterTasksProxy->index(row, 5);
 
-        QDateTime dueDate = model_tasks->data(index_dueDate, Qt::DisplayRole).toDateTime();
+        QDateTime dueDate = sortFilterTasksProxy->data(index_dueDate, Qt::DisplayRole).toDateTime();
 
         ui->dateTimeEdit_duedateDisplay->setDateTime(dueDate);
         ui->label_dueDateDisplay->setText(tr("Due on"));
