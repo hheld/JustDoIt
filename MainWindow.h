@@ -35,6 +35,7 @@ class TaskSortFilterProxyModel;
 class TaskTableDateTimeDelegate;
 class TaskTableLineEditDelegate;
 class TaskTableTextEditDelegate;
+class TaskTableRecurrenceDelegate;
 class Reminder;
 
 namespace Ui {
@@ -75,6 +76,7 @@ private:
     TaskTableDateTimeDelegate *dueDate_delegate;
     TaskTableLineEditDelegate *titleDelegate;
     TaskTableTextEditDelegate *descriptionDelegate;
+    TaskTableRecurrenceDelegate *recurrenceDelegate;
 
     QSystemTrayIcon *sti;
     QMenu *trayIconMenu;
