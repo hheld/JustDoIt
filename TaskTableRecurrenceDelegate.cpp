@@ -67,12 +67,43 @@ void TaskTableRecurrenceDelegate::paint(QPainter *painter, const QStyleOptionVie
 {
     int minutes = index.model()->data(index).toInt();
 
+    QPen myPen(QColor(100, 50, 20));
+
+    QFont myFont = option.font;
+    myFont.setPointSizeF(0.75*myFont.pointSizeF());
+
+    painter->setPen(myPen);
+    painter->setFont(myFont);
+
     if(minutes == 0)
     {
-        painter->drawText(option.rect, tr("Not recurring"));
+        QString text = tr("Not recurring");
+
+        painter->drawText(option.rect, Qt::AlignLeft | Qt::AlignVCenter, text);
     }
     else
     {
-        painter->drawText(option.rect, "BLA");
+        int h = minutes / 60;
+        int d = h / 24;
+
+        int leftHours = (minutes - d*24*60) / 60;
+        int leftMinutes = minutes - leftHours*60 - d*24*60;
+
+        QString text;
+
+        if(d > 0)
+        {
+            text = tr("%1 days %2 hours %3 minutes").arg(QString::number(d)).arg(QString::number(leftHours)).arg(QString::number(leftMinutes));
+        }
+        else if(leftHours > 0)
+        {
+            text = tr("%1 hours %2 minutes").arg(QString::number(leftHours)).arg(QString::number(leftMinutes));
+        }
+        else
+        {
+            text = tr("%1 minutes").arg(QString::number(leftMinutes));
+        }
+
+        painter->drawText(option.rect, Qt::AlignLeft | Qt::AlignVCenter, text);
     }
 }
