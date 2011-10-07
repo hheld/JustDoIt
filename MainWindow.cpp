@@ -898,6 +898,9 @@ void MainWindow::handleRecurringTasks(const int &position)
 
         newTask->dueDate(newDueDate);
 
+        // we need to reset the old tasks's recurrence interval, otherwise - if we for some reason mark it unfinished and then again finished - we would re-create the same recurrent task over and over again
+        oldTask->recurrenceIntervalInMinutes(0);
+
         ui->table_tasks->horizontalHeader()->doItemsLayout();
     }
 }
