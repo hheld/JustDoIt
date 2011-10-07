@@ -527,12 +527,20 @@ void MainWindow::on_button_add_clicked()
     QModelIndex indexTitle = model_tasks->index(row, 7);
     QModelIndex indexDescription = model_tasks->index(row, 8);
     QModelIndex indexDueDate = model_tasks->index(row, 6);
+    QModelIndex indexRecurrence = model_tasks->index(row, 9);
+
+    int recurInterval = 0;
+    recurInterval += ui->spinBox_quickRecurrenceYears->value() * 365 * 24 * 60;
+    recurInterval += ui->spinBox_quickRecurrenceDays->value() * 24 * 60;
+    recurInterval += ui->spinBox_quickRecurrenceHours->value() * 60;
+    recurInterval += ui->spinBox_quickRecurrenceMinutes->value();
 
     model_tasks->setData(indexLocation, ui->comboBox_quickLocation->currentText());
     model_tasks->setData(indexCategory, ui->comboBox_quickCategory->currentText());
     model_tasks->setData(indexTitle, ui->lineEdit_quickTitle->text());
     model_tasks->setData(indexDescription, ui->plainTextEdit_quickDescription->document()->toPlainText());
     model_tasks->setData(indexDueDate, ui->dateTimeEdit_quickDueDate->dateTime());
+    model_tasks->setData(indexRecurrence, recurInterval);
 
     on_button_clear_clicked();
 }
@@ -544,6 +552,10 @@ void MainWindow::on_button_clear_clicked()
     ui->comboBox_quickLocation->setCurrentIndex(-1);
     ui->comboBox_quickCategory->setCurrentIndex(-1);
     ui->lineEdit_quickTitle->setFocus();
+    ui->spinBox_quickRecurrenceDays->setValue(0);
+    ui->spinBox_quickRecurrenceHours->setValue(0);
+    ui->spinBox_quickRecurrenceMinutes->setValue(0);
+    ui->spinBox_quickRecurrenceYears->setValue(0);
 }
 
 void MainWindow::updateDefaultDueDateTime()
@@ -901,9 +913,7 @@ void MainWindow::handleRecurringTasks(const int &position)
         sortFilterTasksProxy->setData(index_startDate, QDateTime::currentDateTime());
         sortFilterTasksProxy->setData(index_recurrent, oldTask->recurrenceIntervalInMinutes());
 
-        // we assume that we want the recurrence to start from the actual previous finish time, not from the first due date
-        /// \todo this should be optional
-        QDateTime newDueDate = oldTask->endDate();
+        QDateTime newDueDate = oldTask->dueDate();
         QDateTime current = QDateTime::currentDateTime();
 
         while(newDueDate <= current)

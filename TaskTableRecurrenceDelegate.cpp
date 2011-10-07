@@ -34,6 +34,7 @@ QWidget * TaskTableRecurrenceDelegate::createEditor(QWidget *parent, const QStyl
     Q_UNUSED(index);
 
     QLineEdit *editor = new QLineEdit(parent);
+    editor->setInputMask(tr("999 \\D\\ays 99 \\Hours 99 Mi\\nutes"));
 
     return editor;
 }
@@ -41,6 +42,14 @@ QWidget * TaskTableRecurrenceDelegate::createEditor(QWidget *parent, const QStyl
 void TaskTableRecurrenceDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     QString currentModelText = index.model()->data(index).toString();
+
+    int totalMinutes = currentModelText.toInt();
+
+    int days = totalMinutes / (24*60);
+    int hours = (totalMinutes - days * 24 * 60) / 60;
+    int minutes = totalMinutes - days * 24 * 60 - hours * 60;
+
+    currentModelText = QString("%1%2%3").arg(days, 3, 'f', 0, '0').arg(hours, 2, 'f', 0, '0').arg(minutes, 2, 'f', 0, '0');
 
     QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
 
@@ -51,9 +60,13 @@ void TaskTableRecurrenceDelegate::setModelData(QWidget *editor, QAbstractItemMod
 {
     QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
 
-    QString currentTextLineEdit = lineEdit->text();
+    QString currentTextLineEdit = lineEdit->text().replace(" Days ", "").replace(" Hours ", "").replace(" Minutes ", "");
 
-    model->setData(index, currentTextLineEdit);
+    int days = currentTextLineEdit.mid(0, 3).toInt();
+    int hours = currentTextLineEdit.mid(3, 2).toInt();
+    int minutes = currentTextLineEdit.mid(5, 2).toInt();
+
+    model->setData(index, days*24*60 + hours*60 + minutes);
 }
 
 void TaskTableRecurrenceDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
