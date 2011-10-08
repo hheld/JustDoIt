@@ -211,6 +211,7 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setItemDelegateForColumn(8, recurrenceDelegate);
 
     connect(ui->table_tasks, SIGNAL(clicked(QModelIndex)), this, SLOT(taskRowClicked(QModelIndex)));
+    connect(ui->table_tasks, SIGNAL(selectionHasChanged(QModelIndex)), this, SLOT(taskRowClicked(QModelIndex)));
 
     permuteColumns();
 
@@ -383,10 +384,10 @@ void MainWindow::on_button_addTask_clicked()
 
     model_tasks->insertRows(row, 1);
 
-    QModelIndex index = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 7));
+    QModelIndex indexTitle = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 7));
 
-    ui->table_tasks->setCurrentIndex(index);
-    ui->table_tasks->edit(index);
+    ui->table_tasks->setCurrentIndex(indexTitle);
+    ui->table_tasks->edit(indexTitle);
 }
 
 void MainWindow::on_button_deleteTask_clicked()
@@ -891,6 +892,12 @@ void MainWindow::handleRecurringTasks(const int &position)
     {
         // it is recurrent, so let's create the next one
         Task *oldTask = allTasks[position];
+
+        // if there is no due date, we can't do anything here
+        if(oldTask->dueDate().isNull() || !oldTask->dueDate().isValid())
+        {
+            return;
+        }
 
         int row = model_tasks->rowCount();
         model_tasks->insertRows(row, 1);

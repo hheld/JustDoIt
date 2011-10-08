@@ -361,6 +361,9 @@ QHeaderView::section
      border: 1px solid #6c6c6c;
  }*/</string>
                 </property>
+                <property name="editTriggers">
+                 <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+                </property>
                 <property name="alternatingRowColors">
                  <bool>true</bool>
                 </property>

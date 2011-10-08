@@ -71,3 +71,13 @@ void TaskTableView::mousePressEvent(QMouseEvent *event)
 
     QTableView::mousePressEvent(event);
 }
+
+void TaskTableView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    QTableView::selectionChanged(selected, deselected);
+
+    if(selected.count())
+    {
+        emit selectionHasChanged(selected.indexes().at(0));
+    }
+}

@@ -30,9 +30,11 @@ public:
 
     bool viewportEvent(QEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 signals:
     void clickedOutsideData();
+    void selectionHasChanged(const QModelIndex &index);
 };
 
 #endif // TASKTABLEVIEW_H
