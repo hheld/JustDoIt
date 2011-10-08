@@ -18,10 +18,10 @@
     <normaloff>:/icons/res/app.svg</normaloff>:/icons/res/app.svg</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow
+   <string notr="true">/*QMainWindow
 {
 	background-color: rgb(221, 226, 239);
-}</string>
+}*/</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
@@ -33,7 +33,7 @@
          <bool>false</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">QTabBar::tab
+         <string notr="true">/*QTabBar::tab
 {
   background: transparent;
   color: black;
@@ -44,7 +44,7 @@
 {
 	background-color: rgb(59, 63, 84);
 	color: white;
-}</string>
+}*/</string>
         </property>
         <property name="tabPosition">
          <enum>QTabWidget::North</enum>
@@ -53,7 +53,7 @@
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <property name="documentMode">
          <bool>true</bool>
@@ -342,7 +342,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">TaskTableView
+                 <string notr="true">/*TaskTableView
 {
 	background-color: qlineargradient(spread:pad, x1:0.51, y1:0, x2:0.523333, y2:1, stop:0 rgba(203, 217, 247, 255), stop:1 rgba(255, 255, 255, 255));
 	
@@ -359,7 +359,7 @@ QHeaderView::section
      padding-right: 4px;
      padding-bottom: 4px;
      border: 1px solid #6c6c6c;
- }</string>
+ }*/</string>
                 </property>
                 <property name="alternatingRowColors">
                  <bool>true</bool>
@@ -406,8 +406,8 @@ QHeaderView::section
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(59, 63, 84);
-color: rgb(255, 255, 255);</string>
+              <string notr="true">/*background-color: rgb(59, 63, 84);
+color: rgb(255, 255, 255);*/</string>
              </property>
              <property name="title">
               <string>Current Task</string>
