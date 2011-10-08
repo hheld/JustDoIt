@@ -50,7 +50,7 @@ int TaskTableModel::rowCount(const QModelIndex &parent) const
 int TaskTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return 9;
+    return 10;
 }
 
 QVariant TaskTableModel::data(const QModelIndex &index, int role) const
@@ -82,6 +82,7 @@ QVariant TaskTableModel::data(const QModelIndex &index, int role) const
         else if (index.column() == 6) return task->dueDate();
         else if (index.column() == 7) return task->title();
         else if (index.column() == 8) return task->description();
+        else if (index.column() == 9) return task->recurrenceIntervalInMinutes();
     }
 
     return QVariant();
@@ -122,6 +123,9 @@ QVariant TaskTableModel::headerData(int section, Qt::Orientation orientation, in
 
         case 8:
             return tr("Description");
+
+        case 9:
+            return tr("Recurrence");
 
         default:
             return QVariant();
@@ -186,6 +190,7 @@ bool TaskTableModel::setData(const QModelIndex &index, const QVariant &value, in
         else if (index.column() == 6) currentTask->dueDate(value.toDateTime());
         else if (index.column() == 7) currentTask->title(value.toString());
         else if (index.column() == 8) currentTask->description(value.toString());
+        else if (index.column() == 9) currentTask->recurrenceIntervalInMinutes(value.toInt());
         else return false;
 
         emit(dataChanged(index, index));

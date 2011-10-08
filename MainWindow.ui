@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
+    <width>1250</width>
     <height>680</height>
    </rect>
   </property>
@@ -53,14 +53,14 @@
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="documentMode">
          <bool>true</bool>
         </property>
         <widget class="QWidget" name="tab_quickEnter">
          <attribute name="title">
-          <string>Add thought</string>
+          <string>Add task</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0" colspan="3">
@@ -117,6 +117,9 @@
             <layout class="QGridLayout" name="gridLayout_8">
              <item row="0" column="0">
               <layout class="QFormLayout" name="formLayout">
+               <property name="fieldGrowthPolicy">
+                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+               </property>
                <item row="0" column="0">
                 <widget class="QLabel" name="label_4">
                  <property name="text">
@@ -159,6 +162,54 @@
                   <bool>true</bool>
                  </property>
                 </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Recurrence</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_17">
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_quickRecurrenceYears">
+                   <property name="suffix">
+                    <string> years</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_quickRecurrenceDays">
+                   <property name="suffix">
+                    <string> days</string>
+                   </property>
+                   <property name="maximum">
+                    <number>364</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_quickRecurrenceHours">
+                   <property name="suffix">
+                    <string> hours</string>
+                   </property>
+                   <property name="maximum">
+                    <number>23</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_quickRecurrenceMinutes">
+                   <property name="suffix">
+                    <string> minutes</string>
+                   </property>
+                   <property name="maximum">
+                    <number>59</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
               </layout>
              </item>
@@ -981,7 +1032,7 @@ padding: 2px 4px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1100</width>
+     <width>1250</width>
      <height>25</height>
     </rect>
    </property>

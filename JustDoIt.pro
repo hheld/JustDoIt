@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     TaskTableLineEditDelegate.cpp \
     TaskTableTextEditDelegate.cpp \
     Reminder.cpp \
-    ReminderFilterProxyModel.cpp
+    ReminderFilterProxyModel.cpp \
+    TaskTableRecurrenceDelegate.cpp
 
 HEADERS  += MainWindow.h \
     TaskXmlWriter.h \
@@ -46,7 +47,8 @@ HEADERS  += MainWindow.h \
     TaskTableLineEditDelegate.h \
     TaskTableTextEditDelegate.h \
     Reminder.h \
-    ReminderFilterProxyModel.h
+    ReminderFilterProxyModel.h \
+    TaskTableRecurrenceDelegate.h
 
 FORMS    += MainWindow.ui \
     Reminder.ui
@@ -56,6 +58,8 @@ OTHER_FILES += \
 
 RESOURCES += \
     resources.qrc
+
+
 
 
 

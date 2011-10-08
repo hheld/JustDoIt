@@ -120,6 +120,7 @@ void TaskXmlWriter::writeDocument()
             xmlWriter->writeTextElement("dueDate", currentTask->dueDate().toString(Task::DateTimeFormat));
             xmlWriter->writeTextElement("title", currentTask->title());
             xmlWriter->writeTextElement("description", currentTask->description());
+            xmlWriter->writeTextElement("recurrence", QString::number(currentTask->recurrenceIntervalInMinutes()));
             xmlWriter->writeEndElement();
         }
 

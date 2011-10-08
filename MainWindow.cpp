@@ -32,6 +32,7 @@
 #include "TaskTableDateTimeDelegate.h"
 #include "TaskTableLineEditDelegate.h"
 #include "TaskTableTextEditDelegate.h"
+#include "TaskTableRecurrenceDelegate.h"
 
 #include <QStringListModel>
 #include <QDebug>
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dueDate_delegate(0),
     titleDelegate(0),
     descriptionDelegate(0),
+    recurrenceDelegate(0),
     sti(0),
     trayIconMenu(0),
     timer_autoSave(0),
@@ -108,6 +110,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     descriptionDelegate = new TaskTableTextEditDelegate(this);
 
+    recurrenceDelegate = new TaskTableRecurrenceDelegate(this);
+
     ui->comboBox_quickLocation->setModel(model_locations);
     ui->comboBox_quickCategory->setModel(model_categories);
 
@@ -145,6 +149,7 @@ MainWindow::~MainWindow()
     delete dueDate_delegate; dueDate_delegate = 0;
     delete titleDelegate; titleDelegate = 0;
     delete descriptionDelegate; descriptionDelegate = 0;
+    delete recurrenceDelegate; recurrenceDelegate = 0;
     delete sti; sti = 0;
     delete trayIconMenu; trayIconMenu = 0;
     delete timer_autoSave; timer_autoSave = 0;
@@ -177,7 +182,7 @@ void MainWindow::setUsrData(UserData *uData)
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), ui->table_tasks, SLOT(resizeColumnsToContents()));
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(taskData_changed(QModelIndex)));
     connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), ui->table_tasks->horizontalHeader(), SLOT(doItemsLayout()));
-    connect(model_tasks, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(updateStatusMesg()));
+    connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(updateStatusMesg()));
 
     sortFilterTasksProxy = new TaskSortFilterProxyModel(this);
     connect(ui->checkBox_hideDone, SIGNAL(toggled(bool)), sortFilterTasksProxy, SLOT(hideDoneTasks(bool)));
@@ -203,6 +208,7 @@ void MainWindow::setUsrData(UserData *uData)
     ui->table_tasks->setItemDelegateForColumn(5, dueDate_delegate);
     ui->table_tasks->setItemDelegateForColumn(6, titleDelegate);
     ui->table_tasks->setItemDelegateForColumn(7, descriptionDelegate);
+    ui->table_tasks->setItemDelegateForColumn(8, recurrenceDelegate);
 
     connect(ui->table_tasks, SIGNAL(clicked(QModelIndex)), this, SLOT(taskRowClicked(QModelIndex)));
 
@@ -271,8 +277,6 @@ void MainWindow::locationData_changed()
 
 void MainWindow::taskData_changed(QModelIndex index)
 {
-    Q_UNUSED(index);
-
     saveNeeded = true;
 
     ui->actionSave->setEnabled(true);
@@ -286,6 +290,15 @@ void MainWindow::taskData_changed(QModelIndex index)
     if(currentlySelectedRow != -1)
     {
         taskRowClicked(ui->table_tasks->currentIndex());
+    }
+
+    // check if a task was marked done; if so handle its possible recurring consequences
+    if(index.column() == 3)
+    {
+        if(index.model()->data(index, Qt::CheckStateRole).toBool())
+        {
+            handleRecurringTasks(index.row());
+        }
     }
 }
 
@@ -514,12 +527,20 @@ void MainWindow::on_button_add_clicked()
     QModelIndex indexTitle = model_tasks->index(row, 7);
     QModelIndex indexDescription = model_tasks->index(row, 8);
     QModelIndex indexDueDate = model_tasks->index(row, 6);
+    QModelIndex indexRecurrence = model_tasks->index(row, 9);
+
+    int recurInterval = 0;
+    recurInterval += ui->spinBox_quickRecurrenceYears->value() * 365 * 24 * 60;
+    recurInterval += ui->spinBox_quickRecurrenceDays->value() * 24 * 60;
+    recurInterval += ui->spinBox_quickRecurrenceHours->value() * 60;
+    recurInterval += ui->spinBox_quickRecurrenceMinutes->value();
 
     model_tasks->setData(indexLocation, ui->comboBox_quickLocation->currentText());
     model_tasks->setData(indexCategory, ui->comboBox_quickCategory->currentText());
     model_tasks->setData(indexTitle, ui->lineEdit_quickTitle->text());
     model_tasks->setData(indexDescription, ui->plainTextEdit_quickDescription->document()->toPlainText());
     model_tasks->setData(indexDueDate, ui->dateTimeEdit_quickDueDate->dateTime());
+    model_tasks->setData(indexRecurrence, recurInterval);
 
     on_button_clear_clicked();
 }
@@ -531,11 +552,33 @@ void MainWindow::on_button_clear_clicked()
     ui->comboBox_quickLocation->setCurrentIndex(-1);
     ui->comboBox_quickCategory->setCurrentIndex(-1);
     ui->lineEdit_quickTitle->setFocus();
+    ui->spinBox_quickRecurrenceDays->setValue(0);
+    ui->spinBox_quickRecurrenceHours->setValue(0);
+    ui->spinBox_quickRecurrenceMinutes->setValue(0);
+    ui->spinBox_quickRecurrenceYears->setValue(0);
 }
 
 void MainWindow::updateDefaultDueDateTime()
 {
-    ui->dateTimeEdit_quickDueDate->setDateTime(QDateTime::currentDateTime());
+    // make sure that there are always 'round' values, use multiples of 30 minutes
+    QDateTime defaultDueDateTime(QDateTime::currentDateTime());
+
+    int h = defaultDueDateTime.time().hour();
+    int m = defaultDueDateTime.time().minute();
+
+    if(m<=30)
+    {
+        m = 30;
+    }
+    else
+    {
+        m = 0;
+        h = (h+1) % 24;
+    }
+
+    defaultDueDateTime.setTime(QTime(h, m));
+
+    ui->dateTimeEdit_quickDueDate->setDateTime(defaultDueDateTime);
 }
 
 void MainWindow::initSystray()
@@ -835,4 +878,57 @@ void MainWindow::showAboutMsg()
                   + "Copyright &copy; 2011\tHarald Held (harald.held@gmail.com)";
 
     QMessageBox::about(this, "JustDoIt !!!", msg);
+}
+
+void MainWindow::handleRecurringTasks(const int &position)
+{
+    QVector<Task*> &allTasks = const_cast<QVector<Task*>&>(model_tasks->getTasks());
+
+    // check if it is a recurring task
+    int recurrence = allTasks.at(position)->recurrenceIntervalInMinutes();
+
+    if(recurrence > 0)
+    {
+        // it is recurrent, so let's create the next one
+        Task *oldTask = allTasks[position];
+
+        int row = model_tasks->rowCount();
+        model_tasks->insertRows(row, 1);
+
+        QModelIndex index_title = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 7));
+        QModelIndex index_description = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 8));
+        QModelIndex index_category = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 2));
+        QModelIndex index_location = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 1));
+        QModelIndex index_startDate = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 4));
+        QModelIndex index_recurrent = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 9));
+        QModelIndex index_dueDate = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 6));
+
+        // if the table is sorted immediately, our index might not belong to the row we think it does, so let's turn that off temporarily
+        sortFilterTasksProxy->setDynamicSortFilter(false);
+
+        sortFilterTasksProxy->setData(index_title, oldTask->title());
+        sortFilterTasksProxy->setData(index_description, oldTask->description());
+        sortFilterTasksProxy->setData(index_category, oldTask->category());
+        sortFilterTasksProxy->setData(index_location, oldTask->location());
+        sortFilterTasksProxy->setData(index_startDate, QDateTime::currentDateTime());
+        sortFilterTasksProxy->setData(index_recurrent, oldTask->recurrenceIntervalInMinutes());
+
+        QDateTime newDueDate = oldTask->dueDate();
+        QDateTime current = QDateTime::currentDateTime();
+
+        while(newDueDate <= current)
+        {
+            newDueDate = newDueDate.addSecs(oldTask->recurrenceIntervalInMinutes() * 60);
+        }
+
+        sortFilterTasksProxy->setData(index_dueDate, newDueDate);
+
+        // we need to reset the old tasks's recurrence interval, otherwise - if we for some reason mark it unfinished and then again finished - we would re-create the same recurrent task over and over again
+        QModelIndex index_oldRecurrent = sortFilterTasksProxy->mapFromSource(model_tasks->index(position, 9));
+        sortFilterTasksProxy->setData(index_oldRecurrent, 0);
+
+        // we're done setting up the new tasks, so we can turn on the immediate sorting again and also sort our new tasks correctly
+        sortFilterTasksProxy->setDynamicSortFilter(true);
+        sortFilterTasksProxy->sort(sortFilterTasksProxy->sortColumn());
+    }
 }

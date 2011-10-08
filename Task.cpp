@@ -38,6 +38,7 @@ struct TaskPrivate
     QString location;
     QString category;
     bool done;
+    qint32 recurrenceInterval;
     // -----------------------------------------------
 
     Task *q_ptr;
@@ -57,6 +58,7 @@ Task::Task()
     NumOfTasks++;
 
     d->startDate = QDateTime::currentDateTime();
+    d->recurrenceInterval = 0;
 }
 
 Task::~Task()
@@ -186,4 +188,18 @@ bool Task::operator ==(const Task &task) const
     qint32 rightId = task.id();
 
     return leftId == rightId;
+}
+
+const int & Task::recurrenceIntervalInMinutes() const
+{
+    Q_D(const Task);
+
+    return d->recurrenceInterval;
+}
+
+void Task::recurrenceIntervalInMinutes(const int &interval)
+{
+    Q_D(Task);
+
+    d->recurrenceInterval = interval;
 }

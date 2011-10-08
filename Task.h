@@ -58,6 +58,9 @@ public:
     const bool& done() const;
     void done(const bool &done);
 
+    const int& recurrenceIntervalInMinutes() const;
+    void recurrenceIntervalInMinutes(const int &interval);
+
     //-------------------------------------------------
 
     bool operator==(const Task &task) const;

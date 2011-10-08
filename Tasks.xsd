@@ -24,6 +24,8 @@
             <xsd:element name="dueDate" type="xsd:dateTime"></xsd:element>
             <xsd:element name="title" type="xsd:string"></xsd:element>
             <xsd:element name="description" type="xsd:string"></xsd:element>
+            <!-- This is the recurrence in minutes. If this is 0, the tasks is not considered recurring. -->
+            <xsd:element name="recurrence" type="xsd:int"></xsd:element>
         </xsd:sequence>
         <xsd:attribute ref="id"></xsd:attribute>
         <xsd:attribute ref="location"></xsd:attribute>
