@@ -39,7 +39,7 @@ void TaskTableColorDoneDelegate::paint(QPainter *painter, const QStyleOptionView
 
     bool isDone = allTasks[modelProxy->mapToSource(index).row()]->done();
 
-    QStyleOptionViewItem newOption(option);
+    QStyleOptionViewItemV4 newOption(option);
 
     if(isDone)
     {

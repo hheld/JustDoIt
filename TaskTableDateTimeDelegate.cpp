@@ -66,7 +66,7 @@ void TaskTableDateTimeDelegate::updateEditorGeometry(QWidget *editor, const QSty
 
 void TaskTableDateTimeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItem newOption(option);
+    QStyleOptionViewItemV4 newOption(option);
 
     newOption.palette.setColor(QPalette::Text, QColor(0, 0, 200));
 
