@@ -300,7 +300,7 @@
                   <item>
                    <widget class="QToolButton" name="button_deleteTask">
                     <property name="toolTip">
-                     <string>Delete the current task,</string>
+                     <string>Delete the current task.</string>
                     </property>
                     <property name="text">
                      <string/>
