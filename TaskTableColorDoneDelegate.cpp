@@ -38,10 +38,15 @@ void TaskTableColorDoneDelegate::paint(QPainter *painter, const QStyleOptionView
     const QVector<Task*> allTasks = model->getTasks();
 
     bool isDone = allTasks[modelProxy->mapToSource(index).row()]->done();
+    bool isUnprocessed = allTasks[modelProxy->mapToSource(index).row()]->unprocessed();
 
     QStyleOptionViewItemV4 newOption(option);
 
-    if(isDone)
+    if(isUnprocessed)
+    {
+        newOption.palette.setColor(QPalette::Text, QColor(100, 100, 0));
+    }
+    else if(isDone)
     {
         newOption.palette.setColor(QPalette::Text, QColor(0, 200, 0));
     }

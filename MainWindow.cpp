@@ -189,6 +189,9 @@ void MainWindow::setUsrData(UserData *uData)
     connect(ui->checkBox_hideDone, SIGNAL(toggled(bool)), ui->table_tasks, SLOT(resizeColumnsToContents()));
     connect(ui->checkBox_hideDone, SIGNAL(toggled(bool)), ui->table_tasks->horizontalHeader(), SLOT(doItemsLayout()));
     connect(ui->lineEdit_searchRegedit, SIGNAL(textEdited(QString)), sortFilterTasksProxy, SLOT(setFilterRegExp(QString)));
+    connect(ui->checkBox_showOnlyUnprocessed, SIGNAL(toggled(bool)), sortFilterTasksProxy, SLOT(showOnlyUnprocessedTasks(bool)));
+    connect(ui->checkBox_showOnlyUnprocessed, SIGNAL(toggled(bool)), ui->table_tasks, SLOT(resizeColumnsToContents()));
+    connect(ui->checkBox_showOnlyUnprocessed, SIGNAL(toggled(bool)), ui->table_tasks->horizontalHeader(), SLOT(doItemsLayout()));
 
     sortFilterTasksProxy->setSourceModel(model_tasks);
 
@@ -235,6 +238,9 @@ void MainWindow::setUsrData(UserData *uData)
     // make sure that the saved max. due date setting is applied
     sortFilterTasksProxy->setNumOfDaysAhead(ui->spinBox_dueWithinDays->value());
     sortFilterTasksProxy->hideDoneTasks(ui->checkBox_hideDone->isChecked());
+
+    // make sure that the showOnlyUnprocessed state is handled correctly at startup
+    sortFilterTasksProxy->showOnlyUnprocessedTasks(ui->checkBox_showOnlyUnprocessed->isChecked());
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -523,6 +529,9 @@ void MainWindow::on_button_add_clicked()
 
     model_tasks->insertRows(row, 1);
 
+    // if this button is used, it is assumed that the task is fully specified and therefore already fully processed
+    model_tasks->getTasks()[row]->unprocessed(false);
+
     QModelIndex indexLocation = model_tasks->index(row, 1);
     QModelIndex indexCategory = model_tasks->index(row, 2);
     QModelIndex indexTitle = model_tasks->index(row, 7);
@@ -665,6 +674,7 @@ void MainWindow::readSettings()
     settings.beginGroup("MainWindow");
     startVisible = settings.value("isVisibleOnStart").toBool();
     ui->checkBox_hideDone->setChecked(settings.value("hideDoneTasks").toBool());
+    ui->checkBox_showOnlyUnprocessed->setChecked(settings.value("showOnlyUnprocessedTasks").toBool());
     ui->spinBox_dueWithinDays->setValue(settings.value("showMaxDueDate").toInt());
     remindersEnabled = settings.value("enableReminders").toBool();
     settings.endGroup();
@@ -677,6 +687,7 @@ void MainWindow::writeSettings()
     settings.beginGroup("MainWindow");
     settings.setValue("isVisibleOnStart", startVisible);
     settings.setValue("hideDoneTasks", ui->checkBox_hideDone->isChecked());
+    settings.setValue("showOnlyUnprocessedTasks", ui->checkBox_showOnlyUnprocessed->isChecked());
     settings.setValue("showMaxDueDate", ui->spinBox_dueWithinDays->value());
     settings.setValue("enableReminders", remindersEnabled);
     settings.endGroup();
@@ -938,4 +949,35 @@ void MainWindow::handleRecurringTasks(const int &position)
         sortFilterTasksProxy->setDynamicSortFilter(true);
         sortFilterTasksProxy->sort(sortFilterTasksProxy->sortColumn());
     }
+}
+
+void MainWindow::on_pushButton_addAsThoughtOnly_clicked()
+{
+    int row = model_tasks->rowCount();
+
+    model_tasks->insertRows(row, 1);
+
+    // if this button is used, it is assumed that the task is not yet fully specified, therefore we leave the task's unprocessed flag at true, which it is by default
+
+    QModelIndex indexLocation = model_tasks->index(row, 1);
+    QModelIndex indexCategory = model_tasks->index(row, 2);
+    QModelIndex indexTitle = model_tasks->index(row, 7);
+    QModelIndex indexDescription = model_tasks->index(row, 8);
+    QModelIndex indexDueDate = model_tasks->index(row, 6);
+    QModelIndex indexRecurrence = model_tasks->index(row, 9);
+
+    int recurInterval = 0;
+    recurInterval += ui->spinBox_quickRecurrenceYears->value() * 365 * 24 * 60;
+    recurInterval += ui->spinBox_quickRecurrenceDays->value() * 24 * 60;
+    recurInterval += ui->spinBox_quickRecurrenceHours->value() * 60;
+    recurInterval += ui->spinBox_quickRecurrenceMinutes->value();
+
+    model_tasks->setData(indexLocation, ui->comboBox_quickLocation->currentText());
+    model_tasks->setData(indexCategory, ui->comboBox_quickCategory->currentText());
+    model_tasks->setData(indexTitle, ui->lineEdit_quickTitle->text());
+    model_tasks->setData(indexDescription, ui->plainTextEdit_quickDescription->document()->toPlainText());
+    model_tasks->setData(indexDueDate, ui->dateTimeEdit_quickDueDate->dateTime());
+    model_tasks->setData(indexRecurrence, recurInterval);
+
+    on_button_clear_clicked();
 }

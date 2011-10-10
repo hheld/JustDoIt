@@ -115,6 +115,7 @@ void TaskXmlWriter::writeDocument()
             xmlWriter->writeAttribute("id", QString::number(currentTask->id()));
             xmlWriter->writeAttribute("location", currentTask->location());
             xmlWriter->writeAttribute("category", currentTask->category());
+            xmlWriter->writeAttribute("unprocessed", currentTask->unprocessed() ? "true" : "false");
             xmlWriter->writeTextElement("startDate", currentTask->startDate().toString(Task::DateTimeFormat));
             xmlWriter->writeTextElement("endDate", currentTask->endDate().toString(Task::DateTimeFormat));
             xmlWriter->writeTextElement("dueDate", currentTask->dueDate().toString(Task::DateTimeFormat));

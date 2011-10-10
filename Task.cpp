@@ -39,6 +39,7 @@ struct TaskPrivate
     QString category;
     bool done;
     qint32 recurrenceInterval;
+    bool isUnprocessed;
     // -----------------------------------------------
 
     Task *q_ptr;
@@ -59,6 +60,7 @@ Task::Task()
 
     d->startDate = QDateTime::currentDateTime();
     d->recurrenceInterval = 0;
+    d->isUnprocessed = true;
 }
 
 Task::~Task()
@@ -202,4 +204,18 @@ void Task::recurrenceIntervalInMinutes(const int &interval)
     Q_D(Task);
 
     d->recurrenceInterval = interval;
+}
+
+const bool & Task::unprocessed() const
+{
+    Q_D(const Task);
+
+    return d->isUnprocessed;
+}
+
+void Task::unprocessed(const bool &isUnprocessed)
+{
+    Q_D(Task);
+
+    d->isUnprocessed = isUnprocessed;
 }

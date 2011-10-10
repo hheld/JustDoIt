@@ -61,6 +61,9 @@ public:
     const int& recurrenceIntervalInMinutes() const;
     void recurrenceIntervalInMinutes(const int &interval);
 
+    const bool& unprocessed() const;
+    void unprocessed(const bool &isUnprocessed);
+
     //-------------------------------------------------
 
     bool operator==(const Task &task) const;

@@ -54,6 +54,9 @@ bool ReminderFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
 
     accept = !model->getTasks().at(source_row)->done() && accept;
 
+    // don't show tasks that still need to be reviewed
+    accept = !model->getTasks().at(source_row)->unprocessed() && accept;
+
     QModelIndex index = sourceModel()->index(source_row, 6, source_parent);
 
     accept = accept && dateInRange(sourceModel()->data(index).toDateTime());

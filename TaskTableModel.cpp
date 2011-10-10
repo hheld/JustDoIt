@@ -65,7 +65,14 @@ QVariant TaskTableModel::data(const QModelIndex &index, int role) const
     {
         Task* task = allTasks.at(index.row());
 
-        return task->done() ? Qt::Checked : Qt::Unchecked;
+        if(task->unprocessed())
+        {
+            return Qt::Unchecked;
+        }
+        else
+        {
+            return task->done() ? Qt::Checked : Qt::Unchecked;
+        }
     }
 
     if (role == Qt::DisplayRole)
@@ -75,11 +82,20 @@ QVariant TaskTableModel::data(const QModelIndex &index, int role) const
         if (index.column() == 0) return task->id();
         else if (index.column() == 1) return task->location();
         else if (index.column() == 2) return task->category();
-        else if (index.column() == 3) return task->done() ? tr("Finished" ): QString::number(qMax(QDateTime::currentDateTime().daysTo(task->dueDate()), 0)) + tr(" days left");
-//        else if (index.column() == 3) return QVariant();
+        else if (index.column() == 3)
+        {
+            if(task->unprocessed())
+            {
+                return tr("Review");
+            }
+            else
+            {
+                return task->done() ? tr("Finished" ): QString::number(qMax(QDateTime::currentDateTime().daysTo(task->dueDate()), 0)) + tr(" days left");
+            }
+        }
         else if (index.column() == 4) return task->startDate();
         else if (index.column() == 5) return task->endDate();
-        else if (index.column() == 6) return task->dueDate();
+        else if (index.column() == 6) return task->unprocessed() ? QVariant() : task->dueDate();
         else if (index.column() == 7) return task->title();
         else if (index.column() == 8) return task->description();
         else if (index.column() == 9) return task->recurrenceIntervalInMinutes();
@@ -168,21 +184,28 @@ bool TaskTableModel::setData(const QModelIndex &index, const QVariant &value, in
         else if (index.column() == 2) currentTask->category(value.toString());
         else if (index.column() == 3)
         {
-            currentTask->done(value.toBool());
-
-            if(currentTask->done())
+            if(currentTask->unprocessed())
             {
-                currentTask->endDate(QDateTime::currentDateTime());
-
-                QModelIndex endDateIndex = createIndex(index.row(), 5);
-                emit(dataChanged(endDateIndex, endDateIndex));
+                currentTask->unprocessed(!value.toBool());
             }
             else
             {
-                currentTask->endDate(QDateTime());
+                currentTask->done(value.toBool());
 
-                QModelIndex endDateIndex = createIndex(index.row(), 5);
-                emit(dataChanged(endDateIndex, endDateIndex));
+                if(currentTask->done())
+                {
+                    currentTask->endDate(QDateTime::currentDateTime());
+
+                    QModelIndex endDateIndex = createIndex(index.row(), 5);
+                    emit(dataChanged(endDateIndex, endDateIndex));
+                }
+                else
+                {
+                    currentTask->endDate(QDateTime());
+
+                    QModelIndex endDateIndex = createIndex(index.row(), 5);
+                    emit(dataChanged(endDateIndex, endDateIndex));
+                }
             }
         }
         else if (index.column() == 4) currentTask->startDate(value.toDateTime());

@@ -109,6 +109,7 @@ void TaskXmlReader::readTask()
     QString location = xmlReader->attributes().value("location").toString();
     QString category = xmlReader->attributes().value("category").toString();
     bool done = xmlReader->attributes().value("done").toString() == "true" ? true : false;
+    bool unprocessed = xmlReader->attributes().value("unprocessed").toString() == "true" ? true : false;
 
     QDateTime startDate;
     QDateTime endDate;
@@ -161,6 +162,7 @@ void TaskXmlReader::readTask()
     newTask->title(title);
     newTask->description(description);
     newTask->recurrenceIntervalInMinutes(recurrence);
+    newTask->unprocessed(unprocessed);
 
     userData->addTask(newTask);
 }

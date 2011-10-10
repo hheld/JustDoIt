@@ -141,6 +141,7 @@ private slots:
     void taskRowClicked(QModelIndex);
     void showReminder();
     void showAboutMsg();
+    void on_pushButton_addAsThoughtOnly_clicked();
 };
 
 #endif // MAINWINDOW_H

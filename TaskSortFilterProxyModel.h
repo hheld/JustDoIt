@@ -33,10 +33,12 @@ public:
 
 public slots:
     void hideDoneTasks(bool done);
+    void showOnlyUnprocessedTasks(bool unprocessed);
     void setNumOfDaysAhead(int numOfDaysAhead);
 
 private:
     bool hideDone;
+    bool showOnlyUnprocessed;
     int numOfDaysAhead;
 
     bool dateInRange(const QDate &date) const;

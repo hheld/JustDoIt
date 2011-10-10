@@ -58,6 +58,12 @@ bool TaskSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
         accept = !model->getTasks().at(source_row)->done() && accept;
     }
 
+    // handle processed status
+    if(showOnlyUnprocessed)
+    {
+        accept = model->getTasks().at(source_row)->unprocessed() && accept;
+    }
+
     QModelIndex index1 = sourceModel()->index(source_row, 1, source_parent);
     QModelIndex index2 = sourceModel()->index(source_row, 2, source_parent);
     QModelIndex index7 = sourceModel()->index(source_row, 7, source_parent);
@@ -95,6 +101,13 @@ bool TaskSortFilterProxyModel::dateInRange(const QDate &date) const
 void TaskSortFilterProxyModel::setNumOfDaysAhead(int numOfDaysAhead)
 {
     this->numOfDaysAhead = numOfDaysAhead;
+
+    setFilterKeyColumn(6);
+}
+
+void TaskSortFilterProxyModel::showOnlyUnprocessedTasks(bool unprocessed)
+{
+    showOnlyUnprocessed = unprocessed;
 
     setFilterKeyColumn(6);
 }
