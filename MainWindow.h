@@ -84,6 +84,7 @@ private:
     QAction *actStartVisibility;
     QAction *actHideToSysTray;
     QAction *actEnableReminders;
+    QAction *actShowHide;
 
     QString saveFileName;
 
@@ -132,6 +133,7 @@ private slots:
     void on_tabWidget_currentChanged(int index);
     void on_button_add_clicked();
     void on_button_clear_clicked();
+    void trayIcon_showHide_clicked();
     void trayIcon_addTask_clicked();
     void trayIcon_manageTasks_clicked();
     void setStartVisible(bool visibleOnStart);

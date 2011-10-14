@@ -68,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     actStartVisibility = 0;
     actEnableReminders = 0;
+    actShowHide = 0;
 
     // disable close icon on window
     setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint & ~Qt::WindowMinimizeButtonHint);
@@ -157,6 +158,7 @@ MainWindow::~MainWindow()
     delete timer_reminder; timer_reminder = 0;
     delete actStartVisibility; actStartVisibility = 0;
     delete actEnableReminders; actEnableReminders = 0;
+    delete actShowHide; actShowHide = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -595,6 +597,20 @@ void MainWindow::initSystray()
 {
     sti->setIcon(QIcon(":/icons/res/app.svg"));
 
+    actShowHide = new QAction(this);
+    if(isVisible())
+    {
+        actShowHide->setText("Hide");
+    }
+    else
+    {
+        actShowHide->setText("Show");
+    }
+    connect(actShowHide, SIGNAL(triggered()), this, SLOT(trayIcon_showHide_clicked()));
+    trayIconMenu->addAction(actShowHide);
+
+    trayIconMenu->addSeparator();
+
     trayIconMenu->addAction(tr("Add task"), this, SLOT(trayIcon_addTask_clicked()));
     trayIconMenu->addAction(tr("View/manage tasks"), this, SLOT(trayIcon_manageTasks_clicked()));
 
@@ -619,6 +635,20 @@ void MainWindow::initSystray()
     sti->setContextMenu(trayIconMenu);
 
     sti->show();
+}
+
+void MainWindow::trayIcon_showHide_clicked()
+{
+    sysTrayIconClicked(QSystemTrayIcon::Trigger);
+
+    if(isVisible())
+    {
+        actShowHide->setText("Hide");
+    }
+    else
+    {
+        actShowHide->setText("Show");
+    }
 }
 
 void MainWindow::trayIcon_addTask_clicked()
