@@ -64,21 +64,25 @@ void PrintView::createPage() const
     QTextCharFormat boldFormat = format;
     boldFormat.setFontWeight(QFont::Bold);
 
-    cursor.insertText(tr("Character formats"), format);
+    unsigned int numOfTasks = numOfOpenTasks();
 
-    cursor.insertBlock();
+    if(!numOfTasks)
+    {
+        cursor.insertText(tr("There are currently no open tasks."), format);
 
-    cursor.insertText(tr("Text can be displayed in a variety of "
-                         "different character formats. "), boldFormat);
-    cursor.insertText(tr("We can emphasize text by "));
-    cursor.insertText(tr("making it italic"));
+        return;
+    }
+    else
+    {
+        cursor.insertText(tr("Open tasks as of %1\n\n").arg(QDateTime::currentDateTime().toString()), format);
+    }
 
     QTextTableFormat tableFormat;
-    tableFormat.setCellPadding(0.);
+    tableFormat.setCellPadding(10.);
     tableFormat.setCellSpacing(0.);
     tableFormat.setHeaderRowCount(1);
 
-    int rows = allTasks.size()+1, columns = 5;
+    int rows = allTasks.size()+1, columns = 6;
     QTextTable *table = cursor.insertTable(rows, columns, tableFormat);
 
     QTextTableCell cell;
@@ -110,11 +114,20 @@ void PrintView::createPage() const
         case 4:
             cellCursor.insertText(tr("Location"), boldFormat);
             break;
+
+        case 5:
+            cellCursor.insertText(tr("Done"), boldFormat);
+            break;
         }
     }
 
     for (int row=0; row<rows-1; ++row)
     {
+        if(allTasks.at(row)->done())
+        {
+            continue;
+        }
+
         for (int column=0; column<columns; ++column)
         {
             cell = table->cellAt(row+1, column);
@@ -144,4 +157,21 @@ void PrintView::createPage() const
             }
         }
     }
+}
+
+unsigned int PrintView::numOfOpenTasks() const
+{
+    unsigned int noot = 0;
+
+    unsigned int numOfTasks = allTasks.size();
+
+    for(unsigned int i=0; i<numOfTasks; ++i)
+    {
+        if(!allTasks.at(i)->done())
+        {
+            ++noot;
+        }
+    }
+
+    return noot;
 }

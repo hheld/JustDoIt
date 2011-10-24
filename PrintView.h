@@ -48,6 +48,7 @@ private:
     QVector<Task*> allTasks;
 
     void createPage() const;
+    unsigned int numOfOpenTasks() const;
 };
 
 #endif // PRINTVIEW_H
