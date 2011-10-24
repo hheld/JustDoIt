@@ -37,6 +37,7 @@ class TaskTableLineEditDelegate;
 class TaskTableTextEditDelegate;
 class TaskTableRecurrenceDelegate;
 class Reminder;
+class PrintView;
 
 namespace Ui {
     class MainWindow;
@@ -93,6 +94,8 @@ private:
     Reminder *reminderWidget;
     QTimer *timer_reminder;
 
+    PrintView *printView;
+
     QRect lastGeometry;
 
     void permuteColumns();
@@ -144,6 +147,7 @@ private slots:
     void showReminder();
     void showAboutMsg();
     void on_pushButton_addAsThoughtOnly_clicked();
+    void on_actionPrint_triggered();
 };
 
 #endif // MAINWINDOW_H

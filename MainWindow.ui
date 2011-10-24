@@ -1083,6 +1083,7 @@ padding: 2px 4px;</string>
    <addaction name="actionSave"/>
    <addaction name="actionQuit"/>
    <addaction name="actionAbout_JustDoIt"/>
+   <addaction name="actionPrint"/>
    <addaction name="separator"/>
    <addaction name="actionPurge"/>
   </widget>
@@ -1121,6 +1122,14 @@ padding: 2px 4px;</string>
    </property>
    <property name="toolTip">
     <string>Info about JustDoIt</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="text">
+    <string>Print</string>
+   </property>
+   <property name="toolTip">
+    <string>Print tasks</string>
    </property>
   </action>
  </widget>

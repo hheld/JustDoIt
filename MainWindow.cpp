@@ -19,9 +19,8 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-
+#include "PrintView.h"
 #include "Reminder.h"
-
 #include "UserData.h"
 #include "Task.h"
 #include "TaskXmlWriter.h"
@@ -60,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timer_autoSave(0),
     reminderWidget(0),
     timer_reminder(0),
+    printView(0),
     saveNeeded(false),
     startVisible(true),
     remindersEnabled(true)
@@ -125,6 +125,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionAbout_JustDoIt->setIcon(style()->standardIcon(QStyle::SP_DialogHelpButton));
     connect(ui->actionAbout_JustDoIt, SIGNAL(triggered()), this, SLOT(showAboutMsg()));
 
+    /// \todo add a print icon and assign it to the print action
+
     // center on screen
     center();
 
@@ -159,6 +161,7 @@ MainWindow::~MainWindow()
     delete actStartVisibility; actStartVisibility = 0;
     delete actEnableReminders; actEnableReminders = 0;
     delete actShowHide; actShowHide = 0;
+    delete printView; printView = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -1010,4 +1013,16 @@ void MainWindow::on_pushButton_addAsThoughtOnly_clicked()
     model_tasks->setData(indexRecurrence, recurInterval);
 
     on_button_clear_clicked();
+}
+
+void MainWindow::on_actionPrint_triggered()
+{
+    if(!printView)
+    {
+        printView = new PrintView(0);
+
+        printView->setTasks(model_tasks->getTasks());
+    }
+
+    printView->show();
 }
