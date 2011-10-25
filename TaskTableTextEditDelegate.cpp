@@ -65,3 +65,10 @@ void TaskTableTextEditDelegate::updateEditorGeometry(QWidget *editor, const QSty
 
     editor->setGeometry(cellRect);
 }
+
+QSize TaskTableTextEditDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    Q_UNUSED(index);
+
+    return QSize(300, option.rect.height());
+}

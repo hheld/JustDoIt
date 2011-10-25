@@ -1022,6 +1022,8 @@ void MainWindow::on_actionPrint_triggered()
         printView = new PrintView(0);
 
         printView->setTasks(model_tasks->getTasks());
+
+        connect(model_tasks, SIGNAL(dataChanged(QModelIndex, QModelIndex)), printView, SLOT(recreatePage()));
     }
 
     printView->show();

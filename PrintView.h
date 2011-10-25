@@ -45,10 +45,13 @@ protected:
 private slots:
     void on_pushButton_print_clicked();
 
+public slots:
+    void recreatePage();
+
 private:
     Ui::PrintView *ui;
 
-    QVector<Task*> allTasks;
+    const QVector<Task*> *allTasks;
 
     void createPage() const;
     unsigned int numOfOpenTasks() const;

@@ -27,7 +27,8 @@
 
 PrintView::PrintView(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::PrintView)
+    ui(new Ui::PrintView),
+    allTasks(0)
 {
     ui->setupUi(this);
 }
@@ -51,7 +52,7 @@ void PrintView::changeEvent(QEvent *e)
 
 void PrintView::setTasks(const QVector<Task *> &tasks)
 {
-    allTasks = tasks;
+    allTasks = &tasks;
 
     createPage();
 }
@@ -125,9 +126,9 @@ void PrintView::createPage() const
 
     int actualRow = 0;
 
-    for (int row=0; row<allTasks.size(); ++row)
+    for (int row=0; row<allTasks->size(); ++row)
     {
-        if(allTasks.at(row)->done())
+        if(allTasks->at(row)->done())
         {
             continue;
         }
@@ -140,23 +141,23 @@ void PrintView::createPage() const
             switch(column)
             {
             case 0:
-                cellCursor.insertText(allTasks.at(row)->dueDate().toString(), format);
+                cellCursor.insertText(allTasks->at(row)->dueDate().toString(), format);
                 break;
 
             case 1:
-                cellCursor.insertText(allTasks.at(row)->title(), format);
+                cellCursor.insertText(allTasks->at(row)->title(), format);
                 break;
 
             case 2:
-                cellCursor.insertText(allTasks.at(row)->description(), format);
+                cellCursor.insertText(allTasks->at(row)->description(), format);
                 break;
 
             case 3:
-                cellCursor.insertText(allTasks.at(row)->category(), format);
+                cellCursor.insertText(allTasks->at(row)->category(), format);
                 break;
 
             case 4:
-                cellCursor.insertText(allTasks.at(row)->location(), format);
+                cellCursor.insertText(allTasks->at(row)->location(), format);
                 break;
             }
         }
@@ -169,11 +170,11 @@ unsigned int PrintView::numOfOpenTasks() const
 {
     unsigned int noot = 0;
 
-    unsigned int numOfTasks = allTasks.size();
+    unsigned int numOfTasks = allTasks->size();
 
     for(unsigned int i=0; i<numOfTasks; ++i)
     {
-        if(!allTasks.at(i)->done())
+        if(!allTasks->at(i)->done())
         {
             ++noot;
         }
@@ -192,4 +193,10 @@ void PrintView::on_pushButton_print_clicked()
     {
         ui->textEdit->print(&printer);
     }
+}
+
+void PrintView::recreatePage()
+{
+    ui->textEdit->clear();
+    createPage();
 }
