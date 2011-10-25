@@ -82,7 +82,7 @@ void PrintView::createPage() const
     tableFormat.setCellSpacing(0.);
     tableFormat.setHeaderRowCount(1);
 
-    int rows = allTasks.size()+1, columns = 6;
+    int rows = numOfTasks + 1/*allTasks.size()+1*/, columns = 6;
     QTextTable *table = cursor.insertTable(rows, columns, tableFormat);
 
     QTextTableCell cell;
@@ -121,7 +121,9 @@ void PrintView::createPage() const
         }
     }
 
-    for (int row=0; row<rows-1; ++row)
+    int actualRow = 0;
+
+    for (int row=0; row<allTasks.size(); ++row)
     {
         if(allTasks.at(row)->done())
         {
@@ -130,7 +132,7 @@ void PrintView::createPage() const
 
         for (int column=0; column<columns; ++column)
         {
-            cell = table->cellAt(row+1, column);
+            cell = table->cellAt(actualRow+1, column);
             cellCursor = cell.firstCursorPosition();
 
             switch(column)
@@ -156,6 +158,8 @@ void PrintView::createPage() const
                 break;
             }
         }
+
+        ++actualRow;
     }
 }
 
