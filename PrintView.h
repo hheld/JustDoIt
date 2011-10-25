@@ -42,6 +42,9 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+private slots:
+    void on_pushButton_print_clicked();
+
 private:
     Ui::PrintView *ui;
 

@@ -18,6 +18,8 @@
  */
 
 #include <QTextTable>
+#include <QPrintDialog>
+#include <QPrinter>
 
 #include "PrintView.h"
 #include "ui_PrintView.h"
@@ -178,4 +180,16 @@ unsigned int PrintView::numOfOpenTasks() const
     }
 
     return noot;
+}
+
+void PrintView::on_pushButton_print_clicked()
+{
+    QPrinter printer;
+
+    QPrintDialog printDialog(&printer, this);
+
+    if (printDialog.exec() == QDialog::Accepted)
+    {
+        ui->textEdit->print(&printer);
+    }
 }
