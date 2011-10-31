@@ -57,10 +57,12 @@ FORMS    += MainWindow.ui \
     PrintView.ui
 
 OTHER_FILES += \
-    Tasks.xsd
+    Tasks.xsd \
+    enableSystrayIconUnity.sh
 
 RESOURCES += \
     resources.qrc
+
 
 
 

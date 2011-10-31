@@ -754,10 +754,12 @@ void MainWindow::sysTrayIconClicked(QSystemTrayIcon::ActivationReason reason)
         if(!isActiveWindow())
         {
             trayIcon_addTask_clicked();
+            actShowHide->setText("Hide");
         }
         else
         {
             hide();
+            actShowHide->setText("Show");
         }
     }
 }
