@@ -31,6 +31,10 @@ PrintView::PrintView(QWidget *parent) :
     allTasks(0)
 {
     ui->setupUi(this);
+
+    connect(ui->radioButton_all, SIGNAL(clicked()), this, SLOT(recreatePage()));
+    connect(ui->radioButton_week, SIGNAL(clicked()), this, SLOT(recreatePage()));
+    connect(ui->radioButton_month, SIGNAL(clicked()), this, SLOT(recreatePage()));
 }
 
 PrintView::~PrintView()
@@ -126,11 +130,30 @@ void PrintView::createPage() const
 
     int actualRow = 0;
 
+    // as radio buttons they are exclusive, therefore we don't need a flag for the third 'all' option
+    bool showWeek = ui->radioButton_week->isChecked();
+    bool showMonth = ui->radioButton_month->isChecked();
+
     for (int row=0; row<allTasks->size(); ++row)
     {
         if(allTasks->at(row)->done())
         {
             continue;
+        }
+
+        if(showWeek)
+        {
+            if(allTasks->at(row)->dueDate()>QDateTime::currentDateTime().addDays(7))
+            {
+                continue;
+            }
+        }
+        else if(showMonth)
+        {
+            if(allTasks->at(row)->dueDate()>QDateTime::currentDateTime().addDays(30))
+            {
+                continue;
+            }
         }
 
         for (int column=0; column<columns; ++column)
@@ -174,6 +197,25 @@ unsigned int PrintView::numOfOpenTasks() const
 
     for(unsigned int i=0; i<numOfTasks; ++i)
     {
+        // as radio buttons they are exclusive, therefore we don't need a flag for the third 'all' option
+        bool showWeek = ui->radioButton_week->isChecked();
+        bool showMonth = ui->radioButton_month->isChecked();
+
+        if(showWeek)
+        {
+            if(allTasks->at(i)->dueDate()>QDateTime::currentDateTime().addDays(7))
+            {
+                continue;
+            }
+        }
+        else if(showMonth)
+        {
+            if(allTasks->at(i)->dueDate()>QDateTime::currentDateTime().addDays(30))
+            {
+                continue;
+            }
+        }
+
         if(!allTasks->at(i)->done())
         {
             ++noot;
