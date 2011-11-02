@@ -20,10 +20,16 @@
 #include <QTextTable>
 #include <QPrintDialog>
 #include <QPrinter>
+#include <QtAlgorithms>
 
 #include "PrintView.h"
 #include "ui_PrintView.h"
 #include "Task.h"
+
+bool TaskLessThan(Task* const t1, Task* const t2)
+{
+    return t1->dueDate() < t2->dueDate();
+}
 
 PrintView::PrintView(QWidget *parent) :
     QWidget(parent),
@@ -54,7 +60,7 @@ void PrintView::changeEvent(QEvent *e)
     }
 }
 
-void PrintView::setTasks(const QVector<Task *> &tasks)
+void PrintView::setTasks(QVector<Task *> &tasks)
 {
     allTasks = &tasks;
 
@@ -83,6 +89,9 @@ void PrintView::createPage() const
     {
         cursor.insertText(tr("Open tasks as of %1\n\n").arg(QDateTime::currentDateTime().toString()), format);
     }
+
+    // sort tasks ascending according to their due dates
+    qSort(allTasks->begin(), allTasks->end(), TaskLessThan);
 
     QTextTableFormat tableFormat;
     tableFormat.setCellPadding(10.);

@@ -29,6 +29,10 @@ namespace Ui {
     class PrintView;
 }
 
+/** For sorting the tasks according to due date.
+  */
+bool TaskLessThan(Task* const t1, Task* const t2);
+
 class PrintView : public QWidget
 {
     Q_OBJECT
@@ -37,7 +41,7 @@ public:
     explicit PrintView(QWidget *parent = 0);
     ~PrintView();
 
-    void setTasks(const QVector<Task*> &tasks);
+    void setTasks(QVector<Task*> &tasks);
 
 protected:
     void changeEvent(QEvent *e);
@@ -51,7 +55,7 @@ public slots:
 private:
     Ui::PrintView *ui;
 
-    const QVector<Task*> *allTasks;
+    QVector<Task*> *allTasks;
 
     void createPage() const;
     unsigned int numOfOpenTasks() const;
