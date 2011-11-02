@@ -88,6 +88,11 @@ MainWindow::MainWindow(QWidget *parent) :
     updateDefaultDueDateTime();
     connect(ui->button_add, SIGNAL(clicked()), this, SLOT(updateDefaultDueDateTime()));
 
+    // update the default due date time every 10 minutes, not only when tasks are added by clicking 'add'
+    timer_updateDefaultDueDateTime = new QTimer(this);
+    connect(timer_updateDefaultDueDateTime, SIGNAL(timeout()), this, SLOT(updateDefaultDueDateTime()));
+    timer_updateDefaultDueDateTime->start(1000 * 60 * 10);
+
     model_categories = new QStringListModel(this);
     model_locations = new QStringListModel(this);
 
@@ -162,6 +167,7 @@ MainWindow::~MainWindow()
     delete actEnableReminders; actEnableReminders = 0;
     delete actShowHide; actShowHide = 0;
     delete printView; printView = 0;
+    delete timer_updateDefaultDueDateTime; timer_updateDefaultDueDateTime = 0;
 }
 
 void MainWindow::changeEvent(QEvent *e)

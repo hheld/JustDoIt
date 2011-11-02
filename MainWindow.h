@@ -90,6 +90,7 @@ private:
     QString saveFileName;
 
     QTimer *timer_autoSave;
+    QTimer *timer_updateDefaultDueDateTime;
 
     Reminder *reminderWidget;
     QTimer *timer_reminder;
