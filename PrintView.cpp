@@ -91,7 +91,8 @@ void PrintView::createPage() const
     }
 
     // sort tasks ascending according to their due dates
-    qSort(allTasks->begin(), allTasks->end(), TaskLessThan);
+    QVector<Task*> allTasksCp = *allTasks;
+    qSort(allTasksCp.begin(), allTasksCp.end(), TaskLessThan);
 
     QTextTableFormat tableFormat;
     tableFormat.setCellPadding(10.);
@@ -143,23 +144,23 @@ void PrintView::createPage() const
     bool showWeek = ui->radioButton_week->isChecked();
     bool showMonth = ui->radioButton_month->isChecked();
 
-    for (int row=0; row<allTasks->size(); ++row)
+    for (int row=0; row<allTasksCp.size(); ++row)
     {
-        if(allTasks->at(row)->done())
+        if(allTasksCp.at(row)->done())
         {
             continue;
         }
 
         if(showWeek)
         {
-            if(allTasks->at(row)->dueDate()>QDateTime::currentDateTime().addDays(7))
+            if(allTasksCp.at(row)->dueDate()>QDateTime::currentDateTime().addDays(7))
             {
                 continue;
             }
         }
         else if(showMonth)
         {
-            if(allTasks->at(row)->dueDate()>QDateTime::currentDateTime().addDays(30))
+            if(allTasksCp.at(row)->dueDate()>QDateTime::currentDateTime().addDays(30))
             {
                 continue;
             }
@@ -173,23 +174,23 @@ void PrintView::createPage() const
             switch(column)
             {
             case 0:
-                cellCursor.insertText(allTasks->at(row)->dueDate().toString(), format);
+                cellCursor.insertText(allTasksCp.at(row)->dueDate().toString(), format);
                 break;
 
             case 1:
-                cellCursor.insertText(allTasks->at(row)->title(), format);
+                cellCursor.insertText(allTasksCp.at(row)->title(), format);
                 break;
 
             case 2:
-                cellCursor.insertText(allTasks->at(row)->description(), format);
+                cellCursor.insertText(allTasksCp.at(row)->description(), format);
                 break;
 
             case 3:
-                cellCursor.insertText(allTasks->at(row)->category(), format);
+                cellCursor.insertText(allTasksCp.at(row)->category(), format);
                 break;
 
             case 4:
-                cellCursor.insertText(allTasks->at(row)->location(), format);
+                cellCursor.insertText(allTasksCp.at(row)->location(), format);
                 break;
             }
         }
