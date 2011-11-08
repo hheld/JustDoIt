@@ -64,6 +64,11 @@ public:
     const bool& unprocessed() const;
     void unprocessed(const bool &isUnprocessed);
 
+    /** Returns a sha1 hash value from the actual task's data.
+      * This can be used to identify tasks when merging the XML files.
+      */
+    const QByteArray hash() const;
+
     //-------------------------------------------------
 
     bool operator==(const Task &task) const;

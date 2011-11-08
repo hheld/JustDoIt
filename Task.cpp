@@ -17,6 +17,8 @@
  * along with JustDoIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QCryptographicHash>
+
 #include "Task.h"
 
 QString Task::DateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
@@ -184,12 +186,7 @@ void Task::done(const bool &done)
 
 bool Task::operator ==(const Task &task) const
 {
-    Q_D(const Task);
-
-    qint32 leftId = d->id;
-    qint32 rightId = task.id();
-
-    return leftId == rightId;
+    return hash() == task.hash();
 }
 
 const int & Task::recurrenceIntervalInMinutes() const
@@ -218,4 +215,29 @@ void Task::unprocessed(const bool &isUnprocessed)
     Q_D(Task);
 
     d->isUnprocessed = isUnprocessed;
+}
+
+const QByteArray Task::hash() const
+{
+    Q_D(const Task);
+
+    QCryptographicHash myHash(QCryptographicHash::Sha1);
+
+    QByteArray taskData;
+
+    taskData.append(d->startDate.toString());
+    taskData.append(d->endDate.toString());
+    taskData.append(d->dueDate.toString());
+    taskData.append(d->title);
+    taskData.append(d->description);
+    taskData.append(QString::number(d->id));
+    taskData.append(d->location);
+    taskData.append(d->category);
+    taskData.append(QString::number(d->done));
+    taskData.append(QString::number(d->recurrenceInterval));
+    taskData.append(QString::number(d->isUnprocessed));
+
+    myHash.addData(taskData);
+
+    return myHash.result().toHex();
 }
