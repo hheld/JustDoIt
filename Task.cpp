@@ -230,7 +230,6 @@ const QByteArray Task::hash() const
     taskData.append(d->dueDate.toString());
     taskData.append(d->title);
     taskData.append(d->description);
-    taskData.append(QString::number(d->id));
     taskData.append(d->location);
     taskData.append(d->category);
     taskData.append(QString::number(d->done));

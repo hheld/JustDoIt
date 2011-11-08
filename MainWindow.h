@@ -107,6 +107,7 @@ private:
     void purgeAllDoneTasks();
     void center();
     void handleRecurringTasks(const int &position);
+    void importTasksFromXML(const QString &xmlFileName);
 
     bool saveNeeded;
     bool startVisible;

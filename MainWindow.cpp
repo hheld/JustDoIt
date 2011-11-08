@@ -32,6 +32,7 @@
 #include "TaskTableLineEditDelegate.h"
 #include "TaskTableTextEditDelegate.h"
 #include "TaskTableRecurrenceDelegate.h"
+#include "TaskXmlReader.h"
 
 #include <QStringListModel>
 #include <QDebug>
@@ -252,6 +253,9 @@ void MainWindow::setUsrData(UserData *uData)
 
     // make sure that the showOnlyUnprocessed state is handled correctly at startup
     sortFilterTasksProxy->showOnlyUnprocessedTasks(ui->checkBox_showOnlyUnprocessed->isChecked());
+
+    /// \todo this line is just for testing, remove it later
+    importTasksFromXML("/home/harry/.justdoit/tasks_new.xml");
 }
 
 void MainWindow::saveXML(const QString &fileName)
@@ -1035,4 +1039,71 @@ void MainWindow::on_actionPrint_triggered()
     }
 
     printView->show();
+}
+
+void MainWindow::importTasksFromXML(const QString &xmlFileName)
+{
+    TaskXmlReader reader(xmlFileName);
+
+    UserData *ud = 0;
+
+    reader.readDocument();
+    ud = reader.uData();
+
+    QVector<Task*> &newTasks = ud->tasks();
+    QVector<Task*> &existingTasks = uData->tasks();
+
+    // if there are any tasks in the other XML file, let's see if there are any new ones
+    if(newTasks.size())
+    {
+        QVector<QByteArray> hashesOfExistingTasks;
+
+        int numOfExistingTasks = existingTasks.size();
+
+        for(int i=0; i<numOfExistingTasks; ++i)
+        {
+            hashesOfExistingTasks.append(existingTasks.at(i)->hash());
+        }
+
+        int numOfNewTasks = newTasks.size();
+        int numOfActualNewTasks = 0;
+
+        for(int i=0; i<numOfNewTasks; ++i)
+        {
+            if(!hashesOfExistingTasks.contains(newTasks.at(i)->hash()))
+            {
+                ++numOfActualNewTasks;
+
+                Task *newTaskToBeAdded = newTasks.at(i);
+
+                int row = model_tasks->rowCount();
+
+                model_tasks->insertRows(row, 1);
+
+                model_tasks->getTasks()[row]->unprocessed(newTaskToBeAdded->unprocessed());
+
+                QModelIndex indexLocation = model_tasks->index(row, 1);
+                QModelIndex indexCategory = model_tasks->index(row, 2);
+                QModelIndex indexTitle = model_tasks->index(row, 7);
+                QModelIndex indexDescription = model_tasks->index(row, 8);
+                QModelIndex indexDueDate = model_tasks->index(row, 6);
+                QModelIndex indexStartDate = model_tasks->index(row, 4);
+                QModelIndex indexRecurrence = model_tasks->index(row, 9);
+                QModelIndex indexDone = model_tasks->index(row, 3);
+                QModelIndex indexEndDate = model_tasks->index(row, 5);
+
+                model_tasks->setData(indexLocation, newTaskToBeAdded->location());
+                model_tasks->setData(indexCategory, newTaskToBeAdded->category());
+                model_tasks->setData(indexTitle, newTaskToBeAdded->title());
+                model_tasks->setData(indexDescription, newTaskToBeAdded->description());
+                model_tasks->setData(indexDueDate, newTaskToBeAdded->dueDate());
+                model_tasks->setData(indexStartDate, newTaskToBeAdded->startDate());
+                model_tasks->setData(indexRecurrence, newTaskToBeAdded->recurrenceIntervalInMinutes());
+                model_tasks->setData(indexDone, newTaskToBeAdded->done());
+                model_tasks->setData(indexEndDate, newTaskToBeAdded->endDate());
+            }
+        }
+    }
+
+    delete ud;
 }
