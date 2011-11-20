@@ -69,6 +69,10 @@ public:
       */
     const QByteArray hash() const;
 
+    /** Returns true iff the current task has the identical title or description as the specified task 'task'.
+      */
+    bool similarTo(const Task &task) const;
+
     //-------------------------------------------------
 
     bool operator==(const Task &task) const;

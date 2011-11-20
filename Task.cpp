@@ -240,3 +240,10 @@ const QByteArray Task::hash() const
 
     return myHash.result().toHex();
 }
+
+bool Task::similarTo(const Task &task) const
+{
+    Q_D(const Task);
+
+    return d->title == task.title() || d->description == task.description();
+}
