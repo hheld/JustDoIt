@@ -1058,6 +1058,11 @@ void MainWindow::importTasksFromXML(const QString &xmlFileName)
     {
         QVector<QByteArray> hashesOfExistingTasks;
 
+        /** These are most likely conflicting tasks that need to be resolved manually by the user.
+          * The first task of the pair is always the existing one, the second one the newly imported candidate.
+          */
+        QVector< QPair<Task*, Task*> > possiblySimilarTasks;
+
         int numOfExistingTasks = existingTasks.size();
 
         for(int i=0; i<numOfExistingTasks; ++i)
@@ -1072,6 +1077,25 @@ void MainWindow::importTasksFromXML(const QString &xmlFileName)
         {
             if(!hashesOfExistingTasks.contains(newTasks.at(i)->hash()))
             {
+                bool conflictsExistingTask = false;
+
+                for(int j=0; j<numOfExistingTasks; ++j)
+                {
+                    if(newTasks.at(i)->similarTo(*existingTasks.at(j)))
+                    {
+                        conflictsExistingTask = true;
+
+                        possiblySimilarTasks.append(QPair<Task*, Task*>(existingTasks.at(j), newTasks.at(i)));
+
+                        break;
+                    }
+                }
+
+                if(conflictsExistingTask)
+                {
+                    continue;
+                }
+
                 ++numOfActualNewTasks;
 
                 Task *newTaskToBeAdded = newTasks.at(i);
@@ -1102,6 +1126,13 @@ void MainWindow::importTasksFromXML(const QString &xmlFileName)
                 model_tasks->setData(indexDone, newTaskToBeAdded->done());
                 model_tasks->setData(indexEndDate, newTaskToBeAdded->endDate());
             }
+        }
+
+        qDebug() << QString("Found %1 possibly conflicting tasks").arg(QString::number(possiblySimilarTasks.size()));
+        for(int k=0; k<possiblySimilarTasks.size(); ++k)
+        {
+            qDebug() << possiblySimilarTasks.at(k).first->title() << "\t" << possiblySimilarTasks.at(k).second->title();
+            qDebug() << possiblySimilarTasks.at(k).first->description() << "\t" << possiblySimilarTasks.at(k).second->description() << "\n";
         }
     }
 

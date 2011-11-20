@@ -245,5 +245,5 @@ bool Task::similarTo(const Task &task) const
 {
     Q_D(const Task);
 
-    return d->title == task.title() || d->description == task.description();
+    return (d->title == task.title() && !(d->title.isEmpty())) || (d->description == task.description() && !d->description.isEmpty());
 }
