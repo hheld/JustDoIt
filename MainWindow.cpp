@@ -961,6 +961,7 @@ void MainWindow::handleRecurringTasks(const int &position)
         QModelIndex index_startDate = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 4));
         QModelIndex index_recurrent = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 9));
         QModelIndex index_dueDate = sortFilterTasksProxy->mapFromSource(model_tasks->index(row, 6));
+        model_tasks->getTasks()[row]->unprocessed(oldTask->unprocessed());
 
         // if the table is sorted immediately, our index might not belong to the row we think it does, so let's turn that off temporarily
         sortFilterTasksProxy->setDynamicSortFilter(false);
